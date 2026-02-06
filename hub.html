@@ -8,7 +8,7 @@
   <style>
     .process-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;margin:2.5rem 0}
     .phase-node{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:1.2rem 1.5rem;text-align:center;min-width:160px;transition:border-color .3s,transform .3s}
-    .phase-node:hover{border-color:var(--accent);transform:translateY(-3px)}
+    .phase-node:hover{border-color:var(--accent);transform:translateY(-3px)}         .phase-node.expanded{border-color:var(--accent);background:rgba(0,160,251,.08);transform:scale(1.02)}         .phase-node.expanded .phase-sub{max-height:200px;padding-top:.5rem}
     .phase-num{font-size:.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:.35rem}
     .phase-title{font-size:1.05rem;font-weight:600;color:var(--fg)}
     .phase-sub{font-size:.8rem;color:var(--muted);margin-top:.25rem}
@@ -72,37 +72,37 @@
       <div class="section-sub">End-to-end autonomous pipeline: from deep research to closed revenue. Each phase is operational today.</div>
 
       <div class="process-flow">
-        <div class="phase-node">
+        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
           <div class="phase-num">Phase 1</div>
           <div class="phase-title">Deep Research</div>
-          <div class="phase-sub">Perplexity agent generates 69-page battle card</div>
+          <div class="phase-sub">AI agent generates competitive intelligence framework</div>
         </div>
         <div class="phase-arrow">&#8594;</div>
-        <div class="phase-node">
+        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
           <div class="phase-num">Phase 2</div>
           <div class="phase-title">JSON Handoff</div>
           <div class="phase-sub">Structured data export for downstream systems</div>
         </div>
         <div class="phase-arrow">&#8594;</div>
-        <div class="phase-node">
+        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
           <div class="phase-num">Phase 3</div>
           <div class="phase-title">LinkedIn Intel</div>
           <div class="phase-sub">Persona mapping, buying committee ID</div>
         </div>
         <div class="phase-arrow">&#8594;</div>
-        <div class="phase-node">
+        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
           <div class="phase-num">Phase 4</div>
           <div class="phase-title">ZoomInfo Enrich</div>
           <div class="phase-sub">Intent signals, contact validation</div>
         </div>
         <div class="phase-arrow">&#8594;</div>
-        <div class="phase-node">
+        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
           <div class="phase-num">Phase 5</div>
           <div class="phase-title">6sense Scoring</div>
           <div class="phase-sub">Buying stage, account prioritization</div>
         </div>
         <div class="phase-arrow">&#8594;</div>
-        <div class="phase-node">
+        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
           <div class="phase-num">Phase 6</div>
           <div class="phase-title">Salesloft Execute</div>
           <div class="phase-sub">Cadence activation, play deployment</div>
