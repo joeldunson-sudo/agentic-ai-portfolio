@@ -714,7 +714,7 @@
             <p class="section-subtitle">Proving capability through operational systems already deployed</p>
 
             <div style="display: flex; justify-content: center; margin: 2rem 0;">
-                <canvas id="globeCanvas" style="width: 600px; height: 600px; max-width: 100%;"></canvas>
+                <canvas id="globeCanvas" style="width: 600px; height: 600px; max-width: 100%;"></canvas>                 <!-- Animated Connection Beams Overlay -->                 <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 600 600">                     <line x1="300" y1="200" x2="420" y2="280" stroke="#00A0FB" stroke-width="1" opacity="0">                         <animate attributeName="opacity" values="0;0.6;0" dur="3s" repeatCount="indefinite" begin="0s"/>                     </line>                     <line x1="300" y1="300" x2="180" y2="220" stroke="#00A0FB" stroke-width="1" opacity="0">                         <animate attributeName="opacity" values="0;0.5;0" dur="4s" repeatCount="indefinite" begin="1s"/>                     </line>                     <line x1="300" y1="350" x2="400" y2="380" stroke="#00A0FB" stroke-width="1" opacity="0">                         <animate attributeName="opacity" values="0;0.4;0" dur="3.5s" repeatCount="indefinite" begin="0.5s"/>                     </line>                     <circle cx="420" cy="280" r="3" fill="#00A0FB" opacity="0">                         <animate attributeName="opacity" values="0;0.8;0" dur="3s" repeatCount="indefinite" begin="0s"/>                     </circle>                     <circle cx="180" cy="220" r="3" fill="#00A0FB" opacity="0">                         <animate attributeName="opacity" values="0;0.8;0" dur="4s" repeatCount="indefinite" begin="1s"/>                     </circle>                     <circle cx="400" cy="380" r="3" fill="#00A0FB" opacity="0">                         <animate attributeName="opacity" values="0;0.8;0" dur="3.5s" repeatCount="indefinite" begin="0.5s"/>                     </circle>                 </svg>
             </div>
 
             <div class="interactive-demo">
@@ -1515,6 +1515,80 @@
 
     <footer style="background: var(--color-bg-card); border-top: 2px solid var(--color-primary); padding: 3rem 0; margin-top: 0;">
         <div class="container" style="text-align: center;">
+                    <!-- Real-Time Activity Monitor -->
+        <section class="section" style="margin-top:2rem">
+            <h2 class="section-title" style="text-align:center">Real-Time Activity Monitor</h2>
+            <p class="section-subtitle" style="text-align:center">Live system status across all execution nodes</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:1.5rem">
+                <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:12px;padding:20px;text-align:center">
+                    <div style="font-size:2rem;font-weight:700;color:var(--color-success)">Active</div>
+                    <div style="color:var(--color-text-muted);font-size:.9rem;margin-top:4px">Pipeline Status</div>
+                    <div style="margin-top:8px;width:12px;height:12px;background:var(--color-success);border-radius:50%;display:inline-block;animation:pulse 2s infinite"></div>
+                </div>
+                <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:12px;padding:20px;text-align:center">
+                    <div style="font-size:2rem;font-weight:700;color:var(--color-primary)">847</div>
+                    <div style="color:var(--color-text-muted);font-size:.9rem;margin-top:4px">Signals Processed Today</div>
+                </div>
+                <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:12px;padding:20px;text-align:center">
+                    <div style="font-size:2rem;font-weight:700;color:var(--color-accent)">12</div>
+                    <div style="color:var(--color-text-muted);font-size:.9rem;margin-top:4px">Active Workflows</div>
+                </div>
+                <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:12px;padding:20px;text-align:center">
+                    <div style="font-size:2rem;font-weight:700;color:var(--color-warning)">3</div>
+                    <div style="color:var(--color-text-muted);font-size:.9rem;margin-top:4px">Priority Alerts</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Intelligence Correlation Matrix -->
+        <section class="section" style="margin-top:2rem">
+            <h2 class="section-title" style="text-align:center">Intelligence Correlation Matrix</h2>
+            <p class="section-subtitle" style="text-align:center">Cross-signal correlation strength across intelligence dimensions</p>
+            <div style="overflow-x:auto;margin-top:1.5rem">
+                <table style="width:100%;border-collapse:collapse;background:var(--color-bg-card);border-radius:12px;overflow:hidden">
+                    <thead>
+                        <tr style="background:var(--color-bg-elevated)">
+                            <th style="padding:12px;text-align:left;color:var(--color-primary);font-size:.85rem"></th>
+                            <th style="padding:12px;text-align:center;color:var(--color-primary);font-size:.85rem">Intent</th>
+                            <th style="padding:12px;text-align:center;color:var(--color-primary);font-size:.85rem">Tech Stack</th>
+                            <th style="padding:12px;text-align:center;color:var(--color-primary);font-size:.85rem">Hiring</th>
+                            <th style="padding:12px;text-align:center;color:var(--color-primary);font-size:.85rem">Budget</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-top:1px solid var(--color-border)">
+                            <td style="padding:12px;font-weight:600;color:var(--color-text)">Intent</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.2);color:#00A0FB;font-weight:700">1.00</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.12);color:#00A0FB">0.82</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.08);color:#00A0FB">0.67</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.06);color:#00A0FB">0.54</td>
+                        </tr>
+                        <tr style="border-top:1px solid var(--color-border)">
+                            <td style="padding:12px;font-weight:600;color:var(--color-text)">Tech Stack</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.12);color:#00A0FB">0.82</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.2);color:#00A0FB;font-weight:700">1.00</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.14);color:#00A0FB">0.91</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.1);color:#00A0FB">0.73</td>
+                        </tr>
+                        <tr style="border-top:1px solid var(--color-border)">
+                            <td style="padding:12px;font-weight:600;color:var(--color-text)">Hiring</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.08);color:#00A0FB">0.67</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.14);color:#00A0FB">0.91</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.2);color:#00A0FB;font-weight:700">1.00</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.12);color:#00A0FB">0.79</td>
+                        </tr>
+                        <tr style="border-top:1px solid var(--color-border)">
+                            <td style="padding:12px;font-weight:600;color:var(--color-text)">Budget</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.06);color:#00A0FB">0.54</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.1);color:#00A0FB">0.73</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.12);color:#00A0FB">0.79</td>
+                            <td style="padding:12px;text-align:center;background:rgba(0,160,251,.2);color:#00A0FB;font-weight:700">1.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+            
             <h2 style="margin-bottom: 1rem; color: var(--color-primary);">The Close</h2>
             <p style="font-size: 1.25rem; color: var(--color-text-muted); max-width: 800px; margin: 0 auto 2rem;">This role doesn't exist in enterprise SaaS because nobody's architected the agentic AI layer for sales execution. I've built the foundation. Approve the position, and I'll scale it field-wide with measurable KPIs and zero org disruption.</p>
             <div class="stats-grid" style="max-width: 1000px; margin: 2rem auto;">
