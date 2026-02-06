@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deep Analyst Agent | Joel Dunson</title>
+  <link rel="stylesheet" href="../assets/hub.css" />
+  <style>
+    .arch-section{margin:2.5rem 0}
+    .arch-title{font-size:1.6rem;font-weight:700;color:var(--fg);margin-bottom:.5rem}
+    .arch-sub{color:var(--muted);font-size:.95rem;margin-bottom:1.5rem;max-width:640px}
+    .flow-steps{display:flex;flex-direction:column;gap:0}
+    .flow-step{display:flex;align-items:flex-start;gap:1.2rem;padding:1.4rem;background:var(--card);border:1px solid var(--border);border-radius:10px;transition:border-color .3s}
+    .flow-step:hover{border-color:var(--accent)}
+    .step-num{min-width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:.9rem;flex-shrink:0}
+    .step-content h4{color:var(--fg);font-size:1.05rem;margin-bottom:.25rem}
+    .step-content p{color:var(--muted);font-size:.85rem;line-height:1.5}
+    .flow-connector{width:2px;height:24px;background:var(--border);margin-left:17px}
+    .spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-top:1.5rem}
+    .spec-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.4rem}
+    .spec-card h4{color:var(--fg);font-size:1rem;margin-bottom:.5rem}
+    .spec-card ul{list-style:none;padding:0}
+    .spec-card li{color:var(--muted);font-size:.85rem;padding:.3rem 0;padding-left:1rem;position:relative}
+    .spec-card li::before{content:"--";position:absolute;left:0;color:var(--accent)}
+    .status-banner{background:var(--card);border:2px solid var(--accent);border-radius:10px;padding:1.5rem;margin-top:2rem;display:flex;align-items:center;gap:1rem}
+    .status-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);flex-shrink:0}
+    .status-text{color:var(--fg);font-size:.95rem}
+    .status-text span{color:var(--muted);font-size:.85rem;display:block;margin-top:.25rem}
+    @media(max-width:680px){.spec-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="container">
+      <div class="h1">Deep Analyst Agent</div>
+      <p class="sub">Autonomous research agent concept -- architecture, data flow, and deployment path.</p>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn secondary" href="./">Back to Tools</a>
+        <a class="btn secondary" href="../hub.html">Back to Hub</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Agent Architecture -->
+    <div class="arch-section">
+      <div class="arch-title">Agent Execution Flow</div>
+      <div class="arch-sub">The Deep Analyst ingests a target account and autonomously executes all 6 phases, producing deal-ready intelligence as structured JSON output.</div>
+
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Target Account Ingestion</h4>
+            <p>Agent receives account name, industry vertical, and known signals. Validates against existing CRM data if available.</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Deep Research Execution</h4>
+            <p>Perplexity-powered research agent generates comprehensive account intelligence: financials, tech stack, org structure, competitive landscape, and strategic priorities.</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Persona and Committee Mapping</h4>
+            <p>Identifies 15-25 key stakeholders, maps buying committee structure, assigns P5-P1 priority scores, and generates persona-specific messaging angles.</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Intent Signal Enrichment</h4>
+            <p>Cross-references 6sense buying stage data, ZoomInfo intent signals, and technographic triggers. Produces confidence-scored timing windows.</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>JSON Intelligence Output</h4>
+            <p>Structures all findings into machine-readable JSON: KPIs, alerts, persona maps, competitive positioning, and recommended plays.</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Downstream System Handoff</h4>
+            <p>JSON output feeds Salesloft cadences, CRM fields, and rep dashboards. Human validates, then activates play with pre-built messaging.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technical Specs -->
+    <div class="arch-section">
+      <div class="arch-title">Technical Architecture</div>
+      <div class="arch-sub">Component breakdown and integration points for the autonomous research pipeline.</div>
+
+      <div class="spec-grid">
+        <div class="spec-card">
+          <h4>Input Layer</h4>
+          <ul>
+            <li>Account name + industry vertical</li>
+            <li>Known intent signals (optional)</li>
+            <li>CRM opportunity data (optional)</li>
+            <li>Competitive context parameters</li>
+          </ul>
+        </div>
+        <div class="spec-card">
+          <h4>Research Engine</h4>
+          <ul>
+            <li>Perplexity API for deep research</li>
+            <li>Structured prompt chains (6 phases)</li>
+            <li>Confidence scoring at L1/L2/L3 levels</li>
+            <li>Source validation and citation tracking</li>
+          </ul>
+        </div>
+        <div class="spec-card">
+          <h4>Output Schema</h4>
+          <ul>
+            <li>JSON: KPIs, alerts, personas, plays</li>
+            <li>Battle card generation (PDF export)</li>
+            <li>CRM field mapping (Salesforce)</li>
+            <li>Cadence trigger definitions</li>
+          </ul>
+        </div>
+        <div class="spec-card">
+          <h4>Integration Points</h4>
+          <ul>
+            <li>6sense: buying stage + intent scores</li>
+            <li>ZoomInfo: contact enrichment</li>
+            <li>Salesloft: cadence activation</li>
+            <li>Salesforce: opportunity + field updates</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="status-banner">
+      <div class="status-dot"></div>
+      <div class="status-text">
+        Architecture documented. Build path defined. Ready for prototype sprint.
+        <span>Estimated build: 4-6 weeks with Perplexity API access. Phase 1 (research engine) can operate standalone.</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
