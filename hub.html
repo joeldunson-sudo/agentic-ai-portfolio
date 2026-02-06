@@ -3,50 +3,148 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hub | Joel Dunson</title>
+  <title>Command Hub | Joel Dunson</title>
   <link rel="stylesheet" href="./assets/hub.css" />
+  <style>
+    .process-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;margin:2.5rem 0}
+    .phase-node{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:1.2rem 1.5rem;text-align:center;min-width:160px;transition:border-color .3s,transform .3s}
+    .phase-node:hover{border-color:var(--accent);transform:translateY(-3px)}
+    .phase-num{font-size:.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:.35rem}
+    .phase-title{font-size:1.05rem;font-weight:600;color:var(--fg)}
+    .phase-sub{font-size:.8rem;color:var(--muted);margin-top:.25rem}
+    .phase-arrow{font-size:1.4rem;color:var(--accent);padding:0 .5rem;flex-shrink:0}
+    .hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:2rem}
+    .hub-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;transition:border-color .3s,transform .3s}
+    .hub-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+    .hub-card h3{font-size:1.2rem;color:var(--fg);margin-bottom:.5rem}
+    .hub-card .tag{display:inline-block;font-size:.7rem;padding:.25rem .6rem;border-radius:12px;font-weight:600;margin-bottom:.75rem}
+    .tag-live{background:rgba(0,200,83,.15);color:#00c853;border:1px solid #00c853}
+    .tag-concept{background:rgba(0,160,251,.15);color:#00a0fb;border:1px solid #00a0fb}
+    .tag-policy{background:rgba(255,152,0,.15);color:#ff9800;border:1px solid #ff9800}
+    .hub-card p{color:var(--muted);font-size:.9rem;line-height:1.6;margin-bottom:1rem}
+    .hub-card .card-link{display:inline-block;color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;transition:color .2s}
+    .hub-card .card-link:hover{color:var(--fg)}
+    .section-label{font-size:.75rem;text-transform:uppercase;letter-spacing:3px;color:var(--muted);margin-bottom:.5rem}
+    .section-title{font-size:2rem;font-weight:700;color:var(--fg);margin-bottom:.5rem}
+    .section-sub{color:var(--muted);font-size:1rem;margin-bottom:2rem;max-width:640px}
+    .divider{height:1px;background:var(--border);margin:3rem 0}
+    @media(max-width:680px){.process-flow{flex-direction:column}.phase-arrow{transform:rotate(90deg);padding:.3rem 0}}
+  </style>
 </head>
 <body>
+
   <div class="header">
     <div class="container">
-      <div class="h1">Portfolio + Intelligence Hub</div>
-      <p class="sub">Public showroom + private territory ops (local-only) where needed.</p>
+      <div class="h1">Command Hub</div>
+      <p class="sub">Agentic AI Sales Execution -- operational systems, live intelligence, deployment tools.</p>
       <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
         <a class="btn secondary" href="./index.html">Back to Portfolio</a>
-        <a class="btn" href="./intelligence/">Open Intelligence</a>
-        <a class="btn" href="./tools/">Open Tools</a>
+        <a class="btn" href="./intelligence/">Intelligence</a>
+        <a class="btn" href="./tools/">Tools</a>
       </div>
     </div>
   </div>
 
   <div class="container">
-    <div class="grid">
-      <div class="card">
-        <h2>Intelligence</h2>
-        <div class="pill">Safe public demo data</div>
-        <p class="small" style="margin-top:10px">
-          Reads ./intelligence/data/public_demo.json (committed) and optionally ./intelligence/data/private_local.json (gitignored).
-        </p>
-        <div style="margin-top:12px"><a class="btn" href="./intelligence/">Open</a></div>
-      </div>
 
-      <div class="card">
-        <h2>Tools</h2>
-        <div class="pill">Perplexity apps (link-out first)</div>
-        <p class="small" style="margin-top:10px">
-          We start with stable links. If Perplexity allows iframe embedding later, we add it.
-        </p>
-        <div style="margin-top:12px"><a class="btn" href="./tools/">Open</a></div>
-      </div>
+    <!-- 6-Phase Agentic Process -->
+    <div style="margin-top:3rem">
+      <div class="section-label">Execution Architecture</div>
+      <div class="section-title">6-Phase Agentic Process</div>
+      <div class="section-sub">End-to-end autonomous pipeline: from deep research to closed revenue. Each phase is operational today.</div>
 
-      <div class="card">
-        <h2>Private ops policy</h2>
-        <div class="pill">No customer data on public Pages</div>
-        <p class="small" style="margin-top:10px">
-          6sense segments, Salesforce account lists, intent keywords should NOT be pushed to GitHub Pages unless sanitized.
-        </p>
+      <div class="process-flow">
+        <div class="phase-node">
+          <div class="phase-num">Phase 1</div>
+          <div class="phase-title">Deep Research</div>
+          <div class="phase-sub">Perplexity agent generates 69-page battle card</div>
+        </div>
+        <div class="phase-arrow">&#8594;</div>
+        <div class="phase-node">
+          <div class="phase-num">Phase 2</div>
+          <div class="phase-title">JSON Handoff</div>
+          <div class="phase-sub">Structured data export for downstream systems</div>
+        </div>
+        <div class="phase-arrow">&#8594;</div>
+        <div class="phase-node">
+          <div class="phase-num">Phase 3</div>
+          <div class="phase-title">LinkedIn Intel</div>
+          <div class="phase-sub">Persona mapping, buying committee ID</div>
+        </div>
+        <div class="phase-arrow">&#8594;</div>
+        <div class="phase-node">
+          <div class="phase-num">Phase 4</div>
+          <div class="phase-title">ZoomInfo Enrich</div>
+          <div class="phase-sub">Intent signals, contact validation</div>
+        </div>
+        <div class="phase-arrow">&#8594;</div>
+        <div class="phase-node">
+          <div class="phase-num">Phase 5</div>
+          <div class="phase-title">6sense Scoring</div>
+          <div class="phase-sub">Buying stage, account prioritization</div>
+        </div>
+        <div class="phase-arrow">&#8594;</div>
+        <div class="phase-node">
+          <div class="phase-num">Phase 6</div>
+          <div class="phase-title">Salesloft Execute</div>
+          <div class="phase-sub">Cadence activation, play deployment</div>
+        </div>
       </div>
     </div>
+
+    <div class="divider"></div>
+
+    <!-- Systems & Intelligence -->
+    <div class="section-label">Operational Systems</div>
+    <div class="section-title">Live Infrastructure</div>
+    <div class="section-sub">Each card links to a deployed, functional system. No mockups.</div>
+
+    <div class="hub-grid">
+
+      <div class="hub-card">
+        <h3>Intelligence Hub</h3>
+        <div class="tag tag-live">Live</div>
+        <p>Account intelligence dashboard. KPI summaries, deal alerts, and buying-stage data rendered from JSON. Public demo data committed; private overlays gitignored.</p>
+        <a class="card-link" href="./intelligence/">Open Intelligence &#8594;</a>
+      </div>
+
+      <div class="hub-card">
+        <h3>6sense Live Ticker</h3>
+        <div class="tag tag-live">Live</div>
+        <p>Real-time intent signal feed for AMS West territory. Simulated 6sense data showing buying stages, intent scores, and account movement across the pipeline.</p>
+        <a class="card-link" href="./intelligence/6sense-ticker.html">Open Ticker &#8594;</a>
+      </div>
+
+      <div class="hub-card">
+        <h3>Tools -- Perplexity Apps</h3>
+        <div class="tag tag-live">Live</div>
+        <p>Deployed Perplexity app for account research. Stable external links. When Perplexity enables iframe embedding, tools will render inline.</p>
+        <a class="card-link" href="./tools/">Open Tools &#8594;</a>
+      </div>
+
+      <div class="hub-card">
+        <h3>Deep Analyst Agent</h3>
+        <div class="tag tag-concept">Concept</div>
+        <p>Autonomous research agent that ingests target account, runs 6-phase process, and outputs deal-ready intelligence. Architecture documented, build path defined.</p>
+        <a class="card-link" href="./tools/deep-analyst.html">View Concept &#8594;</a>
+      </div>
+
+      <div class="hub-card">
+        <h3>Visual Documentation</h3>
+        <div class="tag tag-live">Live</div>
+        <p>Autonomous UI capture system producing 12 screenshots across desktop, tablet, and mobile breakpoints with zero manual effort.</p>
+        <a class="card-link" href="./index.html">View in Portfolio &#8594;</a>
+      </div>
+
+      <div class="hub-card">
+        <h3>Private Ops Policy</h3>
+        <div class="tag tag-policy">Policy</div>
+        <p>No customer data on public Pages. 6sense segments, Salesforce account lists, and intent keywords are never pushed unless sanitized. Private overlays use .gitignore.</p>
+      </div>
+
+    </div>
+
   </div>
+
 </body>
 </html>
