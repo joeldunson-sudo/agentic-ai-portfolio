@@ -1,1 +1,3 @@
 .local-state/
+.local-state/session_*.txt
+intelligence/data/private_local.json

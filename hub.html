@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hub | Joel Dunson</title>
+  <link rel="stylesheet" href="./assets/hub.css" />
+</head>
+<body>
+  <div class="header">
+    <div class="container">
+      <div class="h1">Portfolio + Intelligence Hub</div>
+      <p class="sub">Public showroom + private territory ops (local-only) where needed.</p>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn secondary" href="./index.html">Back to Portfolio</a>
+        <a class="btn" href="./intelligence/">Open Intelligence</a>
+        <a class="btn" href="./tools/">Open Tools</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <h2>Intelligence</h2>
+        <div class="pill">Safe public demo data</div>
+        <p class="small" style="margin-top:10px">
+          Reads ./intelligence/data/public_demo.json (committed) and optionally ./intelligence/data/private_local.json (gitignored).
+        </p>
+        <div style="margin-top:12px"><a class="btn" href="./intelligence/">Open</a></div>
+      </div>
+
+      <div class="card">
+        <h2>Tools</h2>
+        <div class="pill">Perplexity apps (link-out first)</div>
+        <p class="small" style="margin-top:10px">
+          We start with stable links. If Perplexity allows iframe embedding later, we add it.
+        </p>
+        <div style="margin-top:12px"><a class="btn" href="./tools/">Open</a></div>
+      </div>
+
+      <div class="card">
+        <h2>Private ops policy</h2>
+        <div class="pill">No customer data on public Pages</div>
+        <p class="small" style="margin-top:10px">
+          6sense segments, Salesforce account lists, intent keywords should NOT be pushed to GitHub Pages unless sanitized.
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

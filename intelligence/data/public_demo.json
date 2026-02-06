@@ -1,0 +1,12 @@
+{
+  "updated_utc": "2026-02-06T18:25:00Z",
+  "mode": "public_demo",
+  "kpis": [
+    {"name": "Target account universe", "value": 0, "note": "Demo placeholder"},
+    {"name": "Active $500K+ pursuits", "value": 0, "note": "Demo placeholder"},
+    {"name": "Next-30-day intent spikes", "value": 0, "note": "Demo placeholder"}
+  ],
+  "alerts": [
+    {"severity": "info", "message": "Demo data only. Private territory data stays local (not pushed to GitHub Pages)."}
+  ]
+}

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Intelligence | Joel Dunson</title>
+  <link rel="stylesheet" href="../assets/hub.css" />
+</head>
+<body>
+  <div class="header">
+    <div class="container">
+      <div class="h1">Territory Intelligence</div>
+      <p class="sub">Public demo + optional private local overlay.</p>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn secondary" href="../hub.html">Back to Hub</a>
+        <a class="btn secondary" href="../index.html">Back to Portfolio</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h2>Data source</h2>
+      <div class="pill" id="modePill">Loading…</div>
+      <p class="small" id="updatedLine" style="margin-top:10px"></p>
+      <p class="small">
+        Public file: <code>./data/public_demo.json</code><br/>
+        Optional private file (local-only): <code>./data/private_local.json</code>
+      </p>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>KPIs</h2>
+      <div id="kpiWrap"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>Alerts</h2>
+      <div id="alertWrap"></div>
+    </div>
+  </div>
+
+<script>
+async function loadJson(url){
+  const r = await fetch(url + "?ts=" + Date.now(), {cache:"no-store"});
+  if(!r.ok) throw new Error("HTTP " + r.status);
+  return await r.json();
+}
+
+function render(data){
+  document.getElementById("modePill").textContent = data.mode || "unknown";
+  document.getElementById("updatedLine").textContent = "Updated (UTC): " + (data.updated_utc || "unknown");
+
+  const kpiWrap = document.getElementById("kpiWrap");
+  kpiWrap.innerHTML = "";
+  (data.kpis || []).forEach(k => {
+    const div = document.createElement("div");
+    div.className = "kpi";
+    div.innerHTML = `<div><div class="k">${k.name}</div><div class="small">${k.note || ""}</div></div><div class="v">${k.value}</div>`;
+    kpiWrap.appendChild(div);
+  });
+
+  const alertWrap = document.getElementById("alertWrap");
+  alertWrap.innerHTML = "";
+  (data.alerts || []).forEach(a => {
+    const div = document.createElement("div");
+    div.className = "kpi";
+    div.innerHTML = `<div><div class="k">${a.severity || "info"}</div><div class="v">${a.message || ""}</div></div><div class="pill">signal</div>`;
+    alertWrap.appendChild(div);
+  });
+}
+
+(async () => {
+  const pub = await loadJson("./data/public_demo.json");
+  let merged = pub;
+
+  try{
+    const priv = await loadJson("./data/private_local.json");
+    merged = {...pub, ...priv, mode: (priv.mode || "private_local")};
+  }catch(e){
+    // no private overlay
+  }
+  render(merged);
+})();
+</script>
+</body>
+</html>
