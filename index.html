@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Director, Agentic AI Sales Execution Strategy - Capability Portfolio</title>
+    <style>
+        :root {
+            --color-primary: #00A0FB;
+            --color-secondary: #002854;
+            --color-accent: #32B8C6;
+            --color-success: #00C853;
+            --color-warning: #FF9800;
+            --color-bg: #0A0E27;
+            --color-bg-card: #141B3A;
+            --color-bg-elevated: #1A2348;
+            --color-text: #FFFFFF;
+            --color-text-muted: #B0B8CC;
+            --color-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-bg) 100%);
+            border-bottom: 2px solid var(--color-primary);
+            padding: 2rem 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--color-text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hero .meta {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: var(--color-bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+        }
+
+        .meta-item .label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-top: 0.25rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        nav button {
+            padding: 0.75rem 1.5rem;
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        nav button.active {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .interactive-demo {
+            background: var(--color-bg-elevated);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid var(--color-border);
+        }
+
+        .workflow-step {
+            background: var(--color-bg-card);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid var(--color-border);
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .workflow-step:hover {
+            border-color: var(--color-primary);
+            transform: translateX(10px);
+        }
+
+        .workflow-step.active {
+            border-color: var(--color-success);
+            background: var(--color-bg-elevated);
+        }
+
+        .workflow-arrow {
+            text-align: center;
+            color: var(--color-primary);
+            font-size: 2rem;
+            margin: 0.5rem 0;
+        }
+
+        .roi-calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .calculator-input {
+            margin: 1rem 0;
+        }
+
+        .calculator-input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-muted);
+            font-size: 0.875rem;
+        }
+
+        .calculator-input input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text);
+            font-size: 1rem;
+        }
+
+        .calculator-input input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .calculator-output {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .calculator-result {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--color-text);
+            margin: 1rem 0;
+        }
+
+        .deal-card-interactive {
+            background: var(--color-bg-card);
+            border: 2px solid var(--color-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .deal-card-interactive:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 8px 24px rgba(0, 160, 251, 0.3);
+            transform: scale(1.02);
+        }
+
+        .deal-card-interactive.expanded {
+            border-color: var(--color-success);
+        }
+
+        .deal-details {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .deal-details.visible {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar {
+            background: var(--color-bg-card);
+            border-radius: 8px;
+            height: 30px;
+            margin: 1rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-success), var(--color-primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: width 0.5s ease;
+        }
+
+        .kpi-slider {
+            margin: 2rem 0;
+        }
+
+        .slider-container {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .slider-input {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--color-bg-card);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            border: 3px solid var(--color-bg);
+        }
+
+        .slider-input::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            border: 3px solid var(--color-bg);
+        }
+
+        .slider-value {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 1rem 0;
+        }
+
+        .evidence-grid-interactive {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .evidence-item {
+            background: var(--color-bg-card);
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .evidence-item:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-5px);
+        }
+
+        .evidence-item.checked {
+            border-color: var(--color-success);
+            background: var(--color-bg-elevated);
+        }
+
+        .evidence-item .checkmark {
+            display: none;
+            font-size: 2rem;
+            color: var(--color-success);
+        }
+
+        .evidence-item.checked .checkmark {
+            display: block;
+        }
+
+        .section {
+            display: none;
+            padding: 3rem 0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-muted);
+            margin-bottom: 3rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--color-primary);
+            box-shadow: 0 8px 24px rgba(0, 160, 251, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            color: var(--color-text);
+        }
+
+        .card-content {
+            color: var(--color-text-muted);
+            line-height: 1.8;
+        }
+
+        .card-footer {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(0, 200, 83, 0.2);
+            color: var(--color-success);
+            border: 1px solid var(--color-success);
+        }
+
+        .badge-primary {
+            background: rgba(0, 160, 251, 0.2);
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+        }
+
+        .badge-warning {
+            background: rgba(255, 152, 0, 0.2);
+            color: var(--color-warning);
+            border: 1px solid var(--color-warning);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: var(--color-bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--color-border);
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        th {
+            background: var(--color-bg-elevated);
+            color: var(--color-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 1px;
+        }
+
+        tr:hover {
+            background: var(--color-bg-elevated);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--color-primary);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            border: 3px solid var(--color-bg);
+        }
+
+        .timeline-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-meta {
+            color: var(--color-text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--color-text-muted);
+            font-size: 1rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--color-secondary), var(--color-bg-elevated));
+            border: 2px solid var(--color-primary);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.25rem;
+            color: var(--color-text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--color-primary);
+            color: var(--color-text);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 160, 251, 0.4);
+        }
+
+        .metric-bar {
+            background: var(--color-bg-elevated);
+            border-radius: 8px;
+            height: 40px;
+            margin: 1rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .metric-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            font-weight: 600;
+            transition: width 1s ease;
+        }
+
+        .quote-box {
+            background: var(--color-bg-elevated);
+            border-left: 4px solid var(--color-primary);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        .quote-box .author {
+            margin-top: 1rem;
+            font-style: normal;
+            color: var(--color-text-muted);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.125rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-direction: column;
+            }
+
+            nav button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header" style="position: relative;">
+        <div class="container">
+            <div class="hero">
+                <h1>Director, Agentic AI Sales Execution Strategy</h1>
+                <p class="subtitle">Capability Portfolio - Role Approval Evidence</p>
+                <div class="meta">
+                    <div class="meta-item">
+                        <span class="label">Projected ROI</span>
+                        <span class="value">557%</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Net Benefit</span>
+                        <span class="value">$140M</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Payback</span>
+                        <span class="value">11 Months</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Target OTE</span>
+                        <span class="value">$375K-$425K</span>
+                    </div>
+                </div>
+                <nav>
+                    <button class="nav-btn active" data-section="overview">Executive Summary</button>
+                    <button class="nav-btn" data-section="systems">Systems Built</button>
+                    <button class="nav-btn" data-section="deals">Live Deal Intelligence</button>
+                    <button class="nav-btn" data-section="comp">Self-Funding Model</button>
+                    <button class="nav-btn" data-section="kpis">Measurable KPIs</button>
+                    <button class="nav-btn" data-section="evidence">Evidence Portfolio</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <h2 class="section-title">The Core Argument</h2>
+            <p class="section-subtitle">Proving capability through operational systems already deployed</p>
+
+            <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                <canvas id="globeCanvas" style="width: 400px; height: 400px; max-width: 100%;"></canvas>
+            </div>
+
+            <div class="interactive-demo">
+                <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Interactive: Click the Workflow</h3>
+                <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Click each step to see how the AI-powered sales execution flows</p>
+                
+                <div class="workflow-step" data-step="1">
+                    <strong style="color: var(--color-primary);">Step 1: Intent Detection</strong>
+                    <p style="margin: 0.5rem 0 0 0; color: var(--color-text-muted);">ZoomInfo signals + buying stage validation</p>
+                </div>
+                <div class="workflow-arrow">↓</div>
+                
+                <div class="workflow-step" data-step="2">
+                    <strong style="color: var(--color-primary);">Step 2: Account Intelligence</strong>
+                    <p style="margin: 0.5rem 0 0 0; color: var(--color-text-muted);">6-phase research framework generates 69-page battle card</p>
+                </div>
+                <div class="workflow-arrow">↓</div>
+                
+                <div class="workflow-step" data-step="3">
+                    <strong style="color: var(--color-primary);">Step 3: Persona Mapping</strong>
+                    <p style="margin: 0.5rem 0 0 0; color: var(--color-text-muted);">25 personas prioritized P5-P1 with confidence scoring</p>
+                </div>
+                <div class="workflow-arrow">↓</div>
+                
+                <div class="workflow-step" data-step="4">
+                    <strong style="color: var(--color-primary);">Step 4: Play Execution</strong>
+                    <p style="margin: 0.5rem 0 0 0; color: var(--color-text-muted);">Rep activates pre-built messaging + competitive positioning</p>
+                </div>
+                <div class="workflow-arrow">↓</div>
+                
+                <div class="workflow-step" data-step="5">
+                    <strong style="color: var(--color-primary);">Step 5: Deal Close</strong>
+                    <p style="margin: 0.5rem 0 0 0; color: var(--color-text-muted);">$500K+ deal closes in 90-180 days with measurable ROI</p>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🏗️</div>
+                        <h3>What I Can Build</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>AI-powered sales intelligence systems that replace manual research with autonomous agent workflows</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Production Ready</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">✅</div>
+                        <h3>What I Have Built</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>6-phase account intelligence OS, Pure Storage 69-page battle card, ZoomInfo POC playbook, visual documentation generator</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Operational Today</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">💰</div>
+                        <h3>Business Impact</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>$140M net benefit, 11-month payback, 557% 3-year ROI (Everest Group validated). Self-funding comp structure.</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-primary">Validated</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">⚡</div>
+                        <h3>Why Now</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>Timing-critical opportunities: Meta (30 days), Columbia Banking (90 days), Citrix (91 days) with validated entry strategies</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-warning">Urgent</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h2>The Position That Doesn't Exist</h2>
+                <p>Agentic AI sales execution layer for enterprise SaaS - architected, operational, ready to scale field-wide</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Workstreams</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">40%</div>
+                        <div class="stat-label">Demand Play Design</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">25%</div>
+                        <div class="stat-label">Agentic AI Development</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">15%</div>
+                        <div class="stat-label">West Coast IC R&amp;D Lab</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Systems Built Section -->
+        <section id="systems" class="section">
+            <h2 class="section-title">Operational Systems Already Built</h2>
+            <p class="section-subtitle">Not potential - deployed, production-ready, measurable</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>What It Proves</th>
+                            <th>Business Impact</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Visual Documentation Generator</strong></td>
+                            <td>Built autonomous UI capture system - 12 screenshots desktop/tablet/mobile with zero manual effort</td>
+                            <td>Design and deploy agentic workflows that eliminate repetitive tasks</td>
+                            <td><span class="badge badge-success">Live</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>6-Phase Account Intelligence OS</strong></td>
+                            <td>Production-ready research framework with confidence scoring (L1/L2/L3), buying committee prioritization (P5-P1)</td>
+                            <td>Architect scalable systems where AI executes and humans validate</td>
+                            <td><span class="badge badge-success">Live</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pure Storage Battle Card</strong></td>
+                            <td>69-page comprehensive account intelligence with 25 personas mapped, ROI projections ($511K finance, $20M procurement)</td>
+                            <td>Transform raw research into deal-ready intelligence at scale</td>
+                            <td><span class="badge badge-success">Live</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Top 20 Intent-Driven Territory Intel</strong></td>
+                            <td>Timing windows identified (14-90 days), buying stage validated, triggers documented</td>
+                            <td>Build demand plays with measurable timing triggers</td>
+                            <td><span class="badge badge-success">Live</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>ZoomInfo POC Playbook</strong></td>
+                            <td>Pricing model validated ($750K→$2.2M), CEO objection handling, 30-day pilot de-risking strategy</td>
+                            <td>Extract learnings from completed deals, codify into repeatable plays</td>
+                            <td><span class="badge badge-success">Live</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="quote-box">
+                <p>"This isn't theoretical. Pure Storage dossier is 69 pages of CFO/CTO/Procurement messaging with competitive positioning against UiPath/ABBYY. Ready for immediate activation."</p>
+                <div class="author">— Joel Dunson, Account Intelligence Architect</div>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; color: var(--color-primary);">Research to Execution Time Reduction</h3>
+            <div class="metric-bar">
+                <div class="metric-fill" style="width: 25%">4 hours → 60 minutes (75% reduction)</div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Interactive: Build Your Own System</h3>
+                <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Check off the systems as you imagine deploying them</p>
+                
+                <div class="evidence-grid-interactive">
+                    <div class="evidence-item" onclick="toggleEvidence(this)">
+                        <div class="checkmark">✓</div>
+                        <strong>Visual Docs</strong>
+                        <p style="font-size: 0.75rem; margin: 0.5rem 0 0 0; color: var(--color-text-muted);">12 screenshots automated</p>
+                    </div>
+                    <div class="evidence-item" onclick="toggleEvidence(this)">
+                        <div class="checkmark">✓</div>
+                        <strong>6-Phase OS</strong>
+                        <p style="font-size: 0.75rem; margin: 0.5rem 0 0 0; color: var(--color-text-muted);">Research framework</p>
+                    </div>
+                    <div class="evidence-item" onclick="toggleEvidence(this)">
+                        <div class="checkmark">✓</div>
+                        <strong>Battle Card</strong>
+                        <p style="font-size: 0.75rem; margin: 0.5rem 0 0 0; color: var(--color-text-muted);">69-page Pure Storage</p>
+                    </div>
+                    <div class="evidence-item" onclick="toggleEvidence(this)">
+                        <div class="checkmark">✓</div>
+                        <strong>Intent Intel</strong>
+                        <p style="font-size: 0.75rem; margin: 0.5rem 0 0 0; color: var(--color-text-muted);">Top 20 accounts</p>
+                    </div>
+                    <div class="evidence-item" onclick="toggleEvidence(this)">
+                        <div class="checkmark">✓</div>
+                        <strong>POC Playbook</strong>
+                        <p style="font-size: 0.75rem; margin: 0.5rem 0 0 0; color: var(--color-text-muted);">ZoomInfo validated</p>
+                    </div>
+                </div>
+                
+                <div id="systemProgress" style="margin-top: 2rem;">
+                    <strong style="color: var(--color-text-muted);">Systems Deployed:</strong>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="systemProgressBar" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Deal Intelligence Section -->
+        <section id="deals" class="section">
+            <h2 class="section-title">Live Deal Execution Intelligence</h2>
+            <p class="section-subtitle">Timing-critical opportunities with validated entry strategies</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Intent</th>
+                            <th>Trigger</th>
+                            <th>Window</th>
+                            <th>Confidence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Meta / Facebook</strong></td>
+                            <td><span class="badge badge-primary">94</span></td>
+                            <td>Meta Compute announced Jan 12 (2 days ago)</td>
+                            <td><span class="badge badge-warning">30 days</span></td>
+                            <td>9/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Columbia Banking</strong></td>
+                            <td><span class="badge badge-primary">74-79</span></td>
+                            <td>Systems integration Q1 2026 (next 90 days)</td>
+                            <td><span class="badge badge-warning">90 days</span></td>
+                            <td>10/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Citrix Systems</strong></td>
+                            <td><span class="badge badge-primary">70</span></td>
+                            <td>License migration deadline April 15, 2026</td>
+                            <td><span class="badge badge-warning">91 days</span></td>
+                            <td>9/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Arizona State University</strong></td>
+                            <td><span class="badge badge-primary">92</span></td>
+                            <td>DisruptED 2026 conference + Innovation ranking #1</td>
+                            <td><span class="badge badge-warning">30 days</span></td>
+                            <td>10/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pure Storage</strong></td>
+                            <td><span class="badge badge-primary">70</span></td>
+                            <td>Enterprise Data Cloud launch + 5 partnerships Sept 2025</td>
+                            <td><span class="badge badge-success">90-120 days</span></td>
+                            <td>9/10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; color: var(--color-primary);">West Coast IC as R&amp;D Lab</h3>
+            
+            <div class="interactive-demo">
+                <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Interactive: Explore Live Deals</h3>
+                <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Click each deal to see timing, triggers, and validated entry strategies</p>
+                
+                <div class="deal-card-interactive" onclick="toggleDeal(this, 'meta')">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: var(--color-primary); font-size: 1.25rem;">Meta / Facebook</strong>
+                            <p style="margin: 0.5rem 0 0 0; color: var(--color-text-muted);">Intent Score: 94 | Window: 30 days</p>
+                        </div>
+                        <span style="font-size: 1.5rem;">▼</span>
+                    </div>
+                    <div class="deal-details" id="deal-meta">
+                        <p><strong style="color: var(--color-warning);">Trigger:</strong> Meta Compute announced Jan 12 (2 days ago)</p>
+                        <p><strong style="color: var(--color-success);">Deal Size:</strong> $1M+</p>
+                        <p><strong style="color: var(--color-primary);">Strategy:</strong> Infrastructure buildout play - procurement explosion timing</p>
+                        <div class="progress-bar" style="margin-top: 1rem;">
+                            <div class="progress-fill" style="width: 94%; background: var(--color-warning);">94% Intent</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="deal-card-interactive" onclick="toggleDeal(this, 'columbia')">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: var(--color-primary); font-size: 1.25rem;">Columbia Banking</strong>
+                            <p style="margin: 0.5rem 0 0 0; color: var(--color-text-muted);">Intent Score: 79 | Window: 90 days</p>
+                        </div>
+                        <span style="font-size: 1.5rem;">▼</span>
+                    </div>
+                    <div class="deal-details" id="deal-columbia">
+                        <p><strong style="color: var(--color-warning);">Trigger:</strong> Systems integration Q1 2026 (next 90 days)</p>
+                        <p><strong style="color: var(--color-success);">Deal Size:</strong> $500K+</p>
+                        <p><strong style="color: var(--color-primary);">Strategy:</strong> Post-M&A integration play with CIO Tom Rice</p>
+                        <div class="progress-bar" style="margin-top: 1rem;">
+                            <div class="progress-fill" style="width: 79%; background: var(--color-success);">79% Intent</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="deal-card-interactive" onclick="toggleDeal(this, 'pure')">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: var(--color-primary); font-size: 1.25rem;">Pure Storage</strong>
+                            <p style="margin: 0.5rem 0 0 0; color: var(--color-text-muted);">Intent Score: 70 | Window: 90-120 days</p>
+                        </div>
+                        <span style="font-size: 1.5rem;">▼</span>
+                    </div>
+                    <div class="deal-details" id="deal-pure">
+                        <p><strong style="color: var(--color-warning);">Trigger:</strong> Enterprise Data Cloud launch + 5 partnerships Sept 2025</p>
+                        <p><strong style="color: var(--color-success);">Deal Size:</strong> $750K+ Y1</p>
+                        <p><strong style="color: var(--color-primary);">Strategy:</strong> Product-operations paradox - roll out to manufacturing/tech</p>
+                        <div class="progress-bar" style="margin-top: 1rem;">
+                            <div class="progress-fill" style="width: 70%; background: var(--color-primary);">70% Intent</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid" style="margin-top: 2rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🎯</div>
+                        <h3>Pure Storage</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Deal Size:</strong> $750K+ Y1</p>
+                        <p><strong>Timeline:</strong> 90-120 days</p>
+                        <p><strong>Play Validation:</strong> Product-operations paradox tested live - if it works, roll out to manufacturing/tech vertical</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-primary">Intent: 70</span>
+                        <span class="badge badge-success">Decision Stage</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">⚡</div>
+                        <h3>Meta</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Deal Size:</strong> $1M+</p>
+                        <p><strong>Timeline:</strong> 30-60 days</p>
+                        <p><strong>Play Validation:</strong> Meta Compute procurement explosion - if it closes, playbook for infrastructure buildout triggers</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-primary">Intent: 94</span>
+                        <span class="badge badge-warning">Purchase Stage</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🏦</div>
+                        <h3>Columbia Banking</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Deal Size:</strong> $500K+</p>
+                        <p><strong>Timeline:</strong> 90 days</p>
+                        <p><strong>Play Validation:</strong> Post-M&amp;A integration play with CIO Tom Rice - becomes standard M&amp;A playbook</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-primary">Intent: 79</span>
+                        <span class="badge badge-warning">Decision Stage</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote-box">
+                <p>"West Coast IC isn't a side hustle. It's the R&D lab - validate plays in live $500K+ deals before rolling field-wide. Every play scales with proof, not theory."</p>
+            </div>
+        </section>
+
+        <!-- Self-Funding Model Section -->
+        <section id="comp" class="section">
+            <h2 class="section-title">Self-Funding Compensation Model</h2>
+            <p class="section-subtitle">Variable comp pays only when field performance lifts or IC deals close</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">$185K</div>
+                    <div class="stat-label">Base Salary</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$375K-$425K</div>
+                    <div class="stat-label">Total OTE</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">51-56%</div>
+                    <div class="stat-label">Variable %</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">70%</div>
+                    <div class="stat-label">Year 1 Guarantee</div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; color: var(--color-primary);">Two-Stream Variable Compensation</h3>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📊</div>
+                        <h3>Stream 1: Field Impact</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>60% of variable ($114K-$144K)</strong></p>
+                        <p>Accelerators fire only when reps using plays achieve &gt;100% quota</p>
+                        <div style="margin-top: 1.5rem;">
+                            <strong>Metrics:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>Play Adoption Rate (20%): Target 60%+ adoption by Q4</li>
+                                <li>Strategy-Influenced Pipeline (25%): Pipeline tagged with plays hits target</li>
+                                <li>Win Rate Lift (30%): +3-5 points delta vs. non-influenced deals</li>
+                                <li>Rep Quota Attainment (25%): 65%+ of adopters &gt;100% quota</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Uncapped</span>
+                        <span class="badge badge-primary">Quarterly Payout</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">💼</div>
+                        <h3>Stream 2: West Coast IC</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>40% of variable ($76K-$96K)</strong></p>
+                        <p>Enterprise AE commission on closed deals ($500K+ deal sizes)</p>
+                        <div style="margin-top: 1.5rem;">
+                            <strong>Deal Profile:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>Handpicked $1B+ accounts</li>
+                                <li>Partner directly with David</li>
+                                <li>6-18 month sales cycles</li>
+                                <li>15% time allocation</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Uncapped</span>
+                        <span class="badge badge-primary">Direct Revenue</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h2>Business Logic</h2>
+                <p>If 50 reps improve win rates by 3-5 points using validated plays, incremental revenue covers investment 10x+ over. Stream 2 is direct revenue contribution. If plays don't work, variable stays low. If they work, leverage justifies it.</p>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: 100%">Revenue Multiplier, Not Fixed Cost</div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Interactive: ROI Calculator</h3>
+                <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Adjust the variables to see your custom ROI calculation</p>
+                
+                <div class="roi-calculator">
+                    <div>
+                        <div class="calculator-input">
+                            <label>Number of Reps Using Plays</label>
+                            <input type="number" id="numReps" value="50" min="1" max="200" oninput="calculateROI()">
+                        </div>
+                        <div class="calculator-input">
+                            <label>Win Rate Improvement (%)</label>
+                            <input type="number" id="winRateImprovement" value="4" min="0" max="20" step="0.5" oninput="calculateROI()">
+                        </div>
+                        <div class="calculator-input">
+                            <label>Average Deal Size ($K)</label>
+                            <input type="number" id="avgDealSize" value="750" min="100" max="5000" step="50" oninput="calculateROI()">
+                        </div>
+                        <div class="calculator-input">
+                            <label>Deals Per Rep Per Year</label>
+                            <input type="number" id="dealsPerRep" value="3" min="1" max="20" oninput="calculateROI()">
+                        </div>
+                    </div>
+                    <div class="calculator-output">
+                        <div style="color: var(--color-text); font-size: 1rem; opacity: 0.9;">Incremental Annual Revenue</div>
+                        <div class="calculator-result" id="roiResult">$4.5M</div>
+                        <div style="color: var(--color-text); font-size: 0.875rem; opacity: 0.8; margin-top: 1rem;">
+                            Role Investment: $375K OTE<br>
+                            ROI Multiplier: <strong id="roiMultiplier">12x</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Measurable KPIs Section -->
+        <section id="kpis" class="section">
+            <h2 class="section-title">Measurable KPIs</h2>
+            <p class="section-subtitle">Quarterly QBR reporting - transparent, measurable, accountable</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Baseline</th>
+                            <th>Q2 Checkpoint</th>
+                            <th>Q4 Goal</th>
+                            <th>Measurement Source</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Play Adoption Rate</strong></td>
+                            <td>0% field using standardized plays</td>
+                            <td>30% adoption</td>
+                            <td><strong>60% adoption</strong></td>
+                            <td>CRM tagging: "Strategy Used" field</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Win Rate Lift</strong></td>
+                            <td>Baseline win rate X%</td>
+                            <td>+2 points for strategy-influenced</td>
+                            <td><strong>+3-5 points delta</strong></td>
+                            <td>Salesforce: Strategy vs. non-strategy</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pipeline Velocity</strong></td>
+                            <td>Current avg cycle time Y days</td>
+                            <td>-10% cycle time</td>
+                            <td><strong>-15-20% cycle time</strong></td>
+                            <td>Opportunity stage duration analysis</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rep Quota Attainment (Executing Plays)</strong></td>
+                            <td>Current X% reps &gt;100%</td>
+                            <td>60% of adopters &gt;100%</td>
+                            <td><strong>65% of adopters &gt;100%</strong></td>
+                            <td>Quota attainment filtered by play usage</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; color: var(--color-primary);">Year 1 Ramp Timeline</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-title">Q1-Q2: Foundation</div>
+                    <div class="timeline-meta">Build baselines, design plays, secure systems access</div>
+                    <div class="card-content">
+                        <ul style="padding-left: 1.5rem;">
+                            <li>Track adoption and early metrics</li>
+                            <li>Partial payout eligibility on Stream 1</li>
+                            <li>West Coast IC pipeline development</li>
+                            <li>QBR reporting framework established</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-title">Q3-Q4: Scale & Execute</div>
+                    <div class="timeline-meta">Full payout eligibility as plays scale field-wide</div>
+                    <div class="card-content">
+                        <ul style="padding-left: 1.5rem;">
+                            <li>60% field adoption target</li>
+                            <li>Measurable win rate lift 3-5 points</li>
+                            <li>West Coast IC deals close</li>
+                            <li>Full variable comp acceleration</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-title">Year 2+: Optimization</div>
+                    <div class="timeline-meta">Fully at-risk, uncapped upside on proven performance</div>
+                    <div class="card-content">
+                        <ul style="padding-left: 1.5rem;">
+                            <li>Remove Year 1 70% guarantee</li>
+                            <li>Scale winning plays across all regions</li>
+                            <li>Introduce new play categories</li>
+                            <li>Expand West Coast IC portfolio</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote-box">
+                <p>"Every metric is already in CRM or can be tagged with zero IT lift. Quarterly QBR reporting across all Americas regions - transparent, measurable, accountable."</p>
+            </div>
+
+            <div class="interactive-demo">
+                <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Interactive: Target Performance Slider</h3>
+                <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Slide to set your Q4 adoption target and see projected impact</p>
+                
+                <div class="kpi-slider">
+                    <label style="color: var(--color-text-muted); margin-bottom: 1rem; display: block;">Field Adoption Rate Target</label>
+                    <input type="range" class="slider-input" id="adoptionSlider" min="0" max="100" value="60" oninput="updateAdoption(this.value)">
+                    <div class="slider-value" id="adoptionValue">60%</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;">
+                        <div class="stat-card">
+                            <div class="stat-value" id="repsUsing">30</div>
+                            <div class="stat-label">Reps Using Plays</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="pipelineImpact">$15M</div>
+                            <div class="stat-label">Pipeline Impact</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Evidence Portfolio Section -->
+        <section id="evidence" class="section">
+            <h2 class="section-title">Evidence Portfolio</h2>
+            <p class="section-subtitle">Artifacts to present - physical and digital handouts</p>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📄</div>
+                        <h3>Role Proposal PDF</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Document:</strong> Director-Agentic-AI-Sales-Execution-Strategy.pdf</p>
+                        <p>Full role proposal with comp structure, 4-workstream model, 8-point Pete pitch, HR directives</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Complete</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🎯</div>
+                        <h3>Pure Storage Battle Card</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Document:</strong> Pure-Storage-Comprehensive-Intelligent-Process.pdf</p>
+                        <p>69-page account intelligence dossier with 25 personas, CFO/CTO/Procurement messaging, competitive positioning</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Complete</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🔍</div>
+                        <h3>Top 20 Intent Report</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Document:</strong> Based-off-of-recent-intent-data-what-are-the-top-1.pdf</p>
+                        <p>Timing-critical opportunities with 14-90 day windows, buying stage validation, trigger documentation</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Complete</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📸</div>
+                        <h3>Visual Documentation Demo</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Location:</strong> /tungsten-command-center/visual-docs/index.html</p>
+                        <p>Live demo showing autonomous UI capture - 12 screenshots desktop/tablet/mobile with zero manual effort</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Live</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📊</div>
+                        <h3>6-Phase Intelligence Framework</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Document:</strong> Quick-Ref-Prompts.md</p>
+                        <p>Production-ready research framework with confidence scoring, buying committee prioritization, cadence assignment</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Complete</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">✅</div>
+                        <h3>ZoomInfo POC Playbook</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Document:</strong> Zoominfo-Tungsten-POC-Completion-and-Future-Impact.txt</p>
+                        <p>Pricing model validated, CEO objection handling, 30-day pilot framework - repeatable across field</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Complete</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🏆</div>
+                        <h3>Customer Proof Points</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Document:</strong> Invoice-Automation-Case-Study-Testimonial-Slides.pptx</p>
+                        <p>7 case studies: Kroger (400K invoices), Pfizer ($2M savings, 90 countries), AstraZeneca (600K invoices, 50 countries)</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-success">Complete</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🎥</div>
+                        <h3>Meta Deal Review</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Document:</strong> Meta_Dunson_Deal-Review.pptx</p>
+                        <p>Meta-specific positioning, deal structure, close strategy learnings for high-intent opportunity</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-primary">Available</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h2>Ready for Immediate Activation</h2>
+                <p>All artifacts operational, tested, and available for presentation. No theoretical concepts - only deployed systems with measurable outcomes.</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Evidence Documents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">69</div>
+                        <div class="stat-label">Pages Pure Storage Intel</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">20</div>
+                        <div class="stat-label">Timing-Critical Accounts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Production Phases</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; color: var(--color-primary);">Guard Rails Against Scope Creep</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>NOT This Role</th>
+                            <th>Why It Matters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>❌ BDR/SDR Manager</strong></td>
+                            <td>Influence demand plays without $7M cost center ROI liability</td>
+                        </tr>
+                        <tr>
+                            <td><strong>❌ Sales Operations</strong></td>
+                            <td>No CRM admin, territory mapping, comp design - system design, not tooling</td>
+                        </tr>
+                        <tr>
+                            <td><strong>❌ Enablement</strong></td>
+                            <td>No training delivery, LMS content - playbook creation, not training facilitation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>❌ Deal Overlay</strong></td>
+                            <td>System-level plays (all deals), not individual deal support</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer style="background: var(--color-bg-card); border-top: 2px solid var(--color-primary); padding: 3rem 0; margin-top: 0;">
+        <div class="container" style="text-align: center;">
+            <h2 style="margin-bottom: 1rem; color: var(--color-primary);">The Close</h2>
+            <p style="font-size: 1.25rem; color: var(--color-text-muted); max-width: 800px; margin: 0 auto 2rem;">This role doesn't exist in enterprise SaaS because nobody's architected the agentic AI layer for sales execution. I've built the foundation. Approve the position, and I'll scale it field-wide with measurable KPIs and zero org disruption.</p>
+            <div class="stats-grid" style="max-width: 1000px; margin: 2rem auto;">
+                <div class="stat-card">
+                    <div class="stat-value">✅</div>
+                    <div class="stat-label">Can He Build It? Yes - Operational Systems Deployed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">💰</div>
+                    <div class="stat-label">Will It Pay? Yes - Self-Funding Comp Model</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">🎯</div>
+                    <div class="stat-label">Clean Org? Yes - One Line to Gopi, Guard Rails Built In</div>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; color: var(--color-text-muted);">Prepared by Joel Dunson for Tamas Hevizi &amp; Pete | February 2026</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import createGlobe from "https://cdn.skypack.dev/cobe";
+
+        const canvas = document.getElementById('globeCanvas');
+        if (!canvas) throw new Error('Canvas not found');
+
+        let phi = 0;
+        let globe;
+
+        function mount() {
+            const rect = canvas.getBoundingClientRect();
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+            canvas.width = Math.round(rect.width * dpr);
+            canvas.height = Math.round(rect.height * dpr);
+
+            globe = createGlobe(canvas, {
+                devicePixelRatio: dpr,
+                width: canvas.width,
+                height: canvas.height,
+                phi: 0,
+                theta: 0.2,
+                dark: 1,
+                diffuse: 1.2,
+                scale: 1,
+                mapSamples: 16000,
+                mapBrightness: 6,
+                baseColor: [0.1, 0.1, 0.15],
+                markerColor: [0, 0.63, 0.98],
+                glowColor: [0.1, 0.2, 0.3],
+                offset: [0, 0],
+                markers: [
+                    // Meta - Menlo Park
+                    { location: [37.4529, -122.1817], size: 0.08 },
+                    // Columbia Banking - Tacoma
+                    { location: [47.2529, -122.4443], size: 0.07 },
+                    // Pure Storage - Mountain View
+                    { location: [37.3861, -122.0839], size: 0.07 },
+                    // ASU - Tempe
+                    { location: [33.4242, -111.9281], size: 0.06 },
+                    // Citrix - Fort Lauderdale
+                    { location: [26.1224, -80.1373], size: 0.06 }
+                ],
+                onRender: (state) => {
+                    state.phi = phi;
+                    phi += 0.01;
+                }
+            });
+        }
+
+        function unmount() {
+            if (globe) globe.destroy();
+            globe = null;
+        }
+
+        mount();
+
+        window.addEventListener("resize", () => {
+            unmount();
+            mount();
+        });
+
+        // Navigation functionality
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const sections = document.querySelectorAll('.section');
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetSection = button.dataset.section;
+
+                // Update active button
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Update active section
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === targetSection) {
+                        section.classList.add('active');
+                        // Smooth scroll to top
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+
+        // Animate metric bars on section load
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const metricFills = entry.target.querySelectorAll('.metric-fill');
+                    metricFills.forEach(fill => {
+                        const width = fill.style.width;
+                        fill.style.width = '0';
+                        setTimeout(() => {
+                            fill.style.width = width;
+                        }, 100);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Add smooth hover effects
+        document.querySelectorAll('.card, .stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Interactive workflow steps
+        document.querySelectorAll('.workflow-step').forEach(step => {
+            step.addEventListener('click', function() {
+                document.querySelectorAll('.workflow-step').forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Deal card toggle
+        window.toggleDeal = function(card, dealId) {
+            const details = document.getElementById('deal-' + dealId);
+            const isExpanded = card.classList.contains('expanded');
+            
+            // Close all other deals
+            document.querySelectorAll('.deal-card-interactive').forEach(c => c.classList.remove('expanded'));
+            document.querySelectorAll('.deal-details').forEach(d => d.classList.remove('visible'));
+            
+            if (!isExpanded) {
+                card.classList.add('expanded');
+                details.classList.add('visible');
+            }
+        };
+
+        // Evidence system toggle
+        window.toggleEvidence = function(item) {
+            item.classList.toggle('checked');
+            updateSystemProgress();
+        };
+
+        function updateSystemProgress() {
+            const total = document.querySelectorAll('.evidence-item').length;
+            const checked = document.querySelectorAll('.evidence-item.checked').length;
+            const percentage = Math.round((checked / total) * 100);
+            
+            const progressBar = document.getElementById('systemProgressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+        }
+
+        // ROI Calculator
+        window.calculateROI = function() {
+            const numReps = parseInt(document.getElementById('numReps').value) || 0;
+            const winRate = parseFloat(document.getElementById('winRateImprovement').value) || 0;
+            const avgDeal = parseInt(document.getElementById('avgDealSize').value) || 0;
+            const dealsPerRep = parseInt(document.getElementById('dealsPerRep').value) || 0;
+            
+            // Calculate incremental deals from win rate improvement
+            const baseWinRate = 25; // Assume 25% baseline
+            const incrementalDeals = numReps * dealsPerRep * (winRate / 100);
+            const incrementalRevenue = incrementalDeals * avgDeal * 1000; // Convert K to actual
+            
+            const roiResult = document.getElementById('roiResult');
+            const roiMultiplier = document.getElementById('roiMultiplier');
+            
+            roiResult.textContent = '$' + (incrementalRevenue / 1000000).toFixed(1) + 'M';
+            roiMultiplier.textContent = Math.round(incrementalRevenue / 375000) + 'x';
+        };
+
+        // Initialize ROI calculator
+        calculateROI();
+
+        // Adoption slider
+        window.updateAdoption = function(value) {
+            document.getElementById('adoptionValue').textContent = value + '%';
+            
+            const totalReps = 50;
+            const repsUsing = Math.round(totalReps * (value / 100));
+            const avgPipelinePerRep = 500000; // $500K per rep
+            const pipelineImpact = repsUsing * avgPipelinePerRep;
+            
+            document.getElementById('repsUsing').textContent = repsUsing;
+            document.getElementById('pipelineImpact').textContent = '$' + (pipelineImpact / 1000000).toFixed(0) + 'M';
+        };
+
+        // Initialize adoption display
+        updateAdoption(60);
+    </script>
+</body>
+</html>
+
