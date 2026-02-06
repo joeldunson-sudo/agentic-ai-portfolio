@@ -1,0 +1,235 @@
+{
+  "handoff_meta": {
+    "generated_at": "2026-02-06T19:00:00Z",
+    "purpose": "Hub.html Intuitiveness Enhancement",
+    "source": "Perplexity Spaces Consolidation",
+    "total_spaces_reviewed": 18,
+    "production_spaces": 5,
+    "account_spaces": 3,
+    "planning_spaces": 8,
+    "deprecated_spaces": 5
+  },
+  "role_context": {
+    "title": "Director, Sales Execution Strategy",
+    "company": "Tungsten Automation",
+    "start_date": "February 2026",
+    "reports_to": "Gopi Kalahasthy, SVP Sales Americas",
+    "structure": "Individual contributor with cross-pillar authority",
+    "location": "Remote (Central time zone)",
+    "workstreams": [
+      {
+        "name": "Demand Play Design & Execution",
+        "allocation": "40%",
+        "outcomes": ["Architect repeatable plays", "Define KPIs", "Test and scale winners", "Represent execution strategy in QBRs"]
+      },
+      {
+        "name": "Agentic AI Integration",
+        "allocation": "25%",
+        "outcomes": ["Automation coverage", "Reliable human intervention points"]
+      },
+      {
+        "name": "Cross-Pillar Optimization",
+        "allocation": "20%",
+        "outcomes": ["Identify execution friction across pillars/regions/functions", "Influence top-of-funnel without owning headcount"]
+      },
+      {
+        "name": "West Coast IC (Enterprise Lab)",
+        "allocation": "15%",
+        "outcomes": ["Handpicked $1B+ logos, $500K+ deals with David", "Live R&D lab for validation before field rollout"]
+      }
+    ]
+  },
+  "six_phase_agentic_process": {
+    "description": "End-to-end autonomous pipeline from deep research to closed revenue",
+    "phases": [
+      {
+        "phase": 1,
+        "name": "Deep Research",
+        "agent": "Perplexity Deep Research Agent",
+        "output": "Comprehensive account intelligence dossier with validated signals (L3/L2/L1 confidence-scored), 3-6 deal hypotheses, 4-8 outreach angles",
+        "activation": "Type company name or 'Research [Company]'"
+      },
+      {
+        "phase": 2,
+        "name": "JSON Handoff",
+        "output": "Structured data export for downstream systems",
+        "format": "Company Snapshot -> Signal Table -> Deal Hypotheses -> Outreach Angles -> Gaps & Discovery Questions"
+      },
+      {
+        "phase": 3,
+        "name": "LinkedIn Intel",
+        "tools": ["LinkedIn Sales Navigator"],
+        "output": "Persona mapping, buying committee identification",
+        "insight": "Filter by generic keywords + location to find exact personas"
+      },
+      {
+        "phase": 4,
+        "name": "ZoomInfo Enrich",
+        "tools": ["ZoomInfo Browser Extension"],
+        "output": "Intent signals, contact validation, org charts"
+      },
+      {
+        "phase": 5,
+        "name": "6sense Scoring",
+        "tools": ["6sense Intent Platform"],
+        "output": "Buying stage, account prioritization, intent scores",
+        "data_points": {
+          "total_accounts": 225,
+          "pipeline_value": "$934.8K",
+          "buying_stages": {
+            "target": 5,
+            "awareness": 34,
+            "consideration": 129,
+            "decision": 39,
+            "purchase": 18
+          },
+          "top_geographies": ["California (~120 accounts)", "Washington (~35 accounts)"]
+        }
+      },
+      {
+        "phase": 6,
+        "name": "Salesloft Execute",
+        "tools": ["Salesloft"],
+        "output": "Cadence activation, play deployment"
+      }
+    ]
+  },
+  "production_agent_spaces": [
+    {
+      "name": "Deep Research Account Planning",
+      "status": "PRODUCTION",
+      "purpose": "Account intelligence dossiers: signals, deal hypotheses, outreach angles",
+      "activation": "Type company name or 'Research [Company]'",
+      "not_for": ["Individual prospect research", "Outreach writing", "Deal strategy", "Territory briefings"]
+    },
+    {
+      "name": "Enterprise Research Model",
+      "status": "PRODUCTION",
+      "purpose": "SEC filing deep dives (10-K, 10-Q, DEF-14A, 8-K) to sales POVs",
+      "activation": "'for [Company Name]'"
+    },
+    {
+      "name": "Messaging Workbench (Persona Cadences)",
+      "status": "PRODUCTION",
+      "purpose": "Persona kits, M1/M2/M3 cadence sequences with templated variables",
+      "persona_kits": ["AP Automation", "IAM/SOX", "eComm Fraud", "Document Intelligence"],
+      "variables": ["{{public_anchor}}", "{{persona_problem_hypothesis}}", "{{proof_metrics}}"],
+      "workflow": "draft M1/M2/M3 -> review -> refine -> version -> move to templates"
+    },
+    {
+      "name": "Territory Intelligence",
+      "status": "ACTIVE",
+      "purpose": "Territory-level briefings and pattern analysis",
+      "activation": "Ask about territory patterns"
+    },
+    {
+      "name": "Prospect Orchestration",
+      "status": "ACTIVE",
+      "purpose": "Individual prospect-level research (not account-level)",
+      "activation": "Name a prospect"
+    }
+  ],
+  "account_specific_spaces": [
+    {"name": "Telus", "created": "Jan 29, 2026"},
+    {"name": "Google", "created": "Jan 29, 2026"},
+    {"name": "Zoominfo deal", "created": "Dec 29, 2025"}
+  ],
+  "hub_improvement_recommendations": {
+    "design_requirements": {
+      "theme": "Stealth Operations (F-117/B-2 inspired)",
+      "rules": [
+        "NO EMOJIS - use geometric indicators or monochrome SVG icons",
+        "Dark theme only (bg: #0A0E27, cards: #141B3A)",
+        "ONE accent color family (#00A0FB)",
+        "Hard-edged card geometry with clip-path corner cuts",
+        "Monospace secondary font for data/labels",
+        "Subtle animated elements (radar sweep, pulse indicators)"
+      ],
+      "unified_color_tokens": {
+        "bg_primary": "#0A0E27",
+        "bg_card": "#141B3A",
+        "bg_elevated": "#1A2348",
+        "accent": "#00A0FB",
+        "accent_muted": "rgba(0, 160, 251, 0.15)",
+        "accent_secondary": "#32B8C6",
+        "success": "#00C853",
+        "warning": "#FF9800",
+        "critical": "#FF3B30"
+      }
+    },
+    "6sense_ticker_modernization": {
+      "current_issues": [
+        "Visual hierarchy collapse",
+        "Cognitive overload with dense text blocks",
+        "Static layout with no adaptive response",
+        "Weak visual encoding relying on text",
+        "No explainability layer",
+        "Outdated information display paradigm"
+      ],
+      "modernization_framework": {
+        "visual_hierarchy": {
+          "H1": "Account Priority Score (48px bold, color-coded badge)",
+          "H2": "Category Clusters (grouped cards with semantic backgrounds)",
+          "H3": "Key Metrics (signature charts + values)",
+          "H4": "Supporting Data (collapsed expandable sections)"
+        },
+        "explainability_layer": "CrystalCandle pattern - 4-layer feature hierarchy with narrative generation",
+        "adaptive_layout": "Context-aware display rules based on user role, account size, urgency score",
+        "components": ["Signature charts (animated sparklines)", "Grouped card layouts", "Action-oriented buttons with dual labels"]
+      },
+      "implementation_phases": [
+        {"phase": 1, "name": "Core Visual Redesign", "duration": "2 weeks"},
+        {"phase": 2, "name": "Explainability Integration", "duration": "3 weeks"},
+        {"phase": 3, "name": "Adaptive Intelligence", "duration": "4 weeks"},
+        {"phase": 4, "name": "Validation", "duration": "2 weeks"}
+      ]
+    },
+    "navigation_enhancements": [
+      "Each clickable element should drill down to workflow visualization",
+      "Agent execution flow should show step-by-step pipeline on click",
+      "Buttons should have dual labels (action + methodology)",
+      "Add Deep Analyst as live reasoning engine with signal -> research -> recommendation chain"
+    ],
+    "data_enrichment": [
+      "Link top generic keywords with location data",
+      "Show top challenges by industry for market direction insights",
+      "Enable knowledge discovery through pattern recognition",
+      "Add RPA orchestration layer for actionable intelligence"
+    ]
+  },
+  "research_sources": {
+    "academic_papers": [
+      {
+        "citation": "Dong et al. (2025) Agentic Reinforced Policy Optimization, arXiv:2507.19849v1",
+        "application": "Entropy-based urgency coloring on account cards"
+      },
+      {
+        "citation": "Jena et al. (2023) Account Prioritization Engine with Explainable AI, KDD '23",
+        "application": "CrystalCandle explainability, narrative generation"
+      },
+      {
+        "citation": "Chatlatanagulchai et al. (2025) Agent READMEs, arXiv:2511.12884v1",
+        "application": "4-layer visual hierarchy, progressive disclosure"
+      }
+    ],
+    "industry_sources": [
+      {"name": "NN/G Generative UI", "application": "Outcome-oriented button design"},
+      {"name": "Dashboard Design Patterns", "application": "Signature charts, stratified layouts"},
+      {"name": "HatchWorks AI Agent Best Practices", "application": "Human-in-loop, observability metrics"}
+    ]
+  },
+  "deprecated_spaces_for_cleanup": [
+    {"name": "Account Deep Dive Researcher", "action": "Delete immediately (empty)"},
+    {"name": "Deep Account Signal Analyst", "action": "Migrate 3 threads to Deep Research Account Planning, then delete"},
+    {"name": "New Space (Jan 22)", "action": "Delete immediately (empty)"},
+    {"name": "Document Automation (Jan 20)", "action": "Compare with Jan 19 version, merge or delete"},
+    {"name": "Document Automation (Jan 19)", "action": "Compare with Jan 20 version, merge or delete"}
+  ],
+  "integrated_tool_links": {
+    "linkedin_sales_navigator": "https://linkedin.com/sales/home",
+    "clari": "https://app.clari.com/opportunities",
+    "salesforce": "https://kofax.lightning.force.com/",
+    "zoominfo": "https://zoominfo.com",
+    "perplexity_app": "https://www.perplexity.ai/apps/21632dba-568c-467a-8354-86ac2e4ad788"
+  }
+}
