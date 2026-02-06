@@ -5,30 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tools | Joel Dunson</title>
   <link rel="stylesheet" href="../assets/hub.css" />
+  <style>
+    .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-top:1.5rem}
+    .tool-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;transition:border-color .3s,transform .3s}
+    .tool-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+    .tool-card h3{font-size:1.15rem;color:var(--fg);margin-bottom:.4rem}
+    .tool-card .tag{display:inline-block;font-size:.7rem;padding:.2rem .6rem;border-radius:12px;font-weight:600;margin-bottom:.75rem}
+    .tag-deployed{background:rgba(0,200,83,.15);color:#00c853;border:1px solid #00c853}
+    .tag-concept{background:rgba(0,160,251,.15);color:#00a0fb;border:1px solid #00a0fb}
+    .tag-planned{background:rgba(255,152,0,.15);color:#ff9800;border:1px solid #ff9800}
+    .tool-card p{color:var(--muted);font-size:.9rem;line-height:1.6;margin-bottom:1rem}
+    .tool-card .tool-link{display:inline-block;color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem}
+    .tool-card .tool-link:hover{color:var(--fg)}
+  </style>
 </head>
 <body>
   <div class="header">
     <div class="container">
       <div class="h1">Tools</div>
-      <p class="sub">App launchpad. Start with links; embed later if allowed.</p>
+      <p class="sub">Deployed apps and agent architectures. Links first; iframe embedding when platforms allow.</p>
       <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
         <a class="btn secondary" href="../hub.html">Back to Hub</a>
         <a class="btn secondary" href="../index.html">Back to Portfolio</a>
+        <a class="btn" href="../intelligence/">Intelligence</a>
       </div>
     </div>
   </div>
 
   <div class="container">
-    <div class="card">
-      <h2>Perplexity App: 21632dba…</h2>
-      <div class="pill">Priority 1</div>
-      <p class="small" style="margin-top:10px">
-        If this app is the “Revenue Calculator v2”, we’ll later mirror its inputs/outputs in a local tool page.
-      </p>
-      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn" href="https://www.perplexity.ai/apps/21632dba-568c-467a-8354-86ac2e4ad788" target="_blank" rel="noopener">Open in new tab</a>
+    <div class="tools-grid">
+
+      <div class="tool-card">
+        <h3>Account Research Agent</h3>
+        <div class="tag tag-deployed">Deployed</div>
+        <p>Perplexity app (21632dba) for autonomous account research. Generates structured intelligence on target companies including competitive landscape, buying triggers, and persona mapping.</p>
+        <a class="tool-link" href="https://www.perplexity.ai/apps/21632dba-568c-467a-8354-86ac2e4ad788" target="_blank" rel="noopener">Open in new tab &#8594;</a>
       </div>
+
+      <div class="tool-card">
+        <h3>Deep Analyst Agent</h3>
+        <div class="tag tag-concept">Concept</div>
+        <p>Autonomous research agent running the full 6-phase process: ingests target account, executes deep research, outputs deal-ready JSON intelligence for downstream systems.</p>
+        <a class="tool-link" href="./deep-analyst.html">View Architecture &#8594;</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>Visual Documentation Generator</h3>
+        <div class="tag tag-deployed">Deployed</div>
+        <p>Autonomous UI capture system. 12 screenshots across desktop, tablet, and mobile breakpoints with zero manual effort. Validates design consistency at scale.</p>
+        <a class="tool-link" href="../index.html">View in Portfolio &#8594;</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>6sense Intent Ticker</h3>
+        <div class="tag tag-deployed">Deployed</div>
+        <p>Live intelligence feed showing simulated 6sense intent signals across AMS West territory. Buying stages, intent score trends, and account movement visualization.</p>
+        <a class="tool-link" href="../intelligence/6sense-ticker.html">Open Ticker &#8594;</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>Play Builder Framework</h3>
+        <div class="tag tag-planned">Planned</div>
+        <p>Templated demand play creation tool. Input: trigger + persona + product. Output: cadence-ready messaging, competitive positioning, and objection handling scripts.</p>
+      </div>
+
+      <div class="tool-card">
+        <h3>ROI Calculator Engine</h3>
+        <div class="tag tag-planned">Planned</div>
+        <p>Custom-built ROI modeling tool that ingests deal parameters and outputs financial projections for executive stakeholder presentations.</p>
+      </div>
+
     </div>
   </div>
+
 </body>
 </html>
