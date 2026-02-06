@@ -1,12 +1,17 @@
 {
-  "updated_utc": "2026-02-06T18:25:00Z",
+  "updated_utc": "2026-02-06T23:00:00Z",
   "mode": "public_demo",
   "kpis": [
-    {"name": "Target account universe", "value": 0, "note": "Demo placeholder"},
-    {"name": "Active $500K+ pursuits", "value": 0, "note": "Demo placeholder"},
-    {"name": "Next-30-day intent spikes", "value": 0, "note": "Demo placeholder"}
+    {"name": "Target account universe", "value": 225, "note": "AMS West territory  |  6sense segment  |  Active monitoring"},
+    {"name": "Active $500K+ pursuits", "value": 12, "note": "Pipeline  |  Deal intelligence deployed  |  Battle cards generated"},
+    {"name": "Next-30-day intent spikes", "value": 8, "note": "Bombora + 6sense cross-validated  |  3 high-confidence"}
   ],
   "alerts": [
-    {"severity": "info", "message": "Demo data only. Private territory data stays local (not pushed to GitHub Pages)."}
+    {"severity": "critical", "message": "Meta Platforms: 3 new AI orchestration job postings + press release on automation strategy", "type": "cross_correlation", "timestamp": "2026-02-06T21:30:00Z"},
+    {"severity": "high", "message": "Confluent: Earnings call mentions RPA modernization — 90-day buying window detected", "type": "financial_signal", "timestamp": "2026-02-06T20:15:00Z"},
+    {"severity": "high", "message": "Snowflake: VP of Data Engineering posted about legacy system migration challenges", "type": "social_signal", "timestamp": "2026-02-06T19:45:00Z"},
+    {"severity": "medium", "message": "Pure Storage: Patent filing detected — AI-driven workflow automation (cross-ref with 6sense Decision stage)", "type": "patent_signal", "timestamp": "2026-02-06T18:00:00Z"},
+    {"severity": "medium", "message": "Citrix: 91-day entry window closing — validated Tungsten orchestration fit", "type": "timing_alert", "timestamp": "2026-02-06T17:30:00Z"},
+    {"severity": "info", "message": "Territory scan complete: 65 military aircraft tracked, 42 companies showing data silo signals, 8 intent spikes", "type": "system_status", "timestamp": "2026-02-06T17:00:00Z"}
   ]
 }
