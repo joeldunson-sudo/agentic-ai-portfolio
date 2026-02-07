@@ -1,0 +1,166 @@
+{
+  "activities": [
+    {
+      "id": "seed-001",
+      "timestamp": "2026-02-07T00:00:00Z",
+      "type": "commit",
+      "location": {
+        "lat": 30.6587,
+        "lng": -97.9253,
+        "city": "Liberty Hill",
+        "country": "USA"
+      },
+      "metadata": {
+        "platform": "github",
+        "actor": "joeldunson-sudo",
+        "message": "Deploy RPA Control Center",
+        "url": "https://github.com/joeldunson-sudo/agentic-ai-portfolio",
+        "labels": ["deployment", "rpa"]
+      }
+    },
+    {
+      "id": "seed-002",
+      "timestamp": "2026-02-07T00:01:00Z",
+      "type": "cursor_agent_start",
+      "location": {
+        "lat": 37.7749,
+        "lng": -122.4194,
+        "city": "San Francisco",
+        "country": "USA"
+      },
+      "metadata": {
+        "platform": "cursor",
+        "actor": "website-enhancer-agent",
+        "message": "COBE globe integration started",
+        "labels": ["agent", "enhancement"]
+      }
+    },
+    {
+      "id": "seed-003",
+      "timestamp": "2026-02-07T00:02:00Z",
+      "type": "linear_issue_created",
+      "location": {
+        "lat": 40.7128,
+        "lng": -74.006,
+        "city": "New York",
+        "country": "USA"
+      },
+      "metadata": {
+        "platform": "linear",
+        "actor": "Linear-Cursor Orchestrator",
+        "message": "Website Enhancement: GSAP animations",
+        "labels": ["linear", "website-enhancement"]
+      }
+    },
+    {
+      "id": "seed-004",
+      "timestamp": "2026-02-07T00:03:00Z",
+      "type": "pipeline_success",
+      "location": {
+        "lat": 51.5074,
+        "lng": -0.1278,
+        "city": "London",
+        "country": "UK"
+      },
+      "metadata": {
+        "platform": "gitlab",
+        "actor": "GitLab CI",
+        "message": "Pipeline passed: main branch",
+        "labels": ["gitlab", "ci-cd"]
+      }
+    },
+    {
+      "id": "seed-005",
+      "timestamp": "2026-02-07T00:04:00Z",
+      "type": "tally_submission",
+      "location": {
+        "lat": 35.6762,
+        "lng": 139.6503,
+        "city": "Tokyo",
+        "country": "Japan"
+      },
+      "metadata": {
+        "platform": "tally",
+        "actor": "Lead Capture Form",
+        "message": "New lead submission: Enterprise AI",
+        "labels": ["tally", "lead"]
+      }
+    },
+    {
+      "id": "seed-006",
+      "timestamp": "2026-02-07T00:05:00Z",
+      "type": "cursor_agent_complete",
+      "location": {
+        "lat": 48.8566,
+        "lng": 2.3522,
+        "city": "Paris",
+        "country": "France"
+      },
+      "metadata": {
+        "platform": "cursor",
+        "actor": "data-processor-agent",
+        "message": "Data pipeline integration complete",
+        "labels": ["agent", "data-pipeline"]
+      }
+    },
+    {
+      "id": "seed-007",
+      "timestamp": "2026-02-07T00:06:00Z",
+      "type": "commit",
+      "location": {
+        "lat": -33.8688,
+        "lng": 151.2093,
+        "city": "Sydney",
+        "country": "Australia"
+      },
+      "metadata": {
+        "platform": "github",
+        "actor": "joeldunson-sudo",
+        "message": "Add particle effects and GSAP animations",
+        "labels": ["enhancement", "animation"]
+      }
+    },
+    {
+      "id": "seed-008",
+      "timestamp": "2026-02-07T00:07:00Z",
+      "type": "linear_issue_completed",
+      "location": {
+        "lat": 1.3521,
+        "lng": 103.8198,
+        "city": "Singapore",
+        "country": "Singapore"
+      },
+      "metadata": {
+        "platform": "linear",
+        "actor": "website-enhancer-agent",
+        "message": "COBE globe deployment verified",
+        "labels": ["linear", "completed"]
+      }
+    }
+  ],
+  "statistics": {
+    "totalActivities": 8,
+    "activitiesByType": {
+      "commit": 2,
+      "cursor_agent_start": 1,
+      "cursor_agent_complete": 1,
+      "linear_issue_created": 1,
+      "linear_issue_completed": 1,
+      "pipeline_success": 1,
+      "tally_submission": 1
+    },
+    "activitiesByPlatform": {
+      "github": 2,
+      "cursor": 2,
+      "linear": 2,
+      "gitlab": 1,
+      "tally": 1
+    },
+    "topContributors": [
+      { "actor": "joeldunson-sudo", "count": 2 },
+      { "actor": "website-enhancer-agent", "count": 2 },
+      { "actor": "data-processor-agent", "count": 1 },
+      { "actor": "Linear-Cursor Orchestrator", "count": 1 }
+    ]
+  }
+}
