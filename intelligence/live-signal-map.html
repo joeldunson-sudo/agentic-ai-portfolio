@@ -38,6 +38,9 @@
 <body>
   <div id="map-container">
     <div id="globe"></div>
+            <svg id="airspace" style="position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none;">
+            <!-- Aircraft will be dynamically created here -->
+        </svg>
     
     <!-- ML Decision Engine HUD -->
     <div id="ml-engine" class="hud">
@@ -187,7 +190,124 @@
       const data = await loadData();
       const patterns = analyzePatterns(data);
       
-      renderMLEngine(patterns, data);
+      
+    // Create Stratospheric Aircraft Visualization
+    const aircraftTypes = [
+        {name: 'Boeing 777', type: 'widebody', size: 18},
+        {name: 'Airbus A350', type: 'widebody', size: 17},
+        {name: 'Boeing 787', type: 'widebody', size: 16},
+        {name: 'Airbus A330', type: 'widebody', size: 15},
+        {name: 'Boeing 737 MAX', type: 'narrowbody', size: 12},
+        {name: 'Airbus A320neo', type: 'narrowbody', size: 11}
+    ];
+
+    function createAircraft() {
+        const svg = document.getElementById('airspace');
+        svg.innerHTML = ''; // Clear existing
+
+        // Create 25-30 aircraft at various altitudes
+        const numAircraft = 25 + Math.floor(Math.random() * 6);
+
+        for(let i = 0; i < numAircraft; i++) {
+            const aircraft = aircraftTypes[Math.floor(Math.random() * aircraftTypes.length)];
+            
+            // Altitude in stratosphere: 30,000 - 45,000 feet
+            // Convert to visual representation: higher altitude = smaller size + higher position
+            const altitude = 30000 + Math.random() * 15000;
+            const altitudeFactor = (altitude - 30000) / 15000; // 0 to 1
+            
+            // Size scales with altitude (smaller at higher altitude)
+            const visualSize = aircraft.size * (1.2 - altitudeFactor * 0.6);
+            
+            // Position: X across screen, Y based on altitude (higher = further up)
+            const x = 5 + Math.random() * 90; // 5-95% across
+            const y = 15 + (1 - altitudeFactor) * 70; // Higher altitude = lower Y value (top of screen)
+            
+            // Random heading
+            const heading = Math.random() * 360;
+            
+            // Create aircraft group
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('transform', `translate(${x}%, ${y}%)`);
+            
+            // Create aircraft shape (simplified but recognizable)
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            
+            if(aircraft.type === 'widebody') {
+                // Wider fuselage, larger wings
+                path.setAttribute('d', `
+                    M 0,-${visualSize/2}
+                    L ${visualSize*2},-${visualSize/3}
+                    L ${visualSize*2.5},0
+                    L ${visualSize*2},${visualSize/3}
+                    L 0,${visualSize/2}
+                    L -${visualSize*0.3},0
+                    Z
+                    M -${visualSize*0.5},-${visualSize}
+                    L ${visualSize*0.5},-${visualSize/3}
+                    L ${visualSize*0.5},${visualSize/3}
+                    L -${visualSize*0.5},${visualSize}
+                    Z
+                `);
+            } else {
+                // Narrower fuselage, smaller wings
+                path.setAttribute('d', `
+                    M 0,-${visualSize/3}
+                    L ${visualSize*2.2},-${visualSize/4}
+                    L ${visualSize*2.5},0
+                    L ${visualSize*2.2},${visualSize/4}
+                    L 0,${visualSize/3}
+                    L -${visualSize*0.2},0
+                    Z
+                    M -${visualSize*0.4},-${visualSize*0.8}
+                    L ${visualSize*0.3},-${visualSize/4}
+                    L ${visualSize*0.3},${visualSize/4}
+                    L -${visualSize*0.4},${visualSize*0.8}
+                    Z
+                `);
+            }
+            
+            path.setAttribute('fill', `rgba(0, 230, 255, ${0.6 + altitudeFactor * 0.4})`);
+            path.setAttribute('stroke', `rgba(0, 255, 255, ${0.8 + altitudeFactor * 0.2})`);
+            path.setAttribute('stroke-width', '0.5');
+            path.setAttribute('transform', `rotate(${heading})`);
+            path.setAttribute('filter', 'drop-shadow(0 0 3px rgba(0,230,255,0.8))');
+            
+            // Add contrail effect for higher aircraft
+            if(altitudeFactor > 0.5) {
+                const contrail = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                contrail.setAttribute('x1', '0');
+                contrail.setAttribute('y1', '0');
+                contrail.setAttribute('x2', `-${visualSize*3}`);
+                contrail.setAttribute('y2', '0');
+                contrail.setAttribute('stroke', `rgba(200, 240, 255, ${0.2 * altitudeFactor})`);
+                contrail.setAttribute('stroke-width', visualSize/4);
+                contrail.setAttribute('transform', `rotate(${heading})`);
+                g.appendChild(contrail);
+            }
+            
+            g.appendChild(path);
+            
+            // Add label for aircraft type and altitude
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.textContent = `${aircraft.name} - ${Math.round(altitude)}ft`;
+            text.setAttribute('x', visualSize * 3);
+            text.setAttribute('y', '0');
+            text.setAttribute('fill', 'rgba(0, 230, 255, 0.7)');
+            text.setAttribute('font-size', `${Math.max(8, visualSize/1.5)}px`);
+            text.setAttribute('font-family', 'monospace');
+            g.appendChild(text);
+            
+            svg.appendChild(g);
+        }
+    }
+
+    // Initialize aircraft on load
+    createAircraft();
+    // Refresh aircraft positions every 45 seconds
+    setInterval(createAircraft, 45000);
+
+renderMLEngine(patterns, data);
       renderSignals(data.alerts);
       renderPredictions(data.intent_signals);
       renderStats(data);
