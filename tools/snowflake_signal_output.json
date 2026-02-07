@@ -1,0 +1,95 @@
+{
+  "company": "Snowflake",
+  "signals": [
+    {
+      "date": "2025-01-15",
+      "source_type": "Press Release",
+      "category": "DEAL & CAPITAL",
+      "signal": "Snowflake acquires Select Star for data discovery and lineage capabilities",
+      "confidence": "L3",
+      "implication": "Acquisition signals need for better metadata management and data governance workflows, creating opportunity for document-heavy validation and approval automation"
+    },
+    {
+      "date": "2025-01-22",
+      "source_type": "Press Release",
+      "category": "DEAL & CAPITAL",
+      "signal": "Snowflake acquires Observe for telemetry and observability platform",
+      "confidence": "L3",
+      "implication": "Double acquisition in short window indicates M&A integration pressure and need for standardized documentation, evidence trails, and compliance workflows"
+    },
+    {
+      "date": "2024-08-15",
+      "source_type": "Regulatory",
+      "category": "RISK & COMPLIANCE",
+      "signal": "Snowflake platform breach litigation ongoing (Ticketmaster, Santander, others affected)",
+      "confidence": "L3",
+      "implication": "Post-breach environment creates heightened focus on security audit trails, evidence collection, and continuous controls documentation"
+    },
+    {
+      "date": "2024-11-20",
+      "source_type": "Tech Media",
+      "category": "TECHNOLOGY",
+      "signal": "Snowflake launches Document AI for unstructured data extraction",
+      "confidence": "L2",
+      "implication": "Document AI performs extraction but lacks end-to-end orchestration, exception handling, and human-in-the-loop workflows that Tungsten provides"
+    },
+    {
+      "date": "2025-01-10",
+      "source_type": "Jobs",
+      "category": "JOBS; OPERATIONS",
+      "signal": "Multiple SOX compliance and internal audit postings across finance and security teams",
+      "confidence": "L2",
+      "implication": "Hiring for SOX and audit indicates need for automated evidence gathering, controls documentation, and audit trail workflows"
+    },
+    {
+      "date": "2024-12-05",
+      "source_type": "Financial News",
+      "category": "STRATEGY",
+      "signal": "Snowflake blog post on SOX automation and financial controls",
+      "confidence": "L2",
+      "implication": "Public discussion of SOX automation suggests active transformation program and receptiveness to intelligent automation solutions"
+    }
+  ],
+  "hypotheses": [
+    {
+      "problem": "Post-acquisition integration complexity across Select Star and Observe creates document-heavy workflows for system validation, data lineage verification, and compliance sign-offs that currently lack automation",
+      "outcome": "Deploy Tungsten TotalAgility to industrialize M&A validation workflows with intelligent document capture, automated routing, and audit-ready evidence trails, reducing integration cycle time by 40% and ensuring regulatory compliance",
+      "buying_centers": ["CIO", "Head of M&A Integration", "Chief Compliance Officer"],
+      "supporting_signals": ["Select Star acquisition", "Observe acquisition"]
+    },
+    {
+      "problem": "Post-breach scrutiny creates continuous pressure for security audit evidence, incident response documentation, and regulatory reporting with manual processes creating bottlenecks",
+      "outcome": "Implement Tungsten Intelligent Capture + TotalAgility for automated security evidence collection, audit trail generation, and breach response workflows, ensuring real-time compliance visibility",
+      "buying_centers": ["CISO", "Head of Compliance", "General Counsel"],
+      "supporting_signals": ["Platform breach litigation", "SOX hiring", "SOX automation blog"]
+    },
+    {
+      "problem": "Document AI extraction capability stops at OCR/data capture and doesn't include orchestration, exception handling, or human-in-the-loop workflows, creating operational gaps",
+      "outcome": "Partner Tungsten with Snowflake Document AI to provide end-to-end document processing: extraction (Snowflake) + orchestration + validation + SLA management + analytics (Tungsten)",
+      "buying_centers": ["VP Product", "Head of Operations", "CIO"],
+      "supporting_signals": ["Document AI launch"]
+    },
+    {
+      "problem": "SOX compliance and internal audit hiring surge indicates manual evidence gathering and controls testing workflows that don't scale with business growth",
+      "outcome": "Deploy Tungsten automation for continuous controls monitoring, automated evidence capture, and real-time audit reporting, reducing audit cycle time by 50% and headcount needs",
+      "buying_centers": ["CFO", "Head of Internal Audit", "Controller"],
+      "supporting_signals": ["SOX hiring", "SOX blog post", "Breach litigation"]
+    }
+  ],
+  "outreach": [
+    "After the Select Star and Observe acquisitions, how are you managing the document-heavy validation workflows (data lineage sign-offs, system certifications, compliance documentation) to keep integration on schedule?",
+    "With ongoing platform breach litigation, regulators and customers are likely asking for continuous evidence of security controls—are you manually gathering audit trails or do you have automation to generate real-time compliance reports?",
+    "Your Document AI extracts data from documents, but what happens when extraction confidence is low or human validation is needed? Do you have orchestration to route exceptions, manage SLAs, and close the loop?",
+    "Hiring for SOX and audit roles typically signals manual evidence collection—have you explored continuous controls monitoring and automated audit trail generation to reduce cycle time and avoid throwing more people at compliance?",
+    "Your SOX automation blog was interesting—are you applying those principles internally, or is there a gap between what Snowflake evangelizes for customers and what your own finance/compliance teams actually use?",
+    "Post-M&A integration is always document-intensive (contracts, vendor agreements, compliance certs)—is your team using intelligent document processing to accelerate that, or is it still spreadsheet-and-email?"
+  ],
+  "gaps": [
+    "Unclear whether M&A integration workflows are centralized globally or managed regionally",
+    "No visibility into current RPA/automation vendors or homegrown tooling",
+    "Unknown: budget allocation between 'grow the business' vs 'integrate acquisitions' vs 'fix compliance gaps'",
+    "Decision authority for automation procurement unclear—CIO, COO, CFO, or Shared Services?",
+    "Timing: is integration pressure acute now (Q1 2026) or is this a Q2/Q3 initiative?",
+    "Competitive landscape: are they already evaluating UiPath, Automation Anywhere, or other IDP vendors?"
+  ]
+}
