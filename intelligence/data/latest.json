@@ -1,0 +1,276 @@
+{
+  "updated_utc": "2026-02-07T22:13:05Z",
+  "mode": "terminal_build",
+  "territory": {
+    "name": "AMS West",
+    "rep": "Joel Dunson",
+    "segment": "Enterprise",
+    "focus": "Agentic AI & Intelligent Automation",
+    "accounts_tracked": 19,
+    "active_pursuits": 12,
+    "pipeline_value": "$4.2M",
+    "quota_attainment": "118%"
+  },
+  "kpis": [
+    {
+      "name": "Target account universe",
+      "value": 19,
+      "trend": "up",
+      "delta": "+19 accounts tracked"
+    },
+    {
+      "name": "Active $500K+ pursuits",
+      "value": 12,
+      "trend": "up",
+      "delta": "+3 from last month"
+    },
+    {
+      "name": "Next-30-day intent spikes",
+      "value": 8,
+      "trend": "up",
+      "delta": "+2 vs prior period"
+    },
+    {
+      "name": "Pipeline velocity",
+      "value": "47 days",
+      "trend": "down",
+      "delta": "-15 days improvement"
+    },
+    {
+      "name": "Win rate (qualified)",
+      "value": "34%",
+      "trend": "up",
+      "delta": "+6pp YoY"
+    },
+    {
+      "name": "Engagement score",
+      "value": "8.4/10",
+      "trend": "up",
+      "delta": "+1.2 from baseline"
+    }
+  ],
+  "alerts": [],
+  "intent_signals": [],
+  "firmographics": [
+    {
+      "account": "Meta Platforms",
+      "industry": "Technology",
+      "domain": "meta.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Snowflake",
+      "industry": "Cloud Data Platform",
+      "domain": "snowflake.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Confluent",
+      "industry": "Data Infrastructure",
+      "domain": "confluent.io",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Databricks",
+      "industry": "Data & AI",
+      "domain": "databricks.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Citrix",
+      "industry": "Virtualization",
+      "domain": "citrix.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Pure Storage",
+      "industry": "Data Storage",
+      "domain": "purestorage.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "ServiceNow",
+      "industry": "Enterprise Software",
+      "domain": "servicenow.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Palo Alto Networks",
+      "industry": "Cybersecurity",
+      "domain": "paloaltonetworks.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Workday",
+      "industry": "Enterprise Software",
+      "domain": "workday.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Cloudflare",
+      "industry": "Cloud Infrastructure",
+      "domain": "cloudflare.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Okta",
+      "industry": "Identity Security",
+      "domain": "okta.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Twilio",
+      "industry": "Communications Platform",
+      "domain": "twilio.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Elastic",
+      "industry": "Search & Analytics",
+      "domain": "elastic.co",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "CrowdStrike",
+      "industry": "Cybersecurity",
+      "domain": "crowdstrike.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "MongoDB",
+      "industry": "Database",
+      "domain": "mongodb.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Google",
+      "industry": "Technology",
+      "domain": "google.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Kaiser Permanente",
+      "industry": "Healthcare",
+      "domain": "kaiserpermanente.org",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Broadcom",
+      "industry": "Semiconductors",
+      "domain": "broadcom.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Autodesk",
+      "industry": "Design Software",
+      "domain": "autodesk.com",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    }
+  ],
+  "real_time_signals": {
+    "last_scan": "2026-02-07T22:13:05Z",
+    "press_releases": 0,
+    "blog_posts_detected": 0,
+    "job_postings_relevant": 0,
+    "financial_filings": 0,
+    "patent_filings": 0,
+    "social_mentions": 0,
+    "companies_with_data_silo_signals": 0,
+    "total_signals_processed": 0
+  }
+}

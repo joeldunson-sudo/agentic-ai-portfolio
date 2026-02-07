@@ -1,0 +1,93 @@
+{
+  "updated_utc": "2026-02-07T10:16:42Z",
+  "mode": "terminal_build",
+  "territory": {
+    "name": "AMS West",
+    "rep": "Joel Dunson",
+    "segment": "Enterprise",
+    "focus": "Agentic AI & Intelligent Automation",
+    "accounts_tracked": 2,
+    "active_pursuits": 0,
+    "pipeline_value": "$0",
+    "quota_attainment": "0%"
+  },
+  "kpis": [
+    {
+      "name": "Target account universe",
+      "value": 2,
+      "note": "From territory_accounts.csv",
+      "trend": "stable",
+      "delta": "0"
+    },
+    {
+      "name": "Active $500K+ pursuits",
+      "value": 0,
+      "note": "Not wired",
+      "trend": "stable",
+      "delta": "0"
+    },
+    {
+      "name": "Next-30-day intent spikes",
+      "value": 0,
+      "note": "Not wired",
+      "trend": "stable",
+      "delta": "0"
+    },
+    {
+      "name": "Pipeline velocity",
+      "value": "N/A",
+      "note": "Not wired",
+      "trend": "stable",
+      "delta": "0"
+    },
+    {
+      "name": "Win rate (qualified)",
+      "value": "N/A",
+      "note": "Not wired",
+      "trend": "stable",
+      "delta": "0"
+    },
+    {
+      "name": "Engagement score",
+      "value": "N/A",
+      "note": "Not wired",
+      "trend": "stable",
+      "delta": "0"
+    }
+  ],
+  "alerts": [],
+  "intent_signals": [],
+  "firmographics": [
+    {
+      "account": "Meta Platforms",
+      "industry": "Technology",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    },
+    {
+      "account": "Confluent",
+      "industry": "Data Infrastructure",
+      "employees": "Unknown",
+      "revenue": "Unknown",
+      "hq": "Unknown",
+      "tech_stack": [],
+      "buying_committee_size": 0,
+      "champion_identified": false
+    }
+  ],
+  "real_time_signals": {
+    "last_scan": "2026-02-07T10:16:42Z",
+    "press_releases": 0,
+    "blog_posts_detected": 0,
+    "job_postings_relevant": 0,
+    "financial_filings": 0,
+    "patent_filings": 0,
+    "social_mentions": 0,
+    "companies_with_data_silo_signals": 0,
+    "total_signals_processed": 0
+  }
+}
