@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Command Center | Enterprise AE Hub</title>
+<style>
+:root{--bg:#0a0e17;--card:#111827;--border:#1e293b;--text:#e2e8f0;--muted:#64748b;--green:#10b981;--yellow:#f59e0b;--blue:#3b82f6;--purple:#8b5cf6;--red:#ef4444;--cyan:#06b6d4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,monospace;background:var(--bg);color:var(--text);min-height:100vh}
+.header{padding:24px 32px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:20px;letter-spacing:1px}
+.meta{color:var(--muted);font-size:12px}
+.pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:8px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:20px;padding:24px 32px}
+.agent-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color .3s}
+.agent-card:hover{border-color:var(--blue)}
+.agent-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.agent-name{font-size:16px;font-weight:600}
+.agent-avatar{font-size:28px}
+.badge{padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;text-transform:uppercase}
+.badge-active{background:rgba(16,185,129,.15);color:var(--green)}
+.badge-processing{background:rgba(59,130,246,.15);color:var(--blue)}
+.badge-strategizing{background:rgba(139,92,246,.15);color:var(--purple)}
+.badge-orchestrating{background:rgba(245,158,11,.15);color:var(--yellow)}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin:6px 0;font-size:12px}
+.progress-bar{flex:1;height:6px;background:var(--border);border-radius:3px;margin:0 12px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.section-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:16px 0 8px;border-bottom:1px solid var(--border);padding-bottom:4px}
+.activity{font-size:12px;padding:8px;margin:4px 0;background:rgba(255,255,255,.02);border-radius:6px;border-left:3px solid var(--blue)}
+.activity .time{color:var(--muted);font-size:10px}
+.activity .action{color:var(--cyan);font-weight:600}
+.hypothesis{font-size:12px;padding:10px;margin:4px 0;background:rgba(139,92,246,.05);border-radius:6px;border-left:3px solid var(--purple)}
+.decision{font-size:12px;padding:10px;margin:4px 0;background:rgba(245,158,11,.05);border-radius:6px;border-left:3px solid var(--yellow)}
+.flow{font-size:12px;padding:10px;margin:4px 0;background:rgba(16,185,129,.05);border-radius:6px;border-left:3px solid var(--green)}
+.flow-step{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:11px}
+.step-done{color:var(--green)}.step-prog{color:var(--yellow)}.step-queue{color:var(--muted)}
+.confidence{font-size:28px;font-weight:700}
+.data-flow{margin:0 32px 20px;padding:16px;background:rgba(6,182,212,.05);border:1px solid rgba(6,182,212,.2);border-radius:8px}
+.data-flow h3{font-size:12px;color:var(--cyan);margin-bottom:8px}
+.arrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px}
+.arrow span{padding:4px 10px;background:var(--card);border:1px solid var(--border);border-radius:6px}
+.arrow .arr{color:var(--cyan);font-weight:bold;background:none;border:none}
+.opps-table{width:100%;font-size:12px;margin-top:8px}
+.opps-table th{text-align:left;color:var(--muted);font-size:10px;text-transform:uppercase;padding:4px 8px}
+.opps-table td{padding:6px 8px;border-top:1px solid var(--border)}
+.urgency-high{color:var(--red);font-weight:700}
+.urgency-med{color:var(--yellow);font-weight:700}
+.fit-score{color:var(--green);font-weight:700}
+.footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);margin-top:20px}
+.loading{text-align:center;padding:60px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="header">
+<div><h1><span class="pulse"></span>AGENT COMMAND CENTER</h1><div class="meta">Multi-Agent Sales Execution System v2.0</div></div>
+<div style="text-align:right"><div class="meta" id="clock"></div><div class="meta" id="status">Loading...</div></div>
+</div>
+<div class="grid" id="agents-grid"><div class="loading">Loading agent data...</div></div>
+<div class="data-flow" id="pipeline-flow"></div>
+<div class="footer">Enterprise AE Hub | Bastrop, TX | Auto-refresh 30s</div>
+<script>
+var SM={"ACTIVE":"badge-active","PROCESSING":"badge-processing","STRATEGIZING":"badge-strategizing","ORCHESTRATING":"badge-orchestrating"};
+var CL={"signal_intelligence":"#10b981","insight_synthesis":"#3b82f6","territory_strategist":"#8b5cf6","execution_orchestrator":"#f59e0b"};
+function fmt(t){try{return new Date(t).toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})}catch(e){return t||""}}
+function pbar(obj,c){if(!obj)return"";var h="";for(var k in obj){var v=obj[k];if(!v||(!v.current&&v.current!==0))continue;var p=v.target?Math.round(v.current/v.target*100):v.percent||0;h+='<div class="progress-row"><span>'+k+'</span><div class="progress-bar"><div class="progress-fill" style="width:'+p+"%;background:"+c+'"></div></div><span>'+p+"%</span></div>"}return h}
+function rAct(a){if(!a||!a.length)return"";var h='<div class="section-title">Recent Activity</div>';for(var i=0;i<a.length;i++){var x=a[i];h+='<div class="activity"><span class="action">'+x.action+"</span> "+x.details+'<br><span class="time">'+fmt(x.timestamp)+" | "+x.confidence+" | to: "+(x.communicatesTo||"")+"</span></div>"}return h}
+function rHyp(a){if(!a||!a.length)return"";var h='<div class="section-title">Hypotheses</div>';for(var i=0;i<a.length;i++){var x=a[i];h+='<div class="hypothesis"><strong>'+x.hypothesis+"</strong> ("+x.confidence+")<br>";if(x.technologyFit){h+='<span class="fit-score">Fit: '+x.technologyFit.fitScore+"%</span> "+x.technologyFit.tungstenProduct}h+="</div>"}return h}
+function rDec(a){if(!a||!a.length)return"";var h='<div class="section-title">Decisions</div>';for(var i=0;i<a.length;i++){var x=a[i];var w=x.why||{};h+='<div class="decision"><strong>'+x.decision+"</strong><br>";if(w.urgency)h+="Urgency: "+w.urgency+"<br>";if(w.dealSize)h+="Deal: "+w.dealSize+"<br>";if(x.recommendedPlay)h+="Play: "+x.recommendedPlay;h+="</div>"}return h}
+function rOpp(a){if(!a||!a.length)return"";var h='<div class="section-title">Pipeline</div><table class="opps-table"><tr><th>#</th><th>Account</th><th>Urgency</th><th>Deal</th><th>Stage</th></tr>';for(var i=0;i<a.length;i++){var o=a[i];var uc=o.urgency>85?"urgency-high":"urgency-med";h+="<tr><td>"+o.rank+"</td><td><strong>"+o.account+"</strong></td><td class=\""+uc+"\">"+o.urgency+"</td><td>$"+o.dealSize/1000+"K</td><td>"+o.stage+"</td></tr>"}return h+"</table>"}
+function rFlow(a){if(!a||!a.length)return"";var h='<div class="section-title">Automation Flows</div>';for(var i=0;i<a.length;i++){var fl=a[i];h+='<div class="flow"><strong>'+fl.flowId+"</strong><br>";if(fl.steps){for(var j=0;j<fl.steps.length;j++){var s=fl.steps[j];var cls=s.status==="COMPLETE"?"step-done":s.status==="IN_PROGRESS"?"step-prog":"step-queue";var ico=s.status==="COMPLETE"?"\u2713":s.status==="IN_PROGRESS"?"\u25B6":"\u25CB";h+='<div class="flow-step"><span class="'+cls+'">'+ico+"</span> "+s.action+"</div>"}}if(fl.expectedOutcome)h+='<br><em style="color:#64748b">Expected: '+fl.expectedOutcome+"</em>";h+="</div>"}return h}
+function render(data){var g=document.getElementById("agents-grid");g.innerHTML="";for(var i=0;i<data.agents.length;i++){var a=data.agents[i];var c=CL[a.id]||"#3b82f6";var d=document.createElement("div");d.className="agent-card";d.innerHTML='<div class="agent-header"><div><span class="agent-avatar">'+a.avatar+'</span> <span class="agent-name">'+a.name+'</span></div><span class="badge '+(SM[a.status]||"badge-active")+'">'+a.status+'</span></div><div class="confidence" style="color:'+c+'">'+a.confidence+'%</div><div style="color:var(--muted);font-size:11px">confidence</div>'+pbar(a.progress,c)+rAct(a.recentActivity)+rHyp(a.reasoning)+rDec(a.decisionReasoning)+rOpp(a.prioritizedOpportunities)+rFlow(a.automationFlows);g.appendChild(d)}document.getElementById("pipeline-flow").innerHTML='<h3>DATA PIPELINE</h3><div class="arrow"><span>\uD83D\uDD0D Signal Intel</span><span class="arr">\u2192</span><span>\uD83E\uDDE0 Insight</span><span class="arr">\u2192</span><span>\uD83C\uDFAF Strategy</span><span class="arr">\u2192</span><span>\u26A1 Execution</span></div>';document.getElementById("status").textContent=data.agents.length+" agents | v"+data.systemMetadata.version}
+function tick(){document.getElementById("clock").textContent=new Date().toLocaleString()}setInterval(tick,1000);tick();
+async function load(){try{var r=await fetch("intelligence/data/sales_system.json?t="+Date.now());var d=await r.json();render(d)}catch(e){document.getElementById("agents-grid").innerHTML='<div class="loading">Error: '+e.message+"</div>"}}
+load();setInterval(load,30000);
+</script>
+</body>
+</html>

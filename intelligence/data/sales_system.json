@@ -1,0 +1,268 @@
+{
+  "systemMetadata": {
+    "version": "2.0.0",
+    "lastUpdated": "2026-02-06T18:00:00-06:00",
+    "architecture": "Multi-Agent Sales Execution System",
+    "framework": "15-Section Agent Architecture (Reference v1.0)"
+  },
+  "agents": [
+    {
+      "id": "signal_intelligence",
+      "name": "Signal Intelligence Agent",
+      "avatar": "\ud83d\udd0d",
+      "role": "Intent & Buying Signal Detection",
+      "status": "ACTIVE",
+      "confidence": 94,
+      "progress": {
+        "intentSignals": {
+          "current": 847,
+          "target": 1000
+        },
+        "crossValidation": {
+          "current": 94,
+          "target": 100
+        }
+      },
+      "outputsLastHour": {
+        "highConfidence": 23,
+        "medium": 41,
+        "low": 12,
+        "crossValidated": 18
+      },
+      "recentActivity": [
+        {
+          "timestamp": "2026-02-06T17:45:32-06:00",
+          "action": "SIGNAL_DETECTED",
+          "details": "Meta Platforms: 3 new AI orchestration job postings",
+          "confidence": "L3",
+          "evidence": "LinkedIn Jobs API + 6sense Decision stage",
+          "communicatesTo": "insight_synthesis"
+        },
+        {
+          "timestamp": "2026-02-06T17:42:18-06:00",
+          "action": "CROSS_VALIDATION",
+          "details": "Confluent earnings call mentions RPA modernization",
+          "confidence": "L3",
+          "evidence": "SEC 8-K filing + Seeking Alpha transcript",
+          "communicatesTo": "insight_synthesis"
+        },
+        {
+          "timestamp": "2026-02-06T17:38:45-06:00",
+          "action": "PATTERN_DETECTED",
+          "details": "4 accounts showing correlated hiring + budget signals",
+          "confidence": "L2",
+          "reasoning": "VP Data Eng postings + workflow automation keywords = platform modernization cluster",
+          "communicatesTo": "insight_synthesis"
+        }
+      ]
+    },
+    {
+      "id": "insight_synthesis",
+      "name": "Insight Synthesis Agent",
+      "avatar": "\ud83e\udde0",
+      "role": "Pattern Recognition & Opportunity Analysis",
+      "status": "PROCESSING",
+      "confidence": 88,
+      "progress": {
+        "patternAnalysis": {
+          "current": 88,
+          "target": 100
+        },
+        "hypothesisGeneration": {
+          "current": 23,
+          "target": 30
+        }
+      },
+      "reasoning": [
+        {
+          "hypothesis": "Meta + Snowflake platform modernization play",
+          "confidence": "HIGH_80%",
+          "technologyFit": {
+            "keywords": [
+              "workflow automation",
+              "AI orchestration",
+              "data integration"
+            ],
+            "tungstenProduct": "TotalAgility + Power Platform Integration",
+            "fitScore": 92
+          },
+          "unknownFactors": [
+            "Budget allocation timeline",
+            "Current RPA vendor",
+            "Decision authority"
+          ],
+          "communicatesTo": "territory_strategist"
+        },
+        {
+          "hypothesis": "Confluent 90-day displacement window",
+          "confidence": "MODERATE_72%",
+          "technologyFit": {
+            "keywords": [
+              "RPA modernization",
+              "document processing"
+            ],
+            "tungstenProduct": "TotalAgility (RPA displacement play)",
+            "fitScore": 87
+          },
+          "timeline": "90-day window closing Q2 2026",
+          "urgencyScore": 95,
+          "communicatesTo": "territory_strategist"
+        }
+      ]
+    },
+    {
+      "id": "territory_strategist",
+      "name": "Territory Strategist Agent",
+      "avatar": "\ud83c\udfaf",
+      "role": "Opportunity Prioritization & Play Design",
+      "status": "STRATEGIZING",
+      "confidence": 91,
+      "prioritizedOpportunities": [
+        {
+          "rank": 1,
+          "account": "Confluent",
+          "urgency": 95,
+          "dealSize": 500000,
+          "confidence": 88,
+          "stage": "Decision"
+        },
+        {
+          "rank": 2,
+          "account": "Meta Platforms",
+          "urgency": 82,
+          "dealSize": 850000,
+          "confidence": 74,
+          "stage": "Awareness"
+        },
+        {
+          "rank": 3,
+          "account": "Snowflake",
+          "urgency": 78,
+          "dealSize": 650000,
+          "confidence": 82,
+          "stage": "Consideration"
+        },
+        {
+          "rank": 4,
+          "account": "Databricks",
+          "urgency": 71,
+          "dealSize": 580000,
+          "confidence": 69,
+          "stage": "Consideration"
+        }
+      ],
+      "decisionReasoning": [
+        {
+          "decision": "PRIORITIZE: Confluent (Rank #1)",
+          "why": {
+            "urgency": "90-day window from earnings call + Decision stage",
+            "dealSize": "$500K",
+            "confidence": "HIGH - Multiple L3 signals converge",
+            "competitive": "Window narrow - evaluating 2-3 vendors now",
+            "risk": "If we wait 2 weeks, window may close"
+          },
+          "recommendedPlay": "Deploy battle card v3 (RPA displacement) + exec briefing within 3 days",
+          "successCriteria": "Discovery call within 5 days, tech eval within 15 days",
+          "communicatesTo": "execution_orchestrator"
+        },
+        {
+          "decision": "PRIORITIZE: Meta Platforms (Rank #2)",
+          "why": {
+            "urgency": "High hiring velocity = imminent project kickoff",
+            "dealSize": "$750K-1M potential",
+            "confidence": "MODERATE - Strong hiring signals but budget unclear",
+            "strategic": "Logo value - reference customer"
+          },
+          "recommendedPlay": "Multi-thread: LinkedIn engagement + VP outreach + AI white paper",
+          "communicatesTo": "execution_orchestrator"
+        },
+        {
+          "decision": "DEPRIORITIZE: Pure Storage (Rank #18)",
+          "why": {
+            "confidence": "LOW - Only 1 patent filing, no corroborating signals",
+            "timing": "R&D phase, 12-24 month lag",
+            "recommendation": "Archive to future pipeline, set trigger alerts"
+          },
+          "triggerEvent": "Re-prioritize IF procurement posting OR 6sense Consideration+ stage"
+        }
+      ]
+    },
+    {
+      "id": "execution_orchestrator",
+      "name": "Execution Orchestrator Agent",
+      "avatar": "\u26a1",
+      "role": "Agent-to-Agent Automation & Field Routing",
+      "status": "ORCHESTRATING",
+      "confidence": 93,
+      "progress": {
+        "playsRouted": {
+          "current": 8,
+          "target": 12
+        },
+        "battleCardsDeployed": {
+          "current": 5,
+          "target": 8
+        },
+        "meetingsScheduled": {
+          "current": 3,
+          "target": 6
+        }
+      },
+      "automationFlows": [
+        {
+          "flowId": "confluent_displacement_play",
+          "trigger": "Territory Strategist ranked Confluent #1",
+          "steps": [
+            {
+              "step": 1,
+              "action": "Retrieve battle card v3 from content library",
+              "status": "COMPLETE"
+            },
+            {
+              "step": 2,
+              "action": "Route to AE David (West Coast) via CRM task",
+              "status": "COMPLETE",
+              "handoffContext": "HIGH urgency - 90-day window"
+            },
+            {
+              "step": 3,
+              "action": "Generate M1 email personalized to Confluent CFO",
+              "status": "IN_PROGRESS"
+            },
+            {
+              "step": 4,
+              "action": "Schedule follow-up checkpoint in 2 business days",
+              "status": "QUEUED",
+              "scheduledFor": "2026-02-10T10:00:00-06:00"
+            }
+          ],
+          "dataFlow": "Signal Intelligence (847 signals) -> Insight Synthesis (72% confidence) -> Territory Strategist (Rank #1, urgency 95) -> Execution Orchestrator (Route + Deploy)",
+          "expectedOutcome": "Discovery call within 5 days, $500K advanced to tech validation"
+        },
+        {
+          "flowId": "meta_multithread_play",
+          "trigger": "Territory Strategist ranked Meta #2",
+          "steps": [
+            {
+              "step": 1,
+              "action": "Deploy AI orchestration white paper to Meta contacts",
+              "status": "COMPLETE"
+            },
+            {
+              "step": 2,
+              "action": "LinkedIn engagement campaign for 3 hiring managers",
+              "status": "IN_PROGRESS"
+            },
+            {
+              "step": 3,
+              "action": "Direct outreach to VP Infrastructure",
+              "status": "QUEUED"
+            }
+          ],
+          "dataFlow": "Signal Intelligence -> Insight Synthesis -> Territory Strategist -> Execution Orchestrator",
+          "expectedOutcome": "Surface budget owner within 2 weeks, $850K opportunity"
+        }
+      ]
+    }
+  ]
+}
