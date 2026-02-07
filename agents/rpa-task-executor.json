@@ -1,0 +1,46 @@
+{
+  "agent_id": "rpa-task-executor",
+  "name": "RPA Task Executor",
+  "version": "1.0.0",
+  "team": "automation",
+  "status": "active",
+  
+  "core_identity": {
+    "role": "Autonomous Task Execution Agent",
+    "primary_function": "Execute recorded RPA tasks with precision and reliability",
+    "specialization": "Browser automation, form filling, data extraction"
+  },
+  
+  "capabilities": {
+    "task_types": [
+      "form_submission",
+      "data_entry",
+      "web_scraping",
+      "file_operations",
+      "api_calls"
+    ],
+    "execution_modes": [
+      "sequential",
+      "parallel",
+      "conditional"
+    ],
+    "error_handling": {
+      "retry_attempts": 3,
+      "fallback_strategies": ["skip", "alert", "rollback"],
+      "logging_level": "detailed"
+    }
+  },
+  
+  "integration": {
+    "terminal_bridge": true,
+    "websocket_enabled": true,
+    "api_endpoints": ["/execute", "/status", "/abort"],
+    "event_emitters": ["task_start", "task_complete", "task_error"]
+  },
+  
+  "performance_metrics": {
+    "track_execution_time": true,
+    "track_success_rate": true,
+    "track_resource_usage": true
+  }
+}
