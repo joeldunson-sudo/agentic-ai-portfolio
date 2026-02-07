@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic RPA Control Center - Multi-Agent Orchestration</title>
+<link rel="stylesheet" href="./assets/globe-skin.css" />
+<style>
+:root {
+--color-primary: #00A0FB;
+--color-glow: rgba(0,160,251,0.15);
+--color-glow-strong: rgba(0,160,251,0.3);
+--color-teal: #32B8C6;
+--color-success: #00C853;
+--color-warning: #FF9800;
+--color-danger: #FF4444;
+--color-bg: #0A0E27;
+--color-bg-card: #141B3A;
+--color-bg-elevated: #1A2348;
+--color-text: #FFFFFF;
+--color-text-muted: #B0B8CC;
+--color-border: rgba(255,255,255,0.1);
+--color-recording: #FF4444;
+--color-agent-active: #00C853;
+--color-agent-idle: #FF9800;
+--color-agent-offline: #666;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+background: var(--color-bg);
+color: var(--color-text);
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* Header Styles */
+.rpa-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 20px 40px;
+background: linear-gradient(180deg, rgba(20,27,58,0.95) 0%, rgba(10,14,39,0.9) 100%);
+border-bottom: 1px solid var(--color-border);
+position: sticky;
+top: 0;
+z-index: 100;
+backdrop-filter: blur(20px);
+}
+.rpa-title {
+font-size: 1.5rem;
+font-weight: 700;
+color: var(--color-primary);
+text-shadow: 0 0 20px var(--color-glow-strong);
+}
+.rpa-title span { color: var(--color-teal); }
+
+/* Recording Indicator */
+.recording-indicator {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 8px 16px;
+border-radius: 20px;
+background: rgba(255,68,68,0.1);
+border: 1px solid var(--color-recording);
+animation: pulse-recording 1.5s infinite;
+}
+.recording-indicator.active { background: rgba(255,68,68,0.2); }
+.recording-dot {
+width: 12px;
+height: 12px;
+border-radius: 50%;
+background: var(--color-recording);
+box-shadow: 0 0 10px var(--color-recording);
+}
+@keyframes pulse-recording {
+0%,100% { opacity: 1; }
+50% { opacity: 0.6; }
+}
+
+/* Main Layout */
+.rpa-container {
+display: grid;
+grid-template-columns: 280px 1fr 320px;
+min-height: calc(100vh - 80px);
+gap: 0;
+}
+
+/* Sidebar - Agent Teams */
+.agent-sidebar {
+background: var(--color-bg-card);
+border-right: 1px solid var(--color-border);
+padding: 20px;
+overflow-y: auto;
+}
+.sidebar-section { margin-bottom: 24px; }
+.sidebar-title {
+font-size: 0.75rem;
+text-transform: uppercase;
+letter-spacing: 1px;
+color: var(--color-text-muted);
+margin-bottom: 12px;
+padding-bottom: 8px;
+border-bottom: 1px solid var(--color-border);
+}
+
+/* Agent Cards */
+.agent-card {
+background: var(--color-bg-elevated);
+border: 1px solid var(--color-border);
+border-radius: 8px;
+padding: 12px;
+margin-bottom: 8px;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.agent-card:hover {
+border-color: var(--color-primary);
+box-shadow: 0 0 15px var(--color-glow);
+transform: translateX(4px);
+}
+.agent-card.active {
+border-color: var(--color-agent-active);
+box-shadow: 0 0 15px rgba(0,200,83,0.2);
+}
+.agent-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 8px;
+}
+.agent-name {
+font-weight: 600;
+font-size: 0.9rem;
+}
+.agent-status {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+}
+.agent-status.active { background: var(--color-agent-active); box-shadow: 0 0 8px var(--color-agent-active); }
+.agent-status.idle { background: var(--color-agent-idle); }
+.agent-status.offline { background: var(--color-agent-offline); }
+.agent-meta {
+font-size: 0.75rem;
+color: var(--color-text-muted);
+}
+
+/* Main Workspace */
+.main-workspace {
+background: var(--color-bg);
+padding: 24px;
+overflow-y: auto;
+}
+.workspace-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 24px;
+}
+.workspace-title {
+font-size: 1.25rem;
+font-weight: 600;
+color: var(--color-primary);
+}
+
+/* Task Recorder Panel */
+.task-recorder {
+background: var(--color-bg-card);
+border: 1px solid var(--color-border);
+border-radius: 12px;
+padding: 20px;
+margin-bottom: 20px;
+}
+.recorder-controls {
+display: flex;
+gap: 12px;
+margin-bottom: 16px;
+}
+.btn {
+padding: 10px 20px;
+border-radius: 8px;
+border: none;
+cursor: pointer;
+font-weight: 600;
+transition: all 0.3s ease;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.btn-primary {
+background: var(--color-primary);
+color: white;
+}
+.btn-primary:hover {
+box-shadow: 0 0 20px var(--color-glow-strong);
+transform: translateY(-2px);
+}
+.btn-danger {
+background: var(--color-danger);
+color: white;
+}
+.btn-success {
+background: var(--color-success);
+color: white;
+}
+.btn-outline {
+background: transparent;
+border: 1px solid var(--color-border);
+color: var(--color-text);
+}
+
+/* Task Steps List */
+.task-steps {
+max-height: 300px;
+overflow-y: auto;
+}
+.task-step {
+background: var(--color-bg-elevated);
+border: 1px solid var(--color-border);
+border-radius: 8px;
+padding: 12px 16px;
+margin-bottom: 8px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.step-info { display: flex; align-items: center; gap: 12px; }
+.step-number {
+width: 28px;
+height: 28px;
+border-radius: 50%;
+background: var(--color-primary);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.8rem;
+font-weight: 700;
+}
+.step-action { font-size: 0.9rem; }
+.step-target { font-size: 0.75rem; color: var(--color-text-muted); }
+.step-time { font-size: 0.75rem; color: var(--color-text-muted); }
+
+/* Terminal Bridge Panel */
+.terminal-bridge {
+background: #0d1117;
+border: 1px solid var(--color-border);
+border-radius: 12px;
+overflow: hidden;
+}
+.terminal-header {
+background: #161b22;
+padding: 12px 16px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: 1px solid var(--color-border);
+}
+.terminal-title {
+font-size: 0.85rem;
+color: var(--color-text-muted);
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.terminal-dots {
+display: flex;
+gap: 6px;
+}
+.terminal-dot {
+width: 12px;
+height: 12px;
+border-radius: 50%;
+}
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27c93f; }
+.terminal-output {
+padding: 16px;
+font-family: 'Monaco', 'Menlo', monospace;
+font-size: 0.8rem;
+line-height: 1.6;
+max-height: 250px;
+overflow-y: auto;
+color: #c9d1d9;
+}
+.terminal-output .prompt { color: var(--color-success); }
+.terminal-output .command { color: #79c0ff; }
+.terminal-output .output { color: #8b949e; }
+.terminal-input {
+background: #0d1117;
+border: none;
+border-top: 1px solid var(--color-border);
+padding: 12px 16px;
+width: 100%;
+font-family: 'Monaco', 'Menlo', monospace;
+font-size: 0.8rem;
+color: #c9d1d9;
+}
+.terminal-input:focus { outline: none; }
+
+/* Right Panel - Agent Details */
+.agent-panel {
+background: var(--color-bg-card);
+border-left: 1px solid var(--color-border);
+padding: 20px;
+overflow-y: auto;
+}
+.panel-section { margin-bottom: 24px; }
+.panel-title {
+font-size: 0.9rem;
+font-weight: 600;
+color: var(--color-primary);
+margin-bottom: 12px;
+padding-bottom: 8px;
+border-bottom: 1px solid var(--color-border);
+}
+
+/* Metrics Grid */
+.metrics-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+}
+.metric-card {
+background: var(--color-bg-elevated);
+border: 1px solid var(--color-border);
+border-radius: 8px;
+padding: 12px;
+text-align: center;
+}
+.metric-value {
+font-size: 1.5rem;
+font-weight: 700;
+color: var(--color-primary);
+}
+.metric-label {
+font-size: 0.7rem;
+color: var(--color-text-muted);
+text-transform: uppercase;
+}
+
+/* Workflow Visualizer */
+.workflow-step {
+display: flex;
+align-items: flex-start;
+margin-bottom: 16px;
+}
+.step-connector {
+width: 32px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.step-dot {
+width: 12px;
+height: 12px;
+border-radius: 50%;
+background: var(--color-primary);
+box-shadow: 0 0 10px var(--color-glow);
+}
+.step-line {
+width: 2px;
+height: 24px;
+background: var(--color-border);
+}
+.step-content {
+flex: 1;
+padding-left: 12px;
+}
+.step-title {
+font-size: 0.85rem;
+font-weight: 600;
+margin-bottom: 4px;
+}
+.step-desc {
+font-size: 0.75rem;
+color: var(--color-text-muted);
+}
+
+/* Quick Actions */
+.quick-actions {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+.quick-action {
+background: var(--color-bg-elevated);
+border: 1px solid var(--color-border);
+border-radius: 8px;
+padding: 12px;
+cursor: pointer;
+transition: all 0.3s ease;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.quick-action:hover {
+border-color: var(--color-primary);
+box-shadow: 0 0 15px var(--color-glow);
+}
+.action-icon {
+width: 36px;
+height: 36px;
+border-radius: 8px;
+background: var(--color-primary);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.2rem;
+}
+.action-label {
+font-size: 0.85rem;
+font-weight: 500;
+}
+.action-desc {
+font-size: 0.7rem;
+color: var(--color-text-muted);
+}
+</style>
+</head>
+<body>
+<!-- Header -->
+<header class="rpa-header">
+<div class="rpa-title">Agentic <span>RPA</span> Control Center</div>
+<div class="header-controls" style="display:flex;gap:16px;align-items:center;">
+<div class="recording-indicator" id="recordingIndicator">
+<div class="recording-dot"></div>
+<span>REC</span>
+</div>
+<a href="hub.html" class="btn btn-outline">Hub</a>
+<a href="command-center.html" class="btn btn-outline">Command Center</a>
+</div>
+</header>
+
+<!-- Main Container -->
+<div class="rpa-container">
+<!-- Left Sidebar - Agent Teams -->
+<aside class="agent-sidebar">
+<div class="sidebar-section">
+<div class="sidebar-title">Active Agent Teams</div>
+<div class="agent-card active" onclick="selectAgent('signal')">
+<div class="agent-header">
+<span class="agent-name">Deep Signal Analyst</span>
+<div class="agent-status active"></div>
+</div>
+<div class="agent-meta">Phase 1 Research | 47 tasks/hr</div>
+</div>
+<div class="agent-card" onclick="selectAgent('committee')">
+<div class="agent-header">
+<span class="agent-name">Buying Committee Builder</span>
+<div class="agent-status idle"></div>
+</div>
+<div class="agent-meta">Phase 2-4 | Awaiting trigger</div>
+</div>
+<div class="agent-card" onclick="selectAgent('messaging')">
+<div class="agent-header">
+<span class="agent-name">Messaging Sequence Gen</span>
+<div class="agent-status offline"></div>
+</div>
+<div class="agent-meta">Phase C | Offline</div>
+</div>
+</div>
+
+<div class="sidebar-section">
+<div class="sidebar-title">Cross-Platform Integration</div>
+<div class="agent-card">
+<div class="agent-header">
+<span class="agent-name">Linear Sync</span>
+<div class="agent-status active"></div>
+</div>
+<div class="agent-meta">Dunson AI workspace</div>
+</div>
+<div class="agent-card">
+<div class="agent-header">
+<span class="agent-name">Terminal Bridge</span>
+<div class="agent-status active"></div>
+</div>
+<div class="agent-meta">Cursor IDE connected</div>
+</div>
+<div class="agent-card">
+<div class="agent-header">
+<span class="agent-name">GitHub Actions</span>
+<div class="agent-status active"></div>
+</div>
+<div class="agent-meta">CI/CD Pipeline ready</div>
+</div>
+</div>
+
+<div class="sidebar-section">
+<div class="sidebar-title">Deploy New Team</div>
+<button class="btn btn-primary" style="width:100%;" onclick="deployTeam()">
++ Deploy Agent Team
+</button>
+</div>
+</aside>
+
+<!-- Main Workspace -->
+<main class="main-workspace">
+<div class="workspace-header">
+<h2 class="workspace-title">Task Automation Studio</h2>
+<div style="display:flex;gap:12px;">
+<button class="btn btn-outline" onclick="loadSession()">Load Session</button>
+<button class="btn btn-primary" onclick="saveSession()">Save Session</button>
+</div>
+</div>
+
+<!-- Task Recorder -->
+<div class="task-recorder">
+<h3 style="font-size:0.9rem;margin-bottom:16px;color:var(--color-teal);">RPA Task Recorder</h3>
+<div class="recorder-controls">
+<button class="btn btn-danger" id="recordBtn" onclick="toggleRecording()">Start Recording</button>
+<button class="btn btn-outline" onclick="clearSteps()">Clear</button>
+<button class="btn btn-success" onclick="executeSteps()">Execute All</button>
+</div>
+<div class="task-steps" id="taskSteps">
+<div class="task-step">
+<div class="step-info">
+<div class="step-number">1</div>
+<div>
+<div class="step-action">Navigate to Intelligence Dashboard</div>
+<div class="step-target">./intelligence/index.html</div>
+</div>
+</div>
+<div class="step-time">0.2s</div>
+</div>
+<div class="task-step">
+<div class="step-info">
+<div class="step-number">2</div>
+<div>
+<div class="step-action">Extract Signal Data</div>
+<div class="step-target">data.signal_matrix</div>
+</div>
+</div>
+<div class="step-time">1.5s</div>
+</div>
+<div class="task-step">
+<div class="step-info">
+<div class="step-number">3</div>
+<div>
+<div class="step-action">Generate Battle Card</div>
+<div class="step-target">./workflows/output</div>
+</div>
+</div>
+<div class="step-time">3.2s</div>
+</div>
+</div>
+</div>
+
+<!-- Terminal Bridge -->
+<div class="terminal-bridge">
+<div class="terminal-header">
+<div class="terminal-dots">
+<div class="terminal-dot red"></div>
+<div class="terminal-dot yellow"></div>
+<div class="terminal-dot green"></div>
+</div>
+<div class="terminal-title">Terminal Bridge - Cursor IDE</div>
+</div>
+<div class="terminal-output" id="terminalOutput">
+<div><span class="prompt">~/agentic-ai-portfolio $</span> <span class="command">./. local-state/capture.sh</span></div>
+<div class="output">Timestamp: Sat Feb 7 00:15:32 CST 2026</div>
+<div class="output">Dir: /Users/joel/agentic-ai-portfolio</div>
+<div class="output">Branch: main</div>
+<div class="output">Top processes: node, npm, python</div>
+<div class="output">Saved: .local-state/session_20260207_001532.txt</div>
+<div><span class="prompt">~/agentic-ai-portfolio $</span> <span class="command">git status</span></div>
+<div class="output">On branch main</div>
+<div class="output">Your branch is up to date with 'origin/main'.</div>
+<div><span class="prompt">~/agentic-ai-portfolio $</span> <span class="command">_</span></div>
+</div>
+<input type="text" class="terminal-input" placeholder="Enter command..." id="terminalInput" onkeypress="handleTerminal(event)">
+</div>
+</main>
+
+<!-- Right Panel - Agent Details -->
+<aside class="agent-panel">
+<div class="panel-section">
+<div class="panel-title">Agent Performance</div>
+<div class="metrics-grid">
+<div class="metric-card">
+<div class="metric-value">47</div>
+<div class="metric-label">Tasks/Hour</div>
+</div>
+<div class="metric-card">
+<div class="metric-value">99.2%</div>
+<div class="metric-label">Accuracy</div>
+</div>
+<div class="metric-card">
+<div class="metric-value">156</div>
+<div class="metric-label">Sources</div>
+</div>
+<div class="metric-card">
+<div class="metric-value">L3</div>
+<div class="metric-label">Confidence</div>
+</div>
+</div>
+</div>
+
+<div class="panel-section">
+<div class="panel-title">Current Workflow</div>
+<div class="workflow-step">
+<div class="step-connector">
+<div class="step-dot"></div>
+<div class="step-line"></div>
+</div>
+<div class="step-content">
+<div class="step-title">Intent Detection</div>
+<div class="step-desc">ZoomInfo signals validated</div>
+</div>
+</div>
+<div class="workflow-step">
+<div class="step-connector">
+<div class="step-dot" style="background:var(--color-teal);"></div>
+<div class="step-line"></div>
+</div>
+<div class="step-content">
+<div class="step-title">Account Intelligence</div>
+<div class="step-desc">Generating 69-page battle card</div>
+</div>
+</div>
+<div class="workflow-step">
+<div class="step-connector">
+<div class="step-dot" style="background:var(--color-text-muted);"></div>
+</div>
+<div class="step-content">
+<div class="step-title">Persona Mapping</div>
+<div class="step-desc">Pending P5-P1 prioritization</div>
+</div>
+</div>
+</div>
+
+<div class="panel-section">
+<div class="panel-title">Quick Actions</div>
+<div class="quick-actions">
+<div class="quick-action" onclick="window.location.href='intelligence/index.html'">
+<div class="action-icon">R</div>
+<div>
+<div class="action-label">Open Intelligence</div>
+<div class="action-desc">View real-time signals</div>
+</div>
+</div>
+<div class="quick-action" onclick="window.location.href='tools/deep-analyst.html'">
+<div class="action-icon">A</div>
+<div>
+<div class="action-label">Launch Deep Analyst</div>
+<div class="action-desc">Start Phase 1 research</div>
+</div>
+</div>
+<div class="quick-action" onclick="syncLinear()">
+<div class="action-icon">L</div>
+<div>
+<div class="action-label">Sync to Linear</div>
+<div class="action-desc">Create tasks in workspace</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+
+<script>
+// RPA Control Center JavaScript
+let isRecording = false;
+let recordedSteps = [];
+let stepCounter = 4;
+
+function toggleRecording() {
+  isRecording = !isRecording;
+  const btn = document.getElementById('recordBtn');
+  const indicator = document.getElementById('recordingIndicator');
+  
+  if (isRecording) {
+    btn.textContent = 'Stop Recording';
+    btn.classList.remove('btn-danger');
+    btn.classList.add('btn-success');
+    indicator.classList.add('active');
+    startRecording();
+  } else {
+    btn.textContent = 'Start Recording';
+    btn.classList.remove('btn-success');
+    btn.classList.add('btn-danger');
+    indicator.classList.remove('active');
+    stopRecording();
+  }
+}
+
+function startRecording() {
+  document.addEventListener('click', recordClick, true);
+  document.addEventListener('input', recordInput, true);
+  console.log('RPA Recording started');
+}
+
+function stopRecording() {
+  document.removeEventListener('click', recordClick, true);
+  document.removeEventListener('input', recordInput, true);
+  console.log('RPA Recording stopped', recordedSteps);
+}
+
+function recordClick(e) {
+  if (e.target.closest('.task-recorder')) return;
+  addStep('Click', e.target.tagName + (e.target.className ? '.' + e.target.className.split(' ')[0] : ''));
+}
+
+function recordInput(e) {
+  addStep('Input', e.target.placeholder || e.target.name || 'field');
+}
+
+function addStep(action, target) {
+  const stepsContainer = document.getElementById('taskSteps');
+  const step = document.createElement('div');
+  step.className = 'task-step';
+  step.innerHTML = `
+    <div class="step-info">
+      <div class="step-number">${stepCounter}</div>
+      <div>
+        <div class="step-action">${action}</div>
+        <div class="step-target">${target}</div>
+      </div>
+    </div>
+    <div class="step-time">0.1s</div>
+  `;
+  stepsContainer.appendChild(step);
+  stepCounter++;
+  recordedSteps.push({ action, target, time: Date.now() });
+}
+
+function clearSteps() {
+  document.getElementById('taskSteps').innerHTML = '';
+  stepCounter = 1;
+  recordedSteps = [];
+}
+
+function executeSteps() {
+  alert('Executing ' + (stepCounter - 1) + ' recorded steps...');
+  console.log('Executing steps:', recordedSteps);
+}
+
+function handleTerminal(e) {
+  if (e.key === 'Enter') {
+    const input = e.target;
+    const output = document.getElementById('terminalOutput');
+    const cmd = input.value;
+    output.innerHTML += `<div><span class="prompt">~/agentic-ai-portfolio $</span> <span class="command">${cmd}</span></div>`;
+    output.innerHTML += `<div class="output">Command queued for execution...</div>`;
+    input.value = '';
+    output.scrollTop = output.scrollHeight;
+  }
+}
+
+function selectAgent(agentId) {
+  document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  console.log('Selected agent:', agentId);
+}
+
+function deployTeam() {
+  alert('Deploy Agent Team dialog - Select agents and configure workflow');
+}
+
+function syncLinear() {
+  window.open('https://linear.app/dunson-ai/team/DUN/active', '_blank');
+}
+
+function loadSession() {
+  alert('Loading last session from .local-state/');
+}
+
+function saveSession() {
+  const sessionData = {
+    timestamp: new Date().toISOString(),
+    steps: recordedSteps,
+    agents: ['signal', 'committee', 'messaging']
+  };
+  console.log('Session saved:', sessionData);
+  alert('Session saved to .local-state/');
+}
+</script>
+</body>
+</html>
