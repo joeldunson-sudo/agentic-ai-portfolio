@@ -714,7 +714,7 @@
             <p class="section-subtitle">Proving capability through operational systems already deployed</p>
 
             <div style="display: flex; justify-content: center; margin: 2rem 0;">
-                <canvas id="globeCanvas" style="width: 600px; height: 600px; max-width: 100%;"></canvas>                 <!-- Animated Connection Beams Overlay -->                 <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 600 600">                     <line x1="300" y1="200" x2="420" y2="280" stroke="#00A0FB" stroke-width="1" opacity="0">                         <animate attributeName="opacity" values="0;0.6;0" dur="3s" repeatCount="indefinite" begin="0s"/>                     </line>                     <line x1="300" y1="300" x2="180" y2="220" stroke="#00A0FB" stroke-width="1" opacity="0">                         <animate attributeName="opacity" values="0;0.5;0" dur="4s" repeatCount="indefinite" begin="1s"/>                     </line>                     <line x1="300" y1="350" x2="400" y2="380" stroke="#00A0FB" stroke-width="1" opacity="0">                         <animate attributeName="opacity" values="0;0.4;0" dur="3.5s" repeatCount="indefinite" begin="0.5s"/>                     </line>                     <circle cx="420" cy="280" r="3" fill="#00A0FB" opacity="0">                         <animate attributeName="opacity" values="0;0.8;0" dur="3s" repeatCount="indefinite" begin="0s"/>                     </circle>                     <circle cx="180" cy="220" r="3" fill="#00A0FB" opacity="0">                         <animate attributeName="opacity" values="0;0.8;0" dur="4s" repeatCount="indefinite" begin="1s"/>                     </circle>                     <circle cx="400" cy="380" r="3" fill="#00A0FB" opacity="0">                         <animate attributeName="opacity" values="0;0.8;0" dur="3.5s" repeatCount="indefinite" begin="0.5s"/>                     </circle>                 </svg>
+                <canvas id="globeCanvas" style="width: 900px; height: 900px; max-width: 100%;"></canvas>                 <!-- Animated Connection Beams Overlay -->                 <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 600 600">                     <line x1="300" y1="200" x2="420" y2="280" stroke="#00A0FB" stroke-width="1" opacity="0">                         <animate attributeName="opacity" values="0;0.6;0" dur="3s" repeatCount="indefinite" begin="0s"/>                     </line>                     <line x1="300" y1="300" x2="180" y2="220" stroke="#00A0FB" stroke-width="1" opacity="0">                         <animate attributeName="opacity" values="0;0.5;0" dur="4s" repeatCount="indefinite" begin="1s"/>                     </line>                     <line x1="300" y1="350" x2="400" y2="380" stroke="#00A0FB" stroke-width="1" opacity="0">                         <animate attributeName="opacity" values="0;0.4;0" dur="3.5s" repeatCount="indefinite" begin="0.5s"/>                     </line>                     <circle cx="420" cy="280" r="3" fill="#00A0FB" opacity="0">                         <animate attributeName="opacity" values="0;0.8;0" dur="3s" repeatCount="indefinite" begin="0s"/>                     </circle>                     <circle cx="180" cy="220" r="3" fill="#00A0FB" opacity="0">                         <animate attributeName="opacity" values="0;0.8;0" dur="4s" repeatCount="indefinite" begin="1s"/>                     </circle>                     <circle cx="400" cy="380" r="3" fill="#00A0FB" opacity="0">                         <animate attributeName="opacity" values="0;0.8;0" dur="3.5s" repeatCount="indefinite" begin="0.5s"/>                     </circle>                 </svg>
             </div>
 
             <div class="interactive-demo">
@@ -1650,7 +1650,52 @@
                     // ASU - Tempe
                     { location: [33.4242, -111.9281], size: 0.06 },
                     // Citrix - Fort Lauderdale
-                    { location: [26.1224, -80.1373], size: 0.06 }
+                    { location: [26.1224, -80.1373], size: 0.06 },
+                    // === HEAT MAP: Search Term Density & HQ Locations ===
+                    // West Coast Tech Corridor (high density)
+                    { location: [37.7749, -122.4194], size: 0.04 },
+                    { location: [37.5585, -122.2711], size: 0.03 },
+                    { location: [37.3382, -121.8863], size: 0.04 },
+                    { location: [34.0522, -118.2437], size: 0.03 },
+                    { location: [47.6062, -122.3321], size: 0.04 },
+                    { location: [45.5155, -122.6789], size: 0.02 },
+                    // East Coast Corridor
+                    { location: [40.7128, -74.0060], size: 0.05 },
+                    { location: [42.3601, -71.0589], size: 0.03 },
+                    { location: [38.9072, -77.0369], size: 0.04 },
+                    { location: [39.9526, -75.1652], size: 0.02 },
+                    { location: [40.4406, -79.9959], size: 0.02 },
+                    // Central US
+                    { location: [41.8781, -87.6298], size: 0.03 },
+                    { location: [29.7604, -95.3698], size: 0.03 },
+                    { location: [32.7767, -96.7970], size: 0.04 },
+                    { location: [30.2672, -97.7431], size: 0.02 },
+                    { location: [39.7392, -104.9903], size: 0.03 },
+                    { location: [36.1627, -86.7816], size: 0.02 },
+                    // Southeast
+                    { location: [33.7490, -84.3880], size: 0.03 },
+                    { location: [28.5383, -81.3792], size: 0.02 },
+                    { location: [35.2271, -80.8431], size: 0.02 },
+                    { location: [25.7617, -80.1918], size: 0.02 },
+                    // Micro dots - search density cloud
+                    { location: [37.8, -122.3], size: 0.015 },
+                    { location: [37.6, -122.1], size: 0.01 },
+                    { location: [37.4, -122.0], size: 0.02 },
+                    { location: [37.3, -121.9], size: 0.015 },
+                    { location: [40.8, -74.1], size: 0.015 },
+                    { location: [40.6, -73.9], size: 0.02 },
+                    { location: [40.7, -73.8], size: 0.01 },
+                    { location: [34.1, -118.3], size: 0.015 },
+                    { location: [34.0, -118.1], size: 0.01 },
+                    { location: [47.7, -122.4], size: 0.01 },
+                    { location: [47.5, -122.2], size: 0.015 },
+                    // === MILITARY AIRCRAFT TRACKING POSITIONS ===
+                    // Simulated rare US aircraft positions (ADS-B inspired)
+                    { location: [38.7, -104.7], size: 0.02 },
+                    { location: [36.2, -115.0], size: 0.02 },
+                    { location: [32.8, -117.1], size: 0.02 },
+                    { location: [30.4, -86.5], size: 0.02 },
+                    { location: [39.0, -76.3], size: 0.02 }
                 ],
                 onRender: (state) => {
                     state.phi = phi;
