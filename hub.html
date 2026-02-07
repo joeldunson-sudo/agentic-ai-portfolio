@@ -95,6 +95,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </head>
 <body>
 <!-- HEADER -->
+        
+/* === GLOBE-INSPIRED HUB ENHANCEMENTS === */
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#0A0E27}::-webkit-scrollbar-thumb{background:#00A0FB;border-radius:4px}::-webkit-scrollbar-thumb:hover{background:#32B8C6}
+body{background-image:radial-gradient(1px 1px at 10% 20%,rgba(0,160,251,.12) 50%,transparent 50%),radial-gradient(1px 1px at 80% 10%,rgba(50,184,198,.1) 50%,transparent 50%),radial-gradient(1px 1px at 30% 80%,rgba(0,160,251,.08) 50%,transparent 50%),radial-gradient(1px 1px at 70% 60%,rgba(50,184,198,.06) 50%,transparent 50%);background-size:200px 200px,300px 300px,250px 250px,350px 350px}
+.ops-panel,.kpi-card,.territory-card,.tungsten-card,.mini-window{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(0,0,0,.3),inset 0 1px 0 rgba(0,160,251,.15)}
+.ops-panel:hover,.kpi-card:hover,.territory-card:hover,.tungsten-card:hover{box-shadow:0 8px 32px rgba(0,160,251,.3),inset 0 1px 0 rgba(0,160,251,.15),0 0 20px rgba(0,160,251,.15)}
+.section-title,.kpi-val,h2,h3{background:linear-gradient(135deg,#00A0FB,#32B8C6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.status-dot{box-shadow:0 0 8px currentColor}
+.signal-score.high{box-shadow:0 0 10px rgba(0,200,83,.4)}.signal-score.med{box-shadow:0 0 10px rgba(0,160,251,.4)}.signal-score.low{box-shadow:0 0 10px rgba(255,152,0,.4)}
+.alert-item.urgent{box-shadow:inset 3px 0 0 #ff4444,0 0 16px rgba(255,68,68,.1)}.alert-item.info{box-shadow:inset 3px 0 0 #00A0FB,0 0 16px rgba(0,160,251,.1)}.alert-item.warning{box-shadow:inset 3px 0 0 #FF9800,0 0 16px rgba(255,152,0,.1)}
+.agent-console{box-shadow:0 0 20px rgba(0,160,251,.1),inset 0 1px 0 rgba(0,160,251,.1)}
+.agent-console::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,160,251,.02) 2px,rgba(0,160,251,.02) 4px);pointer-events:none;border-radius:10px}
+.territory-card .stage{box-shadow:0 0 8px currentColor}
+.nav-bar a.active{box-shadow:0 0 12px rgba(0,160,251,.3)}
+.wf-node{box-shadow:0 0 10px rgba(0,160,251,.2)}.wf-node.active{box-shadow:0 0 16px rgba(0,160,251,.4)}
+.bar-fill{box-shadow:0 0 8px rgba(0,160,251,.3)}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 5px rgba(0,160,251,.15)}50%{box-shadow:0 0 20px rgba(0,160,251,.3),0 0 40px rgba(0,160,251,.15)}}
+.kpi-trend.up::before{content:'';display:inline-block;width:6px;height:6px;background:#00C853;border-radius:50%;margin-right:4px;box-shadow:0 0 6px rgba(0,200,83,.5)}
 <div class="header">
 <div class="container">
 <h1>Sales Execution Strategy</h1>
