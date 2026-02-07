@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Globe Activity Event",
+  "description": "Schema for globe visualization activity events in the RPA Control Center",
+  "type": "object",
+  "required": ["id", "type", "coordinates", "timestamp"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique event identifier",
+      "pattern": "^evt-[a-z0-9]{8}$"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "webhook-received",
+        "agent-dispatched",
+        "pipeline-triggered",
+        "issue-created",
+        "sync-completed",
+        "form-submitted",
+        "deployment-started",
+        "error-detected"
+      ],
+      "description": "Type of activity event"
+    },
+    "coordinates": {
+      "type": "object",
+      "required": ["lat", "lng"],
+      "properties": {
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 }
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["tally", "linear", "github", "gitlab", "cursor", "manual"],
+      "description": "Platform that generated the event"
+    },
+    "agent": {
+      "type": "string",
+      "description": "Agent ID that processed the event"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "label": { "type": "string" },
+        "priority": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "status": { "type": "string", "enum": ["pending", "active", "completed", "failed"] },
+        "duration": { "type": "string" },
+        "linkedIssue": { "type": "string" }
+      }
+    },
+    "visualization": {
+      "type": "object",
+      "properties": {
+        "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+        "size": { "type": "number", "minimum": 0.1, "maximum": 2.0 },
+        "pulseEffect": { "type": "boolean" },
+        "arcTarget": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        }
+      }
+    }
+  }
+}
