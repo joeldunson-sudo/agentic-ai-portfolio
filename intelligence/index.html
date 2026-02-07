@@ -1,1 +1,590 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Territory Intelligence | Joel Dunson</title><link rel="stylesheet" href="../assets/hub.css"/><link rel="stylesheet" href="../assets/globe-skin.css"/><style>:root{--intel-bg:#050810;--intel-surface:#0a0e1a;--intel-card:#0f1422;--intel-border:rgba(0,180,255,0.15);--intel-accent:#00b4ff;--intel-gold:#d4af37;--intel-text:#e8edf5;--intel-muted:#7a8ba3}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--intel-bg);color:var(--intel-text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh;position:relative;overflow-x:hidden}.ambient-bg{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0}.ambient-grid{position:absolute;width:200%;height:200%;top:-50%;left:-50%;background-image:linear-gradient(rgba(0,180,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,255,0.04) 1px,transparent 1px);background-size:50px 50px;transform:perspective(600px) rotateX(60deg);animation:gridMove 45s linear infinite}@keyframes gridMove{0%{transform:perspective(600px) rotateX(60deg) translateY(0)}100%{transform:perspective(600px) rotateX(60deg) translateY(50px)}}.glow-orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.12;animation:orbFloat 12s ease-in-out infinite}.orb-1{width:700px;height:700px;background:var(--intel-accent);top:-15%;right:-10%;animation-delay:-3s}.orb-2{width:600px;height:600px;background:var(--intel-gold);bottom:-20%;left:-8%;animation-delay:-7s}@keyframes orbFloat{0%,100%{opacity:0.1;transform:scale(1)}50%{opacity:0.18;transform:scale(1.15)}}.radar{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:550px;height:550px;pointer-events:none;z-index:0;opacity:0.09}.radar-sweep{position:absolute;width:100%;height:100%;border-radius:50%;background:conic-gradient(from 0deg,transparent,var(--intel-accent) 15deg,transparent 45deg);animation:radarSpin 8s linear infinite}@keyframes radarSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}.radar-ring{position:absolute;border:1px solid rgba(0,180,255,0.2);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%)}.ring-1{width:30%;height:30%}.ring-2{width:55%;height:55%}.ring-3{width:80%;height:80%}.ring-4{width:100%;height:100%}.container{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:2rem 1.5rem}header{padding:4rem 0 3rem;text-align:center;border-bottom:1px solid var(--intel-border)}.title{font-size:3.5rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:1rem;background:linear-gradient(135deg,var(--intel-text) 0%,var(--intel-accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.subtitle{font-size:1.1rem;color:var(--intel-muted);font-weight:400;letter-spacing:0.02em;text-transform:uppercase}.nav-links{display:flex;gap:1rem;justify-content:center;margin-top:2rem;flex-wrap:wrap}.nav-btn{padding:0.75rem 1.75rem;border:1px solid var(--intel-border);background:var(--intel-surface);color:var(--intel-text);text-decoration:none;border-radius:6px;font-size:0.9rem;font-weight:500;transition:all 0.3s;position:relative;overflow:hidden}.nav-btn:hover{border-color:var(--intel-accent);box-shadow:0 0 20px rgba(0,180,255,0.2);transform:translateY(-2px)}.nav-btn.primary{background:linear-gradient(135deg,var(--intel-accent),#0088cc);border-color:var(--intel-accent);color:#fff}.status-bar{display:flex;gap:2rem;padding:1.5rem;background:var(--intel-surface);border:1px solid var(--intel-border);border-radius:8px;margin:2rem 0;flex-wrap:wrap;align-items:center}.status-item{display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;color:var(--intel-muted)}.status-dot{width:8px;height:8px;border-radius:50%;animation:pulse 2s infinite}.dot-green{background:#00d68f;box-shadow:0 0 8px #00d68f}.dot-amber{background:#ffb800;box-shadow:0 0 8px #ffb800;animation-delay:-1s}.dot-red{background:#ff4757;box-shadow:0 0 8px #ff4757;animation:blink 1s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}.intel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin:2.5rem 0}.intel-card{background:var(--intel-card);border:1px solid var(--intel-border);border-radius:10px;padding:2rem;position:relative;transition:all 0.3s;overflow:hidden}.intel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--intel-accent),transparent);opacity:0;transition:opacity 0.3s}.intel-card:hover{transform:translateY(-4px);border-color:var(--intel-accent);box-shadow:0 8px 30px rgba(0,180,255,0.15)}.intel-card:hover::before{opacity:1}.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem}.card-title{font-size:0.85rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--intel-muted);font-weight:600}.card-value{font-size:2.8rem;font-weight:700;color:var(--intel-accent);line-height:1;margin-bottom:0.5rem}.card-label{font-size:0.9rem;color:var(--intel-muted);margin-bottom:0.75rem}.card-meta{display:flex;align-items:center;gap:0.75rem;font-size:0.8rem;color:var(--intel-muted)}.trend{display:inline-flex;align-items:center;gap:0.3rem;padding:0.35rem 0.7rem;border-radius:6px;font-weight:700;font-size:0.75rem}.trend-up{background:rgba(0,214,143,0.15);color:#00d68f}.trend-down{background:rgba(255,71,87,0.15);color:#ff4757}.badge{display:inline-block;padding:0.4rem 0.8rem;border-radius:6px;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}.badge-gold{background:rgba(212,175,55,0.15);color:var(--intel-gold);border:1px solid rgba(212,175,55,0.3)}.badge-critical{background:rgba(255,71,87,0.15);color:#ff4757;border:1px solid rgba(255,71,87,0.3)}.badge-success{background:rgba(0,214,143,0.15);color:#00d68f;border:1px solid rgba(0,214,143,0.3)}.alert-card{background:var(--intel-card);border-left:4px solid var(--intel-accent);border-radius:8px;padding:1.5rem;margin-bottom:1rem;position:relative;transition:all 0.3s}.alert-card:hover{transform:translateX(6px);box-shadow:0 4px 20px rgba(0,180,255,0.1)}.alert-critical{border-left-color:#ff4757;background:rgba(255,71,87,0.03)}.alert-warning{border-left-color:#ffb800;background:rgba(255,184,0,0.03)}.alert-title{font-weight:600;margin-bottom:0.5rem;font-size:1rem}.alert-desc{font-size:0.9rem;color:var(--intel-muted);line-height:1.6}.table-container{background:var(--intel-card);border:1px solid var(--intel-border);border-radius:10px;overflow:hidden;margin:2rem 0}.intel-table{width:100%;border-collapse:collapse}.intel-table thead{background:rgba(0,180,255,0.05);border-bottom:1px solid var(--intel-border)}.intel-table th{padding:1.2rem 1.5rem;text-align:left;font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--intel-muted);font-weight:600}.intel-table td{padding:1.2rem 1.5rem;border-bottom:1px solid rgba(0,180,255,0.06);font-size:0.9rem}.intel-table tr:last-child td{border-bottom:none}.intel-table tbody tr{transition:background 0.2s}.intel-table tbody tr:hover{background:rgba(0,180,255,0.03)}.section-title{font-size:1.8rem;font-weight:700;margin:3rem 0 1.5rem;color:var(--intel-text);display:flex;align-items:center;gap:1rem}.section-title::before{content:'';width:4px;height:28px;background:linear-gradient(180deg,var(--intel-accent),var(--intel-gold));border-radius:2px}</style></head><body><div class="ambient-bg"><div class="ambient-grid"></div><div class="glow-orb orb-1"></div><div class="glow-orb orb-2"></div></div><div class="radar"><div class="radar-sweep"></div><div class="radar-rings"><div class="radar-ring ring-1"></div><div class="radar-ring ring-2"></div><div class="radar-ring ring-3"></div><div class="radar-ring ring-4"></div></div></div><div class="container"><header><h1 class="title">TERRITORY INTELLIGENCE</h1><p class="subtitle">Real-Time Signal Aggregation & Cross-Correlation Engine</p><div class="nav-links"><a href="../hub.html" class="nav-btn">Back to Hub</a><a href="../index.html" class="nav-btn">Portfolio</a><a href="./6sense-ticker.html" class="nav-btn primary">6sense Live Ticker</a></div></header><div class="status-bar"><div class="status-item"><div class="status-dot dot-green"></div>SIGNAL ENGINES ACTIVE</div><div class="status-item"><div class="status-dot dot-green"></div>TERRITORY SCAN RUNNING</div><div class="status-item"><div class="status-dot dot-amber"></div>2 CRITICAL ALERTS</div><div class="status-item"><div class="status-dot dot-red"></div>3 URGENT ESCALATIONS</div></div><div id="territoryOverview" class="intel-grid"></div><h2 class="section-title">Performance Metrics</h2><div id="kpiGrid" class="intel-grid"></div><h2 class="section-title">Active Alerts</h2><div id="alertsGrid"></div><h2 class="section-title">Intent Signals</h2><div class="table-container"><table id="intentTable" class="intel-table"></table></div></div><script>async function loadJson(url){const r=await fetch(url+'?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}function render(data){const terr=data.territory||{};document.getElementById('territoryOverview').innerHTML=`<div class="intel-card"><div class="card-title">Territory</div><div class="card-value">${terr.name||'N/A'}</div><div class="card-label">${terr.segment||''}</div></div><div class="intel-card"><div class="card-title">Rep</div><div class="card-value">${terr.rep||'N/A'}</div></div><div class="intel-card"><div class="card-title">Accounts Tracked</div><div class="card-value">${terr.accounts_tracked||0}</div></div><div class="intel-card"><div class="card-title">Active Pursuits</div><div class="card-value">${terr.active_pursuits||0}</div></div><div class="intel-card"><div class="card-title">Pipeline Value</div><div class="card-value">${terr.pipeline_value||'N/A'}</div><span class="badge badge-gold">Q1 2026</span></div><div class="intel-card"><div class="card-title">Quota Attainment</div><div class="card-value">${terr.quota_attainment||'N/A'}</div><span class="trend trend-up">↑ 12%</span></div>`;const kpis=data.kpis||[];document.getElementById('kpiGrid').innerHTML=kpis.map(k=>`<div class="intel-card"><div class="card-header"><div class="card-title">${k.name}</div><span class="trend ${k.trend||'trend-up'}">${k.trend==='up'?'↑':'↓'}</span></div><div class="card-value">${k.value}</div><div class="card-label">${k.note||''}</div></div>`).join('');const alerts=data.alerts||[];document.getElementById('alertsGrid').innerHTML=alerts.map(a=>`<div class="alert-card ${a.severity||''}"><div class="alert-title"><span class="badge badge-${a.severity||'critical'}">${(a.severity||'info').toUpperCase()}</span> ${a.message||''}</div><div class="alert-desc"><strong>Type:</strong> ${a.type||'N/A'} | <strong>Source:</strong> ${a.source||'N/A'}</div></div>`).join('');const intent=data.intent_signals||[];let tableHTML=`<thead><tr><th>Account</th><th>Topic</th><th>Score</th><th>Stage</th><th>Trend</th><th>Days in Stage</th></tr></thead><tbody>`;intent.forEach(sig=>{const scoreClass=sig.score>=80?'trend-up':'';tableHTML+=`<tr><td><strong>${sig.account}</strong></td><td>${sig.topic}</td><td><span class="${scoreClass}">${sig.score}</span></td><td><span class="badge badge-${sig.stage==='Decision'?'critical':'gold'}">${sig.stage}</span></td><td>${sig.trend}</td><td>${sig.days_in_stage}d</td></tr>`});tableHTML+='</tbody>';document.getElementById('intentTable').innerHTML=tableHTML}(async()=>{try{const pub=await loadJson('./data/public_demo.json');let merged=pub;try{const priv=await loadJson('./data/private_local.json');merged={...pub,...priv,mode:priv.mode||'private_local'}}catch(e){}render(merged)}catch(e){console.error('Failed to load data:',e);document.querySelector('.container').innerHTML+='<div class="alert-card alert-critical"><div class="alert-title">DATA LOAD ERROR</div><div class="alert-desc">Failed to load intelligence data. Check console for details.</div></div>'}})()</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intelligence Platform | Agentic AI</title>
+<script src="https://unpkg.com/globe.gl"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg-primary:#0a0a0f;
+--bg-secondary:#12121a;
+--bg-card:#1a1a2e;
+--bg-card-hover:#222240;
+--intel-accent:#00d4ff;
+--intel-accent-dim:rgba(0,212,255,0.15);
+--intel-gold:#c9a84c;
+--intel-gold-dim:rgba(201,168,76,0.15);
+--intel-muted:#8892b0;
+--text-primary:#e6e6e6;
+--text-secondary:#a0a0b8;
+--border-subtle:rgba(255,255,255,0.06);
+--glass:rgba(18,18,26,0.85);
+--transition-smooth:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-primary);color:var(--text-primary);overflow-x:hidden;line-height:1.6}
+
+/* Particle Canvas */
+#particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg-primary)}
+::-webkit-scrollbar-thumb{background:var(--intel-accent);border-radius:3px}
+
+/* Navigation */
+.nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(10,10,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-subtle);padding:0 2rem;transition:var(--transition-smooth)}
+.nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text-primary)}
+.nav-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--intel-accent),var(--intel-gold));border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--bg-primary)}
+.nav-title{font-size:1rem;font-weight:600;letter-spacing:0.5px}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-link{color:var(--intel-muted);text-decoration:none;font-size:0.85rem;letter-spacing:0.5px;text-transform:uppercase;transition:var(--transition-smooth);position:relative;padding:4px 0}
+.nav-link:hover,.nav-link.active{color:var(--intel-accent)}
+.nav-link.active::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:2px;background:var(--intel-accent);border-radius:1px}
+.nav-status{display:flex;align-items:center;gap:8px;font-size:0.75rem;color:var(--intel-muted)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#00ff88;animation:pulse-dot 2s infinite}
+
+/* Hero Section */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 2rem 80px;overflow:hidden}
+.hero-grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%}
+.hero-content{position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--intel-accent-dim);border:1px solid rgba(0,212,255,0.2);border-radius:20px;padding:6px 16px;font-size:0.75rem;color:var(--intel-accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem;animation:fadeInUp 0.8s ease}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--intel-accent);animation:pulse-dot 2s infinite}
+.hero h1{font-size:3.5rem;font-weight:700;line-height:1.1;margin-bottom:1rem;animation:fadeInUp 0.8s ease 0.2s both}
+.hero h1 .accent{background:linear-gradient(135deg,var(--intel-accent),var(--intel-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.1rem;color:var(--text-secondary);max-width:500px;margin-bottom:2rem;animation:fadeInUp 0.8s ease 0.4s both}
+.hero-actions{display:flex;gap:1rem;animation:fadeInUp 0.8s ease 0.6s both}
+.btn{padding:12px 28px;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:var(--transition-smooth);border:none;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:linear-gradient(135deg,var(--intel-accent),#0099cc);color:var(--bg-primary);box-shadow:0 4px 20px rgba(0,212,255,0.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,255,0.4)}
+.btn-outline{background:transparent;border:1px solid var(--intel-accent);color:var(--intel-accent)}
+.btn-outline:hover{background:var(--intel-accent-dim);transform:translateY(-2px)}
+
+/* Globe Container */
+.globe-container{position:relative;width:100%;height:500px;display:flex;align-items:center;justify-content:center;animation:fadeIn 1s ease 0.8s both}
+.globe-container #globeViz{width:100%;height:100%;cursor:grab}
+.globe-glow{position:absolute;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,0.15) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:globePulse 4s ease-in-out infinite}
+
+/* Hero Stats */
+.hero-stats{display:flex;gap:2rem;margin-top:2rem;animation:fadeInUp 0.8s ease 0.8s both}
+.hero-stat{text-align:center}
+.hero-stat-value{font-size:1.8rem;font-weight:700;color:var(--intel-accent)}
+.hero-stat-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--intel-muted);margin-top:4px}
+
+/* Sections */
+.section{padding:100px 2rem;position:relative;z-index:1}
+.section-header{text-align:center;max-width:700px;margin:0 auto 3rem}
+.section-badge{display:inline-flex;align-items:center;gap:6px;font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--intel-gold);margin-bottom:1rem}
+.section-badge::before{content:'';width:20px;height:1px;background:var(--intel-gold)}
+.section-badge::after{content:'';width:20px;height:1px;background:var(--intel-gold)}
+.section-title{font-size:2.5rem;font-weight:700;margin-bottom:1rem}
+.section-title .accent{background:linear-gradient(135deg,var(--intel-accent),var(--intel-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-desc{color:var(--text-secondary);font-size:1rem}
+
+/* Filter Bar */
+.filter-bar{display:flex;justify-content:center;gap:0.75rem;margin-bottom:3rem;flex-wrap:wrap}
+.filter-btn{padding:8px 20px;border-radius:20px;border:1px solid var(--border-subtle);background:transparent;color:var(--intel-muted);font-size:0.8rem;cursor:pointer;transition:var(--transition-smooth);text-transform:uppercase;letter-spacing:0.5px}
+.filter-btn:hover,.filter-btn.active{background:var(--intel-accent-dim);border-color:var(--intel-accent);color:var(--intel-accent)}
+
+/* Capability Cards */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem;max-width:1400px;margin:0 auto}
+.cap-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:2rem;cursor:pointer;transition:var(--transition-smooth);position:relative;overflow:hidden}
+.cap-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--intel-accent),var(--intel-gold));transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease}
+.cap-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.3);background:var(--bg-card-hover);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.cap-card:hover::before{transform:scaleX(1)}
+.cap-card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.2rem}
+.cap-card-icon.blue{background:var(--intel-accent-dim);color:var(--intel-accent)}
+.cap-card-icon.gold{background:var(--intel-gold-dim);color:var(--intel-gold)}
+.cap-card h3{font-size:1.1rem;font-weight:600;margin-bottom:0.5rem}
+.cap-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.6;margin-bottom:1rem}
+.cap-card-tags{display:flex;gap:0.5rem;flex-wrap:wrap}
+.cap-tag{padding:3px 10px;border-radius:10px;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.5px;background:rgba(255,255,255,0.05);color:var(--intel-muted)}
+
+/* Metrics Grid */
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;max-width:1400px;margin:0 auto}
+.metric-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:2rem;text-align:center;transition:var(--transition-smooth);position:relative;overflow:hidden}
+.metric-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.2);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.metric-value{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--intel-accent),var(--intel-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.metric-label{font-size:0.8rem;color:var(--intel-muted);text-transform:uppercase;letter-spacing:1px;margin-top:0.5rem}
+.metric-bar{width:100%;height:4px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:1rem;overflow:hidden}
+.metric-bar-fill{height:100%;background:linear-gradient(90deg,var(--intel-accent),var(--intel-gold));border-radius:2px;transition:width 1.5s ease}
+
+/* Timeline */
+.timeline{max-width:800px;margin:0 auto;position:relative;padding-left:40px}
+.timeline::before{content:'';position:absolute;left:15px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--intel-accent),var(--intel-gold),transparent)}
+.timeline-item{position:relative;margin-bottom:2.5rem;padding-left:2rem}
+.timeline-item::before{content:'';position:absolute;left:-33px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--intel-accent);border:3px solid var(--bg-primary);z-index:1}
+.timeline-item h3{font-size:1rem;font-weight:600;margin-bottom:0.3rem}
+.timeline-item .date{font-size:0.75rem;color:var(--intel-gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem}
+.timeline-item p{color:var(--text-secondary);font-size:0.85rem;line-height:1.6}
+
+/* Modal */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);z-index:2000;align-items:center;justify-content:center}
+.modal.active{display:flex}
+.modal-content{background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:20px;padding:2.5rem;max-width:700px;width:90%;max-height:80vh;overflow-y:auto;position:relative;animation:modalIn 0.3s ease}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--intel-muted);font-size:1.5rem;cursor:pointer;transition:var(--transition-smooth);width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.modal-close:hover{color:var(--intel-accent);background:var(--intel-accent-dim)}
+#modalBody h2{font-size:1.5rem;margin-bottom:1rem}
+#modalBody h2 .accent{background:linear-gradient(135deg,var(--intel-accent),var(--intel-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+#modalBody p{color:var(--text-secondary);line-height:1.8;margin-bottom:1rem}
+#modalBody ul{list-style:none;padding:0}
+#modalBody ul li{padding:0.5rem 0;padding-left:1.5rem;position:relative;color:var(--text-secondary);font-size:0.9rem}
+#modalBody ul li::before{content:'';position:absolute;left:0;top:50%;width:6px;height:6px;border-radius:50%;background:var(--intel-accent);transform:translateY(-50%)}
+
+/* Footer */
+.footer{padding:3rem 2rem;border-top:1px solid var(--border-subtle);text-align:center;position:relative;z-index:1}
+.footer-inner{max-width:1400px;margin:0 auto}
+.footer p{color:var(--intel-muted);font-size:0.8rem}
+.footer-links{display:flex;justify-content:center;gap:2rem;margin-bottom:1rem}
+.footer-links a{color:var(--intel-muted);text-decoration:none;font-size:0.8rem;transition:var(--transition-smooth)}
+.footer-links a:hover{color:var(--intel-accent)}
+
+/* Scroll Reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Animations */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.5)}}
+@keyframes globePulse{0%,100%{opacity:0.3;transform:translate(-50%,-50%) scale(1)}50%{opacity:0.6;transform:translate(-50%,-50%) scale(1.1)}}
+@keyframes modalIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes scanline{0%{top:-5%}100%{top:105%}}
+
+/* Responsive */
+@media(max-width:968px){
+.hero-grid{grid-template-columns:1fr;text-align:center}
+.globe-container{height:350px}
+.hero h1{font-size:2.5rem}
+.metrics-grid{grid-template-columns:repeat(2,1fr)}
+.hero-stats{justify-content:center}
+.hero-actions{justify-content:center}
+.nav-links{display:none}
+}
+@media(max-width:600px){
+.metrics-grid{grid-template-columns:1fr}
+.cards-grid{grid-template-columns:1fr}
+.hero h1{font-size:2rem}
+}
+</style>
+</head>
+<body>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Navigation -->
+<nav class="nav">
+<div class="nav-inner">
+<a href="#" class="nav-brand">
+<div class="nav-logo">AI</div>
+<span class="nav-title">Intelligence Platform</span>
+</a>
+<div class="nav-links">
+<a href="#capabilities" class="nav-link active">Capabilities</a>
+<a href="#metrics" class="nav-link">Metrics</a>
+<a href="#roadmap" class="nav-link">Roadmap</a>
+<a href="#" class="nav-link" onclick="openPortfolio()">Portfolio</a>
+</div>
+<div class="nav-status">
+<span class="status-dot"></span>
+<span>Systems Operational</span>
+</div>
+</div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+<div class="hero-grid">
+<div class="hero-content">
+<div class="hero-badge">
+<span class="hero-badge-dot"></span>
+Classified Intelligence Network
+</div>
+<h1>Autonomous<br><span class="accent">Intelligence</span><br>Operations</h1>
+<p class="hero-sub">Next-generation agentic AI platform delivering autonomous intelligence operations with military-grade precision and executive-class refinement.</p>
+<div class="hero-actions">
+<button class="btn btn-primary" onclick="document.getElementById('capabilities').scrollIntoView({behavior:'smooth'})">Explore Capabilities</button>
+<button class="btn btn-outline" onclick="openModal('about')">Learn More</button>
+</div>
+<div class="hero-stats">
+<div class="hero-stat"><div class="hero-stat-value" id="agentCount">0</div><div class="hero-stat-label">Active Agents</div></div>
+<div class="hero-stat"><div class="hero-stat-value" id="taskCount">0</div><div class="hero-stat-label">Tasks Completed</div></div>
+<div class="hero-stat"><div class="hero-stat-value" id="uptimeCount">0%</div><div class="hero-stat-label">Uptime</div></div>
+</div>
+</div>
+<div class="globe-container">
+<div class="globe-glow"></div>
+<div id="globeViz"></div>
+</div>
+</div>
+</section>
+
+<!-- Capabilities Section -->
+<section class="section" id="capabilities">
+<div class="section-header reveal">
+<div class="section-badge">Core Systems</div>
+<h2 class="section-title">Platform <span class="accent">Capabilities</span></h2>
+<p class="section-desc">Explore the autonomous intelligence systems powering next-generation operations across multiple domains.</p>
+</div>
+
+<div class="filter-bar reveal">
+<button class="filter-btn active" onclick="filterCards('all')">All Systems</button>
+<button class="filter-btn" onclick="filterCards('intelligence')">Intelligence</button>
+<button class="filter-btn" onclick="filterCards('operations')">Operations</button>
+<button class="filter-btn" onclick="filterCards('security')">Security</button>
+<button class="filter-btn" onclick="filterCards('analytics')">Analytics</button>
+</div>
+
+<div class="cards-grid" id="cardsGrid">
+
+<div class="cap-card reveal" data-category="intelligence" onclick="openModal('nlp')">
+<div class="cap-card-icon blue">&#9672;</div>
+<h3>Natural Language Processing</h3>
+<p>Advanced NLP engine with contextual understanding across 40+ languages. Real-time sentiment analysis and entity extraction.</p>
+<div class="cap-card-tags"><span class="cap-tag">NLP</span><span class="cap-tag">ML</span><span class="cap-tag">Real-time</span></div>
+</div>
+
+<div class="cap-card reveal" data-category="operations" onclick="openModal('orchestration')">
+<div class="cap-card-icon gold">&#9881;</div>
+<h3>Agent Orchestration</h3>
+<p>Multi-agent coordination framework enabling autonomous task delegation, parallel execution, and intelligent resource allocation.</p>
+<div class="cap-card-tags"><span class="cap-tag">Agents</span><span class="cap-tag">Orchestration</span><span class="cap-tag">Auto</span></div>
+</div>
+
+<div class="cap-card reveal" data-category="security" onclick="openModal('threat')">
+<div class="cap-card-icon blue">&#9733;</div>
+<h3>Threat Intelligence</h3>
+<p>Continuous threat monitoring with predictive analysis. Identifies vulnerabilities before they become attack vectors.</p>
+<div class="cap-card-tags"><span class="cap-tag">Security</span><span class="cap-tag">Threat</span><span class="cap-tag">Predictive</span></div>
+</div>
+
+<div class="cap-card reveal" data-category="analytics" onclick="openModal('predictive')">
+<div class="cap-card-icon gold">&#9670;</div>
+<h3>Predictive Analytics</h3>
+<p>Machine learning models delivering 97.3% accuracy in outcome prediction across financial, operational, and strategic domains.</p>
+<div class="cap-card-tags"><span class="cap-tag">Analytics</span><span class="cap-tag">Prediction</span><span class="cap-tag">ML</span></div>
+</div>
+
+<div class="cap-card reveal" data-category="intelligence" onclick="openModal('vision')">
+<div class="cap-card-icon blue">&#9673;</div>
+<h3>Computer Vision</h3>
+<p>Advanced image and video analysis with object detection, facial recognition frameworks, and spatial intelligence mapping.</p>
+<div class="cap-card-tags"><span class="cap-tag">Vision</span><span class="cap-tag">Detection</span><span class="cap-tag">Spatial</span></div>
+</div>
+
+<div class="cap-card reveal" data-category="operations" onclick="openModal('deploy')">
+<div class="cap-card-icon gold">&#9889;</div>
+<h3>Rapid Deployment</h3>
+<p>Zero-downtime deployment pipeline with automated rollback. From development to production in under 90 seconds.</p>
+<div class="cap-card-tags"><span class="cap-tag">DevOps</span><span class="cap-tag">CI/CD</span><span class="cap-tag">Cloud</span></div>
+</div>
+
+</div>
+</section>
+
+<!-- Metrics Section -->
+<section class="section" id="metrics" style="background:var(--bg-secondary)">
+<div class="section-header reveal">
+<div class="section-badge">Performance Data</div>
+<h2 class="section-title">System <span class="accent">Metrics</span></h2>
+<p class="section-desc">Real-time performance indicators across all operational domains.</p>
+</div>
+<div class="metrics-grid reveal">
+<div class="metric-card">
+<div class="metric-value">99.97%</div>
+<div class="metric-label">System Uptime</div>
+<div class="metric-bar"><div class="metric-bar-fill" style="width:99.97%"></div></div>
+</div>
+<div class="metric-card">
+<div class="metric-value">2.4ms</div>
+<div class="metric-label">Avg Response Time</div>
+<div class="metric-bar"><div class="metric-bar-fill" style="width:95%"></div></div>
+</div>
+<div class="metric-card">
+<div class="metric-value">47K+</div>
+<div class="metric-label">Daily Operations</div>
+<div class="metric-bar"><div class="metric-bar-fill" style="width:82%"></div></div>
+</div>
+<div class="metric-card">
+<div class="metric-value">97.3%</div>
+<div class="metric-label">Prediction Accuracy</div>
+<div class="metric-bar"><div class="metric-bar-fill" style="width:97.3%"></div></div>
+</div>
+</div>
+</section>
+
+<!-- Roadmap Section -->
+<section class="section" id="roadmap">
+<div class="section-header reveal">
+<div class="section-badge">Development Timeline</div>
+<h2 class="section-title">Platform <span class="accent">Roadmap</span></h2>
+<p class="section-desc">Strategic milestones driving platform evolution and capability expansion.</p>
+</div>
+<div class="timeline reveal">
+<div class="timeline-item">
+<div class="date">Q1 2025</div>
+<h3>Foundation Architecture</h3>
+<p>Core agent framework, NLP engine deployment, and multi-cloud infrastructure initialization.</p>
+</div>
+<div class="timeline-item">
+<div class="date">Q2 2025</div>
+<h3>Intelligence Expansion</h3>
+<p>Computer vision integration, predictive analytics engine, and advanced threat detection systems.</p>
+</div>
+<div class="timeline-item">
+<div class="date">Q3 2025</div>
+<h3>Autonomous Operations</h3>
+<p>Full autonomous agent orchestration, self-healing systems, and real-time decision framework.</p>
+</div>
+<div class="timeline-item">
+<div class="date">Q4 2025</div>
+<h3>Global Scale</h3>
+<p>Multi-region deployment, enterprise API gateway, and advanced compliance automation.</p>
+</div>
+</div>
+</section>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+<div class="modal-content">
+<button class="modal-close" onclick="closeModal()">&times;</button>
+<div id="modalBody"></div>
+</div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+<div class="footer-inner">
+<div class="footer-links">
+<a href="#capabilities">Capabilities</a>
+<a href="#metrics">Metrics</a>
+<a href="#roadmap">Roadmap</a>
+<a href="https://github.com/joeldunson-sudo/agentic-ai-portfolio" target="_blank">GitHub</a>
+</div>
+<p>&copy; 2025 Intelligence Platform | Agentic AI Portfolio | All Systems Operational</p>
+</div>
+</footer>
+
+<script>
+// Particle System
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resizeCanvas() {
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+constructor() {
+this.reset();
+}
+reset() {
+this.x = Math.random() * canvas.width;
+this.y = Math.random() * canvas.height;
+this.size = Math.random() * 1.5 + 0.5;
+this.speedX = (Math.random() - 0.5) * 0.3;
+this.speedY = (Math.random() - 0.5) * 0.3;
+this.opacity = Math.random() * 0.5 + 0.1;
+}
+update() {
+this.x += this.speedX;
+this.y += this.speedY;
+if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+}
+draw() {
+ctx.beginPath();
+ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+ctx.fillStyle = `rgba(0,212,255,${this.opacity})`;
+ctx.fill();
+}
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+function animateParticles() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+particles.forEach(p => { p.update(); p.draw(); });
+// Draw connections
+for (let i = 0; i < particles.length; i++) {
+for (let j = i + 1; j < particles.length; j++) {
+const dx = particles[i].x - particles[j].x;
+const dy = particles[i].y - particles[j].y;
+const dist = Math.sqrt(dx * dx + dy * dy);
+if (dist < 120) {
+ctx.beginPath();
+ctx.moveTo(particles[i].x, particles[i].y);
+ctx.lineTo(particles[j].x, particles[j].y);
+ctx.strokeStyle = `rgba(0,212,255,${0.08 * (1 - dist / 120)})`;
+ctx.lineWidth = 0.5;
+ctx.stroke();
+}
+}
+}
+requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// Globe Initialization
+const globeEl = document.getElementById('globeViz');
+const arcsData = [
+{startLat:37.7749,startLng:-122.4194,endLat:51.5074,endLng:-0.1278,color:['#00d4ff','#c9a84c']},
+{startLat:35.6762,startLng:139.6503,endLat:37.7749,endLng:-122.4194,color:['#00d4ff','#c9a84c']},
+{startLat:51.5074,startLng:-0.1278,endLat:1.3521,endLng:103.8198,color:['#c9a84c','#00d4ff']},
+{startLat:-33.8688,startLng:151.2093,endLat:35.6762,endLng:139.6503,color:['#00d4ff','#c9a84c']},
+{startLat:40.7128,startLng:-74.0060,endLat:48.8566,endLng:2.3522,color:['#c9a84c','#00d4ff']},
+{startLat:25.2048,startLng:55.2708,endLat:37.7749,endLng:-122.4194,color:['#00d4ff','#c9a84c']},
+{startLat:-23.5505,startLng:-46.6333,endLat:40.7128,endLng:-74.0060,color:['#c9a84c','#00d4ff']},
+{startLat:55.7558,startLng:37.6173,endLat:35.6762,endLng:139.6503,color:['#00d4ff','#c9a84c']},
+];
+const pointsData = [
+{lat:37.7749,lng:-122.4194,size:0.8,color:'#00d4ff'},
+{lat:51.5074,lng:-0.1278,size:0.6,color:'#c9a84c'},
+{lat:35.6762,lng:139.6503,size:0.7,color:'#00d4ff'},
+{lat:1.3521,lng:103.8198,size:0.5,color:'#c9a84c'},
+{lat:-33.8688,lng:151.2093,size:0.5,color:'#00d4ff'},
+{lat:40.7128,lng:-74.0060,size:0.7,color:'#c9a84c'},
+{lat:25.2048,lng:55.2708,size:0.5,color:'#00d4ff'},
+{lat:-23.5505,lng:-46.6333,size:0.5,color:'#c9a84c'},
+{lat:55.7558,lng:37.6173,size:0.5,color:'#00d4ff'},
+{lat:48.8566,lng:2.3522,size:0.5,color:'#c9a84c'},
+];
+
+try {
+const myGlobe = Globe()
+.globeImageUrl('https://unpkg.com/three-globe/example/img/earth-dark.jpg')
+.backgroundColor('rgba(0,0,0,0)')
+.arcsData(arcsData)
+.arcColor('color')
+.arcDashLength(0.4)
+.arcDashGap(0.2)
+.arcDashAnimateTime(2500)
+.arcStroke(0.5)
+.pointsData(pointsData)
+.pointAltitude(0.07)
+.pointColor('color')
+.pointRadius('size')
+.atmosphereColor('#00d4ff')
+.atmosphereAltitude(0.15)
+.width(globeEl.offsetWidth)
+.height(globeEl.offsetHeight)
+(globeEl);
+myGlobe.controls().autoRotate = true;
+myGlobe.controls().autoRotateSpeed = 0.8;
+myGlobe.controls().enableZoom = false;
+} catch(e) { console.log('Globe init:', e); }
+
+// Animated Counters
+function animateCounter(el, target, suffix='') {
+let current = 0;
+const increment = target / 60;
+const timer = setInterval(() => {
+current += increment;
+if (current >= target) { current = target; clearInterval(timer); }
+el.textContent = Math.floor(current) + suffix;
+}, 30);
+}
+setTimeout(() => {
+animateCounter(document.getElementById('agentCount'), 24);
+animateCounter(document.getElementById('taskCount'), 1847);
+animateCounter(document.getElementById('uptimeCount'), 99, '%');
+}, 500);
+
+// Scroll Reveal
+const revealObserver = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add('visible');
+}
+});
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// Filter Cards
+function filterCards(category) {
+document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+event.target.classList.add('active');
+const cards = document.querySelectorAll('.cap-card');
+cards.forEach(card => {
+if (category === 'all' || card.dataset.category === category) {
+card.style.display = 'block';
+card.style.animation = 'fadeInUp 0.5s ease forwards';
+} else {
+card.style.display = 'none';
+}
+});
+}
+
+// Modal System
+const modalData = {
+nlp: {
+title: 'Natural Language <span class="accent">Processing</span>',
+content: '<p>Our NLP engine processes text across 40+ languages with contextual understanding that rivals human comprehension.</p><ul><li>Real-time sentiment analysis with 98.2% accuracy</li><li>Named entity recognition across all major domains</li><li>Contextual summarization with source attribution</li><li>Multi-language translation with cultural nuance</li><li>Intent classification for automated routing</li></ul>'
+},
+orchestration: {
+title: 'Agent <span class="accent">Orchestration</span>',
+content: '<p>The orchestration framework coordinates multiple AI agents working in parallel to accomplish complex multi-step tasks.</p><ul><li>Dynamic task decomposition and delegation</li><li>Real-time agent health monitoring</li><li>Automatic failover and load balancing</li><li>Priority-based resource allocation</li><li>Cross-agent knowledge sharing</li></ul>'
+},
+threat: {
+title: 'Threat <span class="accent">Intelligence</span>',
+content: '<p>Continuous monitoring and predictive threat analysis across digital and operational landscapes.</p><ul><li>24/7 automated threat scanning</li><li>Predictive vulnerability assessment</li><li>Incident response automation</li><li>Compliance monitoring and reporting</li><li>Dark web intelligence gathering</li></ul>'
+},
+predictive: {
+title: 'Predictive <span class="accent">Analytics</span>',
+content: '<p>Machine learning models delivering precise outcome predictions across multiple business domains.</p><ul><li>Financial trend forecasting</li><li>Operational efficiency optimization</li><li>Customer behavior modeling</li><li>Supply chain risk prediction</li><li>Market opportunity identification</li></ul>'
+},
+vision: {
+title: 'Computer <span class="accent">Vision</span>',
+content: '<p>Advanced visual intelligence processing for image and video analysis at scale.</p><ul><li>Real-time object detection and classification</li><li>Spatial mapping and 3D reconstruction</li><li>Anomaly detection in visual feeds</li><li>Document and text extraction (OCR)</li><li>Quality inspection automation</li></ul>'
+},
+deploy: {
+title: 'Rapid <span class="accent">Deployment</span>',
+content: '<p>Enterprise-grade CI/CD pipeline with zero-downtime deployment capabilities.</p><ul><li>Blue-green deployment strategy</li><li>Automated rollback on failure detection</li><li>Multi-region simultaneous deployment</li><li>Infrastructure as Code automation</li><li>Performance baseline validation</li></ul>'
+},
+about: {
+title: 'About the <span class="accent">Platform</span>',
+content: '<p>The Intelligence Platform represents a next-generation approach to autonomous AI operations, combining military-precision task execution with enterprise elegance.</p><ul><li>Built on cutting-edge transformer architectures</li><li>Multi-cloud deployment across AWS, Azure, GCP</li><li>SOC 2 Type II compliant infrastructure</li><li>End-to-end encryption for all data in transit and at rest</li><li>Real-time monitoring with automated incident response</li></ul>'
+}
+};
+
+function openModal(key) {
+const data = modalData[key];
+if (!data) return;
+document.getElementById('modalBody').innerHTML = '<h2>' + data.title + '</h2>' + data.content;
+document.getElementById('modal').classList.add('active');
+document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+document.getElementById('modal').classList.remove('active');
+document.body.style.overflow = '';
+}
+document.getElementById('modal').addEventListener('click', function(e) {
+if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', function(e) {
+if (e.key === 'Escape') closeModal();
+});
+
+function openPortfolio() {
+window.open('https://github.com/joeldunson-sudo/agentic-ai-portfolio', '_blank');
+}
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+const nav = document.querySelector('.nav');
+if (window.scrollY > 50) {
+nav.style.background = 'rgba(10,10,15,0.98)';
+nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+} else {
+nav.style.background = 'rgba(10,10,15,0.92)';
+nav.style.boxShadow = 'none';
+}
+});
+</script>
+</body>
+</html>
