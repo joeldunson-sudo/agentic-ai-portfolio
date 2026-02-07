@@ -1,0 +1,33 @@
+{
+  "linearCursorIntegration": {
+    "enabled": true,
+    "agentAssignmentRules": [
+      {
+        "condition": { "label": "website-enhancement" },
+        "action": { "assignToAgent": "website-enhancer-agent", "priority": "high", "autoStart": true }
+      },
+      {
+        "condition": { "label": "data-pipeline" },
+        "action": { "assignToAgent": "data-processor-agent", "priority": "medium", "autoStart": true }
+      },
+      {
+        "condition": { "label": "bug", "priority": "urgent" },
+        "action": { "assignToAgent": "bug-fix-agent", "priority": "urgent", "autoStart": true, "notifySlack": true }
+      }
+    ],
+    "completionActions": [
+      {
+        "agentCompletes": "website-enhancer-agent",
+        "actions": ["closeLinearIssue", "addCommentWithPreview", "updateGlobeMarker", "notifyStakeholders"]
+      },
+      {
+        "agentCompletes": "data-processor-agent",
+        "actions": ["closeLinearIssue", "addCommentWithDocs", "updateGlobeMarker", "runIntegrationTests"]
+      }
+    ],
+    "errorHandling": {
+      "onAgentFailure": ["updateLinearIssueStatus", "addFailureComment", "reassignToManualReview", "notifyTeam"],
+      "retryPolicy": { "maxRetries": 3, "backoffMultiplier": 2, "initialDelaySeconds": 30 }
+    }
+  }
+}
