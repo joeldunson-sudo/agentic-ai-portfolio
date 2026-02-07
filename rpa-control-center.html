@@ -3,779 +3,1195 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agentic RPA Control Center - Multi-Agent Orchestration</title>
-<link rel="stylesheet" href="./assets/globe-skin.css" />
+<title>RPA Control Center - Live Intelligence & Orchestration</title>
+<!-- COBE Globe -->
+<script src="https://unpkg.com/cobe@0.6.3/dist/cobe.umd.js"></script>
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<!-- Mermaid Flowchart -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <style>
 :root {
---color-primary: #00A0FB;
---color-glow: rgba(0,160,251,0.15);
---color-glow-strong: rgba(0,160,251,0.3);
---color-teal: #32B8C6;
---color-success: #00C853;
---color-warning: #FF9800;
---color-danger: #FF4444;
---color-bg: #0A0E27;
---color-bg-card: #141B3A;
---color-bg-elevated: #1A2348;
---color-text: #FFFFFF;
---color-text-muted: #B0B8CC;
---color-border: rgba(255,255,255,0.1);
---color-recording: #FF4444;
---color-agent-active: #00C853;
---color-agent-idle: #FF9800;
---color-agent-offline: #666;
+  --color-primary: #00A0FB;
+  --color-glow: rgba(0,160,251,0.15);
+  --color-glow-strong: rgba(0,160,251,0.4);
+  --color-teal: #32B8C6;
+  --color-success: #00C853;
+  --color-warning: #FF9800;
+  --color-danger: #FF4444;
+  --color-bg: #0A0E27;
+  --color-bg-card: #141B3A;
+  --color-bg-elevated: #1A2348;
+  --color-text: #FFFFFF;
+  --color-text-muted: #B0B8CC;
+  --color-border: rgba(255,255,255,0.1);
+  --color-cyber-green: #00ff41;
+  --color-cyber-pink: #ff00ff;
+  --color-cyber-orange: #ff6600;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-background: var(--color-bg);
-color: var(--color-text);
-min-height: 100vh;
-overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Header Styles */
+/* PARTICLE BACKGROUND */
+#particle-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* HEADER */
 .rpa-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 20px 40px;
-background: linear-gradient(180deg, rgba(20,27,58,0.95) 0%, rgba(10,14,39,0.9) 100%);
-border-bottom: 1px solid var(--color-border);
-position: sticky;
-top: 0;
-z-index: 100;
-backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: linear-gradient(180deg, rgba(20,27,58,0.98) 0%, rgba(10,14,39,0.95) 100%);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(20px);
 }
 .rpa-title {
-font-size: 1.5rem;
-font-weight: 700;
-color: var(--color-primary);
-text-shadow: 0 0 20px var(--color-glow-strong);
+  font-size: 1.4rem; font-weight: 700;
+  color: var(--color-primary);
+  text-shadow: 0 0 20px var(--color-glow-strong);
+  display: flex; align-items: center; gap: 12px;
 }
-.rpa-title span { color: var(--color-teal); }
+.rpa-title .bot-icon {
+  width: 40px; height: 40px;
+  animation: pulse-glow 2s infinite;
+}
+@keyframes pulse-glow {
+  0%,100% { filter: drop-shadow(0 0 8px var(--color-primary)); }
+  50% { filter: drop-shadow(0 0 20px var(--color-cyber-green)); }
+}
+.header-nav { display: flex; gap: 12px; align-items: center; }
+.btn {
+  padding: 10px 20px; border-radius: 8px; border: none;
+  cursor: pointer; font-weight: 600; font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+.btn-primary { background: var(--color-primary); color: white; }
+.btn-primary:hover { box-shadow: 0 0 25px var(--color-glow-strong); transform: translateY(-2px); }
+.btn-outline { background: transparent; border: 1px solid var(--color-border); color: var(--color-text); }
+.btn-outline:hover { border-color: var(--color-primary); }
+.btn-danger { background: var(--color-danger); color: white; }
+.btn-success { background: var(--color-success); color: white; }
 
-/* Recording Indicator */
-.recording-indicator {
-display: flex;
-align-items: center;
-gap: 10px;
-padding: 8px 16px;
-border-radius: 20px;
-background: rgba(255,68,68,0.1);
-border: 1px solid var(--color-recording);
-animation: pulse-recording 1.5s infinite;
-}
-.recording-indicator.active { background: rgba(255,68,68,0.2); }
-.recording-dot {
-width: 12px;
-height: 12px;
-border-radius: 50%;
-background: var(--color-recording);
-box-shadow: 0 0 10px var(--color-recording);
-}
-@keyframes pulse-recording {
-0%,100% { opacity: 1; }
-50% { opacity: 0.6; }
-}
-
-/* Main Layout */
-.rpa-container {
-display: grid;
-grid-template-columns: 280px 1fr 320px;
-min-height: calc(100vh - 80px);
-gap: 0;
+/* MAIN GRID */
+.main-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr 360px;
+  min-height: calc(100vh - 70px);
+  position: relative; z-index: 1;
 }
 
-/* Sidebar - Agent Teams */
-.agent-sidebar {
-background: var(--color-bg-card);
-border-right: 1px solid var(--color-border);
-padding: 20px;
-overflow-y: auto;
+/* LEFT SIDEBAR */
+.sidebar-left {
+  background: var(--color-bg-card);
+  border-right: 1px solid var(--color-border);
+  padding: 20px;
+  overflow-y: auto;
 }
-.sidebar-section { margin-bottom: 24px; }
-.sidebar-title {
-font-size: 0.75rem;
-text-transform: uppercase;
-letter-spacing: 1px;
-color: var(--color-text-muted);
-margin-bottom: 12px;
-padding-bottom: 8px;
-border-bottom: 1px solid var(--color-border);
+.section-title {
+  font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--color-text-muted);
+  margin-bottom: 12px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
 }
 
-/* Agent Cards */
-.agent-card {
-background: var(--color-bg-elevated);
-border: 1px solid var(--color-border);
-border-radius: 8px;
-padding: 12px;
-margin-bottom: 8px;
-cursor: pointer;
-transition: all 0.3s ease;
+/* PLATFORM CARDS */
+.platform-card {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 10px; padding: 14px;
+  margin-bottom: 10px; cursor: pointer;
+  transition: all 0.3s ease;
 }
-.agent-card:hover {
-border-color: var(--color-primary);
-box-shadow: 0 0 15px var(--color-glow);
-transform: translateX(4px);
+.platform-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 20px var(--color-glow);
+  transform: translateX(4px);
 }
-.agent-card.active {
-border-color: var(--color-agent-active);
-box-shadow: 0 0 15px rgba(0,200,83,0.2);
+.platform-card.active {
+  border-color: var(--color-success);
+  box-shadow: 0 0 15px rgba(0,200,83,0.3);
+}
+.platform-header {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 8px;
+}
+.platform-name { font-weight: 600; font-size: 0.9rem; }
+.platform-status {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.status-active { background: var(--color-success); box-shadow: 0 0 10px var(--color-success); }
+.status-idle { background: var(--color-warning); }
+.status-offline { background: #666; }
+.platform-metrics {
+  display: flex; gap: 12px; font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+.metric-badge {
+  background: rgba(0,160,251,0.15);
+  padding: 2px 8px; border-radius: 4px;
+}
+
+/* AGENT DEPLOYMENT PANELS */
+.agent-panel {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 10px; padding: 14px;
+  margin-bottom: 10px;
 }
 .agent-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 8px;
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 10px;
 }
-.agent-name {
-font-weight: 600;
-font-size: 0.9rem;
+.agent-name { font-weight: 600; color: var(--color-teal); }
+.agent-trigger {
+  font-size: 0.65rem; background: rgba(50,184,198,0.2);
+  padding: 2px 6px; border-radius: 4px;
 }
-.agent-status {
-width: 8px;
-height: 8px;
-border-radius: 50%;
+.execution-step {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.8rem; padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.agent-status.active { background: var(--color-agent-active); box-shadow: 0 0 8px var(--color-agent-active); }
-.agent-status.idle { background: var(--color-agent-idle); }
-.agent-status.offline { background: var(--color-agent-offline); }
-.agent-meta {
-font-size: 0.75rem;
-color: var(--color-text-muted);
+.step-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--color-primary); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700;
+}
+.step-time { margin-left: auto; color: var(--color-text-muted); font-size: 0.7rem; }
+.deploy-btn {
+  width: 100%; margin-top: 10px; padding: 8px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-teal));
+  border: none; border-radius: 6px; color: white;
+  font-weight: 600; cursor: pointer;
+  transition: all 0.3s ease;
+}
+.deploy-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--color-glow-strong); }
+
+/* CENTER CONTENT */
+.center-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-/* Main Workspace */
-.main-workspace {
-background: var(--color-bg);
-padding: 24px;
-overflow-y: auto;
+/* GLOBE CONTAINER */
+.globe-section {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
 }
-.workspace-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 24px;
+.globe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 }
-.workspace-title {
-font-size: 1.25rem;
-font-weight: 600;
-color: var(--color-primary);
+.globe-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+.globe-stats {
+  display: flex;
+  gap: 20px;
+}
+.globe-stat {
+  text-align: center;
+}
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-cyber-green);
+}
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+.globe-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+#globe-canvas {
+  width: 400px !important;
+  height: 400px !important;
+}
+.flight-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 0.75rem;
+}
+.flight-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.flight-icon {
+  color: var(--color-cyber-orange);
+}
+.flight-callsign {
+  color: var(--color-cyber-green);
+  font-family: monospace;
 }
 
-/* Task Recorder Panel */
-.task-recorder {
-background: var(--color-bg-card);
-border: 1px solid var(--color-border);
-border-radius: 12px;
-padding: 20px;
-margin-bottom: 20px;
+/* FLOWCHART SECTION */
+.flowchart-section {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px;
 }
-.recorder-controls {
-display: flex;
-gap: 12px;
-margin-bottom: 16px;
+.flowchart-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-teal);
+  margin-bottom: 16px;
 }
-.btn {
-padding: 10px 20px;
-border-radius: 8px;
-border: none;
-cursor: pointer;
-font-weight: 600;
-transition: all 0.3s ease;
-display: flex;
-align-items: center;
-gap: 8px;
+.mermaid {
+  background: transparent !important;
 }
-.btn-primary {
-background: var(--color-primary);
-color: white;
+.mermaid svg {
+  max-width: 100%;
 }
-.btn-primary:hover {
-box-shadow: 0 0 20px var(--color-glow-strong);
-transform: translateY(-2px);
+.node rect, .node circle, .node ellipse, .node polygon {
+  fill: var(--color-bg-elevated) !important;
+  stroke: var(--color-primary) !important;
 }
-.btn-danger {
-background: var(--color-danger);
-color: white;
+.edgePath .path {
+  stroke: var(--color-teal) !important;
 }
-.btn-success {
-background: var(--color-success);
-color: white;
-}
-.btn-outline {
-background: transparent;
-border: 1px solid var(--color-border);
-color: var(--color-text);
+.flowchart-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 12px;
+  text-align: center;
 }
 
-/* Task Steps List */
-.task-steps {
-max-height: 300px;
-overflow-y: auto;
-}
-.task-step {
-background: var(--color-bg-elevated);
-border: 1px solid var(--color-border);
-border-radius: 8px;
-padding: 12px 16px;
-margin-bottom: 8px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.step-info { display: flex; align-items: center; gap: 12px; }
-.step-number {
-width: 28px;
-height: 28px;
-border-radius: 50%;
-background: var(--color-primary);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 0.8rem;
-font-weight: 700;
-}
-.step-action { font-size: 0.9rem; }
-.step-target { font-size: 0.75rem; color: var(--color-text-muted); }
-.step-time { font-size: 0.75rem; color: var(--color-text-muted); }
-
-/* Terminal Bridge Panel */
-.terminal-bridge {
-background: #0d1117;
-border: 1px solid var(--color-border);
-border-radius: 12px;
-overflow: hidden;
+/* TERMINAL */
+.terminal-section {
+  background: #0d1117;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
 }
 .terminal-header {
-background: #161b22;
-padding: 12px 16px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-border-bottom: 1px solid var(--color-border);
-}
-.terminal-title {
-font-size: 0.85rem;
-color: var(--color-text-muted);
-display: flex;
-align-items: center;
-gap: 8px;
+  background: #161b22;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
 }
 .terminal-dots {
-display: flex;
-gap: 6px;
+  display: flex;
+  gap: 6px;
 }
 .terminal-dot {
-width: 12px;
-height: 12px;
-border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
 }
-.terminal-dot.red { background: #ff5f56; }
-.terminal-dot.yellow { background: #ffbd2e; }
-.terminal-dot.green { background: #27c93f; }
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
 .terminal-output {
-padding: 16px;
-font-family: 'Monaco', 'Menlo', monospace;
-font-size: 0.8rem;
-line-height: 1.6;
-max-height: 250px;
-overflow-y: auto;
-color: #c9d1d9;
+  padding: 16px;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  max-height: 200px;
+  overflow-y: auto;
+  color: #c9d1d9;
 }
 .terminal-output .prompt { color: var(--color-success); }
 .terminal-output .command { color: #79c0ff; }
 .terminal-output .output { color: #8b949e; }
 .terminal-input {
-background: #0d1117;
-border: none;
-border-top: 1px solid var(--color-border);
-padding: 12px 16px;
-width: 100%;
-font-family: 'Monaco', 'Menlo', monospace;
-font-size: 0.8rem;
-color: #c9d1d9;
+  background: #0d1117;
+  border: none;
+  border-top: 1px solid var(--color-border);
+  padding: 12px 16px;
+  width: 100%;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.8rem;
+  color: #c9d1d9;
 }
 .terminal-input:focus { outline: none; }
 
-/* Right Panel - Agent Details */
-.agent-panel {
-background: var(--color-bg-card);
-border-left: 1px solid var(--color-border);
-padding: 20px;
-overflow-y: auto;
-}
-.panel-section { margin-bottom: 24px; }
-.panel-title {
-font-size: 0.9rem;
-font-weight: 600;
-color: var(--color-primary);
-margin-bottom: 12px;
-padding-bottom: 8px;
-border-bottom: 1px solid var(--color-border);
+/* RIGHT SIDEBAR */
+.sidebar-right {
+  background: var(--color-bg-card);
+  border-left: 1px solid var(--color-border);
+  padding: 20px;
+  overflow-y: auto;
 }
 
-/* Metrics Grid */
+/* AI BOT SECTION */
+.ai-bot-section {
+  background: linear-gradient(135deg, rgba(0,160,251,0.1), rgba(255,0,255,0.1));
+  border: 1px solid var(--color-primary);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.ai-bot-visual {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 16px;
+  position: relative;
+}
+.bot-core {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-cyber-pink));
+  border-radius: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  animation: bot-pulse 2s infinite;
+  box-shadow: 0 0 40px var(--color-glow-strong);
+}
+@keyframes bot-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+}
+.bot-arm {
+  position: absolute;
+  width: 40px;
+  height: 8px;
+  background: linear-gradient(90deg, var(--color-cyber-orange), var(--color-danger));
+  border-radius: 4px;
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%);
+  animation: arm-recoil 0.5s infinite;
+}
+@keyframes arm-recoil {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  50% { transform: translateY(-50%) translateX(-3px); }
+}
+.bot-particles {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.particle {
+  width: 4px;
+  height: 4px;
+  background: var(--color-cyber-orange);
+  border-radius: 50%;
+  position: absolute;
+  animation: particle-fly 0.3s infinite;
+}
+.particle:nth-child(1) { animation-delay: 0s; }
+.particle:nth-child(2) { animation-delay: 0.1s; top: -5px; }
+.particle:nth-child(3) { animation-delay: 0.2s; top: 5px; }
+@keyframes particle-fly {
+  0% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(30px); }
+}
+.ai-bot-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.ai-bot-status {
+  font-size: 0.75rem;
+  color: var(--color-cyber-green);
+}
+
+/* ASK ANYTHING SECTION */
+.ask-section {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.ask-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--color-primary);
+}
+.ask-input {
+  width: 100%;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--color-text);
+  font-size: 0.85rem;
+  resize: none;
+  min-height: 80px;
+}
+.ask-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px var(--color-glow);
+}
+.ask-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--color-cyber-green), var(--color-teal));
+  border: none;
+  border-radius: 8px;
+  color: var(--color-bg);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.ask-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 25px rgba(0,255,65,0.4);
+}
+
+/* ACTIVITY FEED */
+.activity-feed {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.feed-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--color-teal);
+}
+.feed-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.8rem;
+}
+.feed-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+.feed-icon.github { background: #238636; }
+.feed-icon.linear { background: #5E6AD2; }
+.feed-icon.tally { background: #00A67E; }
+.feed-icon.deploy { background: var(--color-primary); }
+.feed-time {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+/* METRICS GRID */
 .metrics-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 .metric-card {
-background: var(--color-bg-elevated);
-border: 1px solid var(--color-border);
-border-radius: 8px;
-padding: 12px;
-text-align: center;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
 }
 .metric-value {
-font-size: 1.5rem;
-font-weight: 700;
-color: var(--color-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
 }
+.metric-value.success { color: var(--color-success); }
 .metric-label {
-font-size: 0.7rem;
-color: var(--color-text-muted);
-text-transform: uppercase;
-}
-
-/* Workflow Visualizer */
-.workflow-step {
-display: flex;
-align-items: flex-start;
-margin-bottom: 16px;
-}
-.step-connector {
-width: 32px;
-display: flex;
-flex-direction: column;
-align-items: center;
-}
-.step-dot {
-width: 12px;
-height: 12px;
-border-radius: 50%;
-background: var(--color-primary);
-box-shadow: 0 0 10px var(--color-glow);
-}
-.step-line {
-width: 2px;
-height: 24px;
-background: var(--color-border);
-}
-.step-content {
-flex: 1;
-padding-left: 12px;
-}
-.step-title {
-font-size: 0.85rem;
-font-weight: 600;
-margin-bottom: 4px;
-}
-.step-desc {
-font-size: 0.75rem;
-color: var(--color-text-muted);
-}
-
-/* Quick Actions */
-.quick-actions {
-display: flex;
-flex-direction: column;
-gap: 8px;
-}
-.quick-action {
-background: var(--color-bg-elevated);
-border: 1px solid var(--color-border);
-border-radius: 8px;
-padding: 12px;
-cursor: pointer;
-transition: all 0.3s ease;
-display: flex;
-align-items: center;
-gap: 12px;
-}
-.quick-action:hover {
-border-color: var(--color-primary);
-box-shadow: 0 0 15px var(--color-glow);
-}
-.action-icon {
-width: 36px;
-height: 36px;
-border-radius: 8px;
-background: var(--color-primary);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 1.2rem;
-}
-.action-label {
-font-size: 0.85rem;
-font-weight: 500;
-}
-.action-desc {
-font-size: 0.7rem;
-color: var(--color-text-muted);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 </style>
 </head>
 <body>
+<!-- Particle Canvas -->
+<canvas id="particle-canvas"></canvas>
+
 <!-- Header -->
 <header class="rpa-header">
-<div class="rpa-title">Agentic <span>RPA</span> Control Center</div>
-<div class="header-controls" style="display:flex;gap:16px;align-items:center;">
-<div class="recording-indicator" id="recordingIndicator">
-<div class="recording-dot"></div>
-<span>REC</span>
-</div>
-<a href="hub.html" class="btn btn-outline">Hub</a>
-<a href="command-center.html" class="btn btn-outline">Command Center</a>
-</div>
+  <div class="rpa-title">
+    <svg class="bot-icon" viewBox="0 0 100 100">
+      <rect x="25" y="20" width="50" height="60" rx="10" fill="#00A0FB"/>
+      <circle cx="38" cy="40" r="6" fill="#00ff41"/>
+      <circle cx="62" cy="40" r="6" fill="#00ff41"/>
+      <rect x="35" y="55" width="30" height="8" rx="4" fill="#141B3A"/>
+      <rect x="70" y="45" width="25" height="6" rx="3" fill="#ff6600"/>
+      <circle cx="98" cy="48" r="3" fill="#ff4444"/>
+    </svg>
+    <span>RPA Control Center</span>
+  </div>
+  <div class="header-nav">
+    <a href="hub.html" class="btn btn-outline">Hub</a>
+    <a href="command-center.html" class="btn btn-outline">Command Center</a>
+    <a href="intelligence/index.html" class="btn btn-primary">Intelligence</a>
+  </div>
 </header>
 
-<!-- Main Container -->
-<div class="rpa-container">
-<!-- Left Sidebar - Agent Teams -->
-<aside class="agent-sidebar">
-<div class="sidebar-section">
-<div class="sidebar-title">Active Agent Teams</div>
-<div class="agent-card active" onclick="selectAgent('signal')">
-<div class="agent-header">
-<span class="agent-name">Deep Signal Analyst</span>
-<div class="agent-status active"></div>
-</div>
-<div class="agent-meta">Phase 1 Research | 47 tasks/hr</div>
-</div>
-<div class="agent-card" onclick="selectAgent('committee')">
-<div class="agent-header">
-<span class="agent-name">Buying Committee Builder</span>
-<div class="agent-status idle"></div>
-</div>
-<div class="agent-meta">Phase 2-4 | Awaiting trigger</div>
-</div>
-<div class="agent-card" onclick="selectAgent('messaging')">
-<div class="agent-header">
-<span class="agent-name">Messaging Sequence Gen</span>
-<div class="agent-status offline"></div>
-</div>
-<div class="agent-meta">Phase C | Offline</div>
-</div>
-</div>
+<!-- Main Grid -->
+<div class="main-grid">
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar-left">
+    <div class="section-title">Platform Status</div>
+    
+    <div class="platform-card active">
+      <div class="platform-header">
+        <span class="platform-name">GitHub</span>
+        <div class="platform-status status-active"></div>
+      </div>
+      <div class="platform-metrics">
+        <span class="metric-badge">67 deploys</span>
+        <span>CI/CD Ready</span>
+      </div>
+    </div>
+    
+    <div class="platform-card active">
+      <div class="platform-header">
+        <span class="platform-name">Linear</span>
+        <div class="platform-status status-active"></div>
+      </div>
+      <div class="platform-metrics">
+        <span class="metric-badge">12 tasks</span>
+        <span>Synced</span>
+      </div>
+    </div>
+    
+    <div class="platform-card">
+      <div class="platform-header">
+        <span class="platform-name">Tally</span>
+        <div class="platform-status status-idle"></div>
+      </div>
+      <div class="platform-metrics">
+        <span class="metric-badge">Webhook</span>
+        <span>Awaiting</span>
+      </div>
+    </div>
+    
+    <div class="platform-card">
+      <div class="platform-header">
+        <span class="platform-name">CodePen</span>
+        <div class="platform-status status-active"></div>
+      </div>
+      <div class="platform-metrics">
+        <span class="metric-badge">5 pens</span>
+        <span>Synced</span>
+      </div>
+    </div>
+    
+    <div class="section-title" style="margin-top:24px;">Agent Deployment</div>
+    
+    <div class="agent-panel">
+      <div class="agent-header">
+        <span class="agent-name">Website Enhancer</span>
+        <span class="agent-trigger">on push</span>
+      </div>
+      <div class="execution-step">
+        <span class="step-num">1</span>
+        <span>Analyze page structure</span>
+        <span class="step-time">~2s</span>
+      </div>
+      <div class="execution-step">
+        <span class="step-num">2</span>
+        <span>Generate improvements</span>
+        <span class="step-time">~5s</span>
+      </div>
+      <div class="execution-step">
+        <span class="step-num">3</span>
+        <span>Deploy changes</span>
+        <span class="step-time">~3s</span>
+      </div>
+      <button class="deploy-btn" onclick="deployAgent('enhancer')">Deploy Now</button>
+    </div>
+    
+    <div class="agent-panel">
+      <div class="agent-header">
+        <span class="agent-name">Data Pipeline</span>
+        <span class="agent-trigger">scheduled</span>
+      </div>
+      <div class="execution-step">
+        <span class="step-num">1</span>
+        <span>Fetch 6sense data</span>
+        <span class="step-time">~4s</span>
+      </div>
+      <div class="execution-step">
+        <span class="step-num">2</span>
+        <span>Process signals</span>
+        <span class="step-time">~6s</span>
+      </div>
+      <div class="execution-step">
+        <span class="step-num">3</span>
+        <span>Update dashboard</span>
+        <span class="step-time">~2s</span>
+      </div>
+      <button class="deploy-btn" onclick="deployAgent('pipeline')">Run Pipeline</button>
+    </div>
+    
+    <div class="agent-panel">
+      <div class="agent-header">
+        <span class="agent-name">Deep Signal Analyst</span>
+        <span class="agent-trigger">on demand</span>
+      </div>
+      <div class="execution-step">
+        <span class="step-num">1</span>
+        <span>Research account</span>
+        <span class="step-time">~60m</span>
+      </div>
+      <div class="execution-step">
+        <span class="step-num">2</span>
+        <span>Build hypotheses</span>
+        <span class="step-time">~15m</span>
+      </div>
+      <div class="execution-step">
+        <span class="step-num">3</span>
+        <span>Generate dossier</span>
+        <span class="step-time">~10m</span>
+      </div>
+      <button class="deploy-btn" onclick="deployAgent('analyst')">Start Research</button>
+    </div>
+  </aside>
 
-<div class="sidebar-section">
-<div class="sidebar-title">Cross-Platform Integration</div>
-<div class="agent-card">
-<div class="agent-header">
-<span class="agent-name">Linear Sync</span>
-<div class="agent-status active"></div>
-</div>
-<div class="agent-meta">Dunson AI workspace</div>
-</div>
-<div class="agent-card">
-<div class="agent-header">
-<span class="agent-name">Terminal Bridge</span>
-<div class="agent-status active"></div>
-</div>
-<div class="agent-meta">Cursor IDE connected</div>
-</div>
-<div class="agent-card">
-<div class="agent-header">
-<span class="agent-name">GitHub Actions</span>
-<div class="agent-status active"></div>
-</div>
-<div class="agent-meta">CI/CD Pipeline ready</div>
-</div>
-</div>
+  <!-- CENTER CONTENT -->
+  <main class="center-content">
+    <!-- GLOBE WITH FLIGHT TRACKING -->
+    <section class="globe-section">
+      <div class="globe-header">
+        <h2 class="globe-title">Global Operations Monitor</h2>
+        <div class="globe-stats">
+          <div class="globe-stat">
+            <div class="stat-value" id="activeFlights">47</div>
+            <div class="stat-label">Active Tracks</div>
+          </div>
+          <div class="globe-stat">
+            <div class="stat-value" id="globalNodes">8</div>
+            <div class="stat-label">Nodes</div>
+          </div>
+        </div>
+      </div>
+      <div class="globe-wrapper">
+        <canvas id="globe-canvas"></canvas>
+        <div class="flight-overlay">
+          <div style="font-weight:600;margin-bottom:8px;color:var(--color-cyber-orange);">Live Military Tracks</div>
+          <div class="flight-item">
+            <span class="flight-icon">✈</span>
+            <span class="flight-callsign">FORTE12</span>
+            <span>RQ-4 | 55k ft</span>
+          </div>
+          <div class="flight-item">
+            <span class="flight-icon">✈</span>
+            <span class="flight-callsign">LAGR223</span>
+            <span>KC-135 | 28k ft</span>
+          </div>
+          <div class="flight-item">
+            <span class="flight-icon">✈</span>
+            <span class="flight-callsign">HOMER51</span>
+            <span>P-8 | 32k ft</span>
+          </div>
+          <div class="flight-item">
+            <span class="flight-icon">✈</span>
+            <span class="flight-callsign">DUKE01</span>
+            <span>E-6B | 35k ft</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="sidebar-section">
-<div class="sidebar-title">Deploy New Team</div>
-<button class="btn btn-primary" style="width:100%;" onclick="deployTeam()">
-+ Deploy Agent Team
-</button>
-</div>
-</aside>
+    <!-- INTERACTIVE FLOWCHART -->
+    <section class="flowchart-section">
+      <h2 class="flowchart-title">System Workflow - Click Any Node to Execute</h2>
+      <div class="mermaid" id="workflow-chart">
+flowchart LR
+    A[Tally Form] -->|webhook| B[Webhook Relay]
+    B -->|trigger| C[GitHub Actions]
+    C -->|create| D[Linear Issue]
+    C -->|update| E[Globe Data]
+    D -->|notify| F[Cursor IDE]
+    F -->|deploy| G[GitHub Pages]
+    G -->|live| H[Dashboard]
+    
+    click A callback "Receive form submission"
+    click B callback "Process webhook payload"
+    click C callback "Trigger CI/CD pipeline"
+    click D callback "Create task in Linear"
+    click E callback "Update globe markers"
+    click F callback "Open in Cursor IDE"
+    click G callback "Deploy to Pages"
+    click H callback "View live dashboard"
+      </div>
+      <p class="flowchart-hint">Click any node above to trigger that action in real-time</p>
+    </section>
 
-<!-- Main Workspace -->
-<main class="main-workspace">
-<div class="workspace-header">
-<h2 class="workspace-title">Task Automation Studio</h2>
-<div style="display:flex;gap:12px;">
-<button class="btn btn-outline" onclick="loadSession()">Load Session</button>
-<button class="btn btn-primary" onclick="saveSession()">Save Session</button>
-</div>
-</div>
+    <!-- TERMINAL SIMULATION -->
+    <section class="terminal-section">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <div class="terminal-dot dot-red"></div>
+          <div class="terminal-dot dot-yellow"></div>
+          <div class="terminal-dot dot-green"></div>
+        </div>
+        <span style="color:var(--color-text-muted);font-size:0.85rem;">RPA Terminal Bridge</span>
+      </div>
+      <div class="terminal-output" id="terminalOutput">
+        <div><span class="prompt">~/rpa-control $</span> <span class="command">rpa status</span></div>
+        <div class="output">RPA Engine v2.1.0 | Status: ACTIVE</div>
+        <div class="output">Agents online: 4 | Queue: 0 | Processed: 1,247</div>
+        <div><span class="prompt">~/rpa-control $</span> <span class="command">rpa agents --list</span></div>
+        <div class="output">[1] Deep Signal Analyst    | READY  | Last: 2m ago</div>
+        <div class="output">[2] Buying Committee       | IDLE   | Last: 15m ago</div>
+        <div class="output">[3] Messaging Generator    | READY  | Last: 5m ago</div>
+        <div class="output">[4] Website Enhancer       | ACTIVE | Running...</div>
+        <div><span class="prompt">~/rpa-control $</span> <span class="command">_</span></div>
+      </div>
+      <input type="text" class="terminal-input" id="terminalInput" placeholder="Enter command... (try: rpa help, rpa deploy, rpa status)" onkeypress="handleTerminal(event)">
+    </section>
+  </main>
 
-<!-- Task Recorder -->
-<div class="task-recorder">
-<h3 style="font-size:0.9rem;margin-bottom:16px;color:var(--color-teal);">RPA Task Recorder</h3>
-<div class="recorder-controls">
-<button class="btn btn-danger" id="recordBtn" onclick="toggleRecording()">Start Recording</button>
-<button class="btn btn-outline" onclick="clearSteps()">Clear</button>
-<button class="btn btn-success" onclick="executeSteps()">Execute All</button>
-</div>
-<div class="task-steps" id="taskSteps">
-<div class="task-step">
-<div class="step-info">
-<div class="step-number">1</div>
-<div>
-<div class="step-action">Navigate to Intelligence Dashboard</div>
-<div class="step-target">./intelligence/index.html</div>
-</div>
-</div>
-<div class="step-time">0.2s</div>
-</div>
-<div class="task-step">
-<div class="step-info">
-<div class="step-number">2</div>
-<div>
-<div class="step-action">Extract Signal Data</div>
-<div class="step-target">data.signal_matrix</div>
-</div>
-</div>
-<div class="step-time">1.5s</div>
-</div>
-<div class="task-step">
-<div class="step-info">
-<div class="step-number">3</div>
-<div>
-<div class="step-action">Generate Battle Card</div>
-<div class="step-target">./workflows/output</div>
-</div>
-</div>
-<div class="step-time">3.2s</div>
-</div>
-</div>
-</div>
+  <!-- RIGHT SIDEBAR -->
+  <aside class="sidebar-right">
+    <!-- AI BOT VISUAL -->
+    <div class="ai-bot-section">
+      <div class="ai-bot-visual">
+        <div class="bot-core">🤖</div>
+        <div class="bot-arm"></div>
+        <div class="bot-particles">
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+        </div>
+      </div>
+      <div class="ai-bot-title">Agentic AI Executor</div>
+      <div class="ai-bot-status">● ARMED & READY</div>
+    </div>
 
-<!-- Terminal Bridge -->
-<div class="terminal-bridge">
-<div class="terminal-header">
-<div class="terminal-dots">
-<div class="terminal-dot red"></div>
-<div class="terminal-dot yellow"></div>
-<div class="terminal-dot green"></div>
-</div>
-<div class="terminal-title">Terminal Bridge - Cursor IDE</div>
-</div>
-<div class="terminal-output" id="terminalOutput">
-<div><span class="prompt">~/agentic-ai-portfolio $</span> <span class="command">./. local-state/capture.sh</span></div>
-<div class="output">Timestamp: Sat Feb 7 00:15:32 CST 2026</div>
-<div class="output">Dir: /Users/joel/agentic-ai-portfolio</div>
-<div class="output">Branch: main</div>
-<div class="output">Top processes: node, npm, python</div>
-<div class="output">Saved: .local-state/session_20260207_001532.txt</div>
-<div><span class="prompt">~/agentic-ai-portfolio $</span> <span class="command">git status</span></div>
-<div class="output">On branch main</div>
-<div class="output">Your branch is up to date with 'origin/main'.</div>
-<div><span class="prompt">~/agentic-ai-portfolio $</span> <span class="command">_</span></div>
-</div>
-<input type="text" class="terminal-input" placeholder="Enter command..." id="terminalInput" onkeypress="handleTerminal(event)">
-</div>
-</main>
+    <!-- ASK ANYTHING -->
+    <div class="ask-section">
+      <div class="ask-title">Ask Anything / Execute Task</div>
+      <textarea class="ask-input" id="askInput" placeholder="Research Morgan Stanley...
+Build buying committee for JPMorgan...
+Generate messaging for Wells Fargo...
+Deploy latest changes..."></textarea>
+      <button class="ask-btn" onclick="executeTask()">Execute Task</button>
+    </div>
 
-<!-- Right Panel - Agent Details -->
-<aside class="agent-panel">
-<div class="panel-section">
-<div class="panel-title">Agent Performance</div>
-<div class="metrics-grid">
-<div class="metric-card">
-<div class="metric-value">47</div>
-<div class="metric-label">Tasks/Hour</div>
-</div>
-<div class="metric-card">
-<div class="metric-value">99.2%</div>
-<div class="metric-label">Accuracy</div>
-</div>
-<div class="metric-card">
-<div class="metric-value">156</div>
-<div class="metric-label">Sources</div>
-</div>
-<div class="metric-card">
-<div class="metric-value">L3</div>
-<div class="metric-label">Confidence</div>
-</div>
-</div>
-</div>
+    <!-- METRICS -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-value">47</div>
+        <div class="metric-label">Tasks/Hour</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value success">99.2%</div>
+        <div class="metric-label">Accuracy</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">156</div>
+        <div class="metric-label">Sources</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">L3</div>
+        <div class="metric-label">Confidence</div>
+      </div>
+    </div>
 
-<div class="panel-section">
-<div class="panel-title">Current Workflow</div>
-<div class="workflow-step">
-<div class="step-connector">
-<div class="step-dot"></div>
-<div class="step-line"></div>
-</div>
-<div class="step-content">
-<div class="step-title">Intent Detection</div>
-<div class="step-desc">ZoomInfo signals validated</div>
-</div>
-</div>
-<div class="workflow-step">
-<div class="step-connector">
-<div class="step-dot" style="background:var(--color-teal);"></div>
-<div class="step-line"></div>
-</div>
-<div class="step-content">
-<div class="step-title">Account Intelligence</div>
-<div class="step-desc">Generating 69-page battle card</div>
-</div>
-</div>
-<div class="workflow-step">
-<div class="step-connector">
-<div class="step-dot" style="background:var(--color-text-muted);"></div>
-</div>
-<div class="step-content">
-<div class="step-title">Persona Mapping</div>
-<div class="step-desc">Pending P5-P1 prioritization</div>
-</div>
-</div>
-</div>
-
-<div class="panel-section">
-<div class="panel-title">Quick Actions</div>
-<div class="quick-actions">
-<div class="quick-action" onclick="window.location.href='intelligence/index.html'">
-<div class="action-icon">R</div>
-<div>
-<div class="action-label">Open Intelligence</div>
-<div class="action-desc">View real-time signals</div>
-</div>
-</div>
-<div class="quick-action" onclick="window.location.href='tools/deep-analyst.html'">
-<div class="action-icon">A</div>
-<div>
-<div class="action-label">Launch Deep Analyst</div>
-<div class="action-desc">Start Phase 1 research</div>
-</div>
-</div>
-<div class="quick-action" onclick="syncLinear()">
-<div class="action-icon">L</div>
-<div>
-<div class="action-label">Sync to Linear</div>
-<div class="action-desc">Create tasks in workspace</div>
-</div>
-</div>
-</div>
-</div>
-</aside>
+    <!-- ACTIVITY FEED -->
+    <div class="activity-feed">
+      <div class="feed-title">Live Activity Feed</div>
+      <div id="activityFeed">
+        <div class="feed-item">
+          <div class="feed-icon deploy">🚀</div>
+          <div>
+            <div>Deployed to GitHub Pages</div>
+            <div class="feed-time">Just now</div>
+          </div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-icon github">GH</div>
+          <div>
+            <div>Commit: Enhanced RPA Control Center</div>
+            <div class="feed-time">2 min ago</div>
+          </div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-icon linear">LN</div>
+          <div>
+            <div>Task created: Build globe visualization</div>
+            <div class="feed-time">5 min ago</div>
+          </div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-icon tally">TY</div>
+          <div>
+            <div>Form submission: New lead captured</div>
+            <div class="feed-time">12 min ago</div>
+          </div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-icon deploy">🤖</div>
+          <div>
+            <div>Agent completed: Signal analysis for Meta</div>
+            <div class="feed-time">18 min ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
 </div>
 
 <script>
-// RPA Control Center JavaScript
-let isRecording = false;
-let recordedSteps = [];
-let stepCounter = 4;
+// Initialize Mermaid
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'dark',
+  securityLevel: 'loose',
+  flowchart: {
+    useMaxWidth: true,
+    htmlLabels: true,
+    curve: 'basis'
+  }
+});
 
-function toggleRecording() {
-  isRecording = !isRecording;
-  const btn = document.getElementById('recordBtn');
-  const indicator = document.getElementById('recordingIndicator');
-  
-  if (isRecording) {
-    btn.textContent = 'Stop Recording';
-    btn.classList.remove('btn-danger');
-    btn.classList.add('btn-success');
-    indicator.classList.add('active');
-    startRecording();
-  } else {
-    btn.textContent = 'Start Recording';
-    btn.classList.remove('btn-success');
-    btn.classList.add('btn-danger');
-    indicator.classList.remove('active');
-    stopRecording();
+// Mermaid click callback
+window.callback = function(nodeId) {
+  const actions = {
+    'A': () => addFeedItem('tally', 'Tally Form triggered - processing submission'),
+    'B': () => addFeedItem('deploy', 'Webhook relay received payload'),
+    'C': () => addFeedItem('github', 'GitHub Actions workflow started'),
+    'D': () => addFeedItem('linear', 'Linear issue created automatically'),
+    'E': () => addFeedItem('deploy', 'Globe data updated with new marker'),
+    'F': () => addFeedItem('deploy', 'Cursor IDE notified - opening project'),
+    'G': () => addFeedItem('github', 'Deploying to GitHub Pages...'),
+    'H': () => window.location.href = 'hub.html'
+  };
+  if (actions[nodeId]) {
+    actions[nodeId]();
+    terminalLog(`Executed workflow node: ${nodeId}`);
+  }
+};
+
+// PARTICLE BACKGROUND SYSTEM
+const particleCanvas = document.getElementById('particle-canvas');
+const pCtx = particleCanvas.getContext('2d');
+let particles = [];
+
+function resizeParticleCanvas() {
+  particleCanvas.width = window.innerWidth;
+  particleCanvas.height = window.innerHeight;
+}
+resizeParticleCanvas();
+window.addEventListener('resize', resizeParticleCanvas);
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * particleCanvas.width;
+    this.y = Math.random() * particleCanvas.height;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+    this.radius = Math.random() * 2 + 1;
+    this.alpha = Math.random() * 0.5 + 0.2;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > particleCanvas.width) this.vx *= -1;
+    if (this.y < 0 || this.y > particleCanvas.height) this.vy *= -1;
+  }
+  draw() {
+    pCtx.beginPath();
+    pCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    pCtx.fillStyle = `rgba(0, 160, 251, ${this.alpha})`;
+    pCtx.fill();
   }
 }
 
-function startRecording() {
-  document.addEventListener('click', recordClick, true);
-  document.addEventListener('input', recordInput, true);
-  console.log('RPA Recording started');
+for (let i = 0; i < 80; i++) {
+  particles.push(new Particle());
 }
 
-function stopRecording() {
-  document.removeEventListener('click', recordClick, true);
-  document.removeEventListener('input', recordInput, true);
-  console.log('RPA Recording stopped', recordedSteps);
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        pCtx.beginPath();
+        pCtx.moveTo(particles[i].x, particles[i].y);
+        pCtx.lineTo(particles[j].x, particles[j].y);
+        pCtx.strokeStyle = `rgba(0, 160, 251, ${0.1 * (1 - dist / 150)})`;
+        pCtx.stroke();
+      }
+    }
+  }
 }
 
-function recordClick(e) {
-  if (e.target.closest('.task-recorder')) return;
-  addStep('Click', e.target.tagName + (e.target.className ? '.' + e.target.className.split(' ')[0] : ''));
+function animateParticles() {
+  pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+  drawConnections();
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// COBE GLOBE INITIALIZATION
+let globe;
+const globeCanvas = document.getElementById('globe-canvas');
+
+const locations = [
+  { name: 'Liberty Hill', lat: 30.6643, lng: -97.9235 },
+  { name: 'San Francisco', lat: 37.7749, lng: -122.4194 },
+  { name: 'New York', lat: 40.7128, lng: -74.0060 },
+  { name: 'London', lat: 51.5074, lng: -0.1278 },
+  { name: 'Tokyo', lat: 35.6762, lng: 139.6503 },
+  { name: 'Paris', lat: 48.8566, lng: 2.3522 },
+  { name: 'Sydney', lat: -33.8688, lng: 151.2093 },
+  { name: 'Singapore', lat: 1.3521, lng: 103.8198 }
+];
+
+const markers = locations.map(loc => ({
+  location: [loc.lat * Math.PI / 180, loc.lng * Math.PI / 180],
+  size: 0.08
+}));
+
+let phi = 0;
+if (typeof createGlobe !== 'undefined') {
+  globe = createGlobe(globeCanvas, {
+    devicePixelRatio: 2,
+    width: 400 * 2,
+    height: 400 * 2,
+    phi: 0,
+    theta: 0.3,
+    dark: 1,
+    diffuse: 1.2,
+    mapSamples: 16000,
+    mapBrightness: 6,
+    baseColor: [0.05, 0.1, 0.2],
+    markerColor: [0, 0.63, 0.98],
+    glowColor: [0, 0.63, 0.98],
+    markers: markers,
+    onRender: (state) => {
+      state.phi = phi;
+      phi += 0.003;
+    }
+  });
 }
 
-function recordInput(e) {
-  addStep('Input', e.target.placeholder || e.target.name || 'field');
-}
-
-function addStep(action, target) {
-  const stepsContainer = document.getElementById('taskSteps');
-  const step = document.createElement('div');
-  step.className = 'task-step';
-  step.innerHTML = `
-    <div class="step-info">
-      <div class="step-number">${stepCounter}</div>
-      <div>
-        <div class="step-action">${action}</div>
-        <div class="step-target">${target}</div>
-      </div>
-    </div>
-    <div class="step-time">0.1s</div>
-  `;
-  stepsContainer.appendChild(step);
-  stepCounter++;
-  recordedSteps.push({ action, target, time: Date.now() });
-}
-
-function clearSteps() {
-  document.getElementById('taskSteps').innerHTML = '';
-  stepCounter = 1;
-  recordedSteps = [];
-}
-
-function executeSteps() {
-  alert('Executing ' + (stepCounter - 1) + ' recorded steps...');
-  console.log('Executing steps:', recordedSteps);
-}
-
+// TERMINAL COMMANDS
 function handleTerminal(e) {
   if (e.key === 'Enter') {
-    const input = e.target;
-    const output = document.getElementById('terminalOutput');
-    const cmd = input.value;
-    output.innerHTML += `<div><span class="prompt">~/agentic-ai-portfolio $</span> <span class="command">${cmd}</span></div>`;
-    output.innerHTML += `<div class="output">Command queued for execution...</div>`;
-    input.value = '';
-    output.scrollTop = output.scrollHeight;
+    const input = document.getElementById('terminalInput');
+    const cmd = input.value.trim();
+    if (cmd) {
+      terminalLog(cmd, true);
+      processCommand(cmd);
+      input.value = '';
+    }
   }
 }
 
-function selectAgent(agentId) {
-  document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  console.log('Selected agent:', agentId);
+function terminalLog(text, isCommand = false) {
+  const output = document.getElementById('terminalOutput');
+  if (isCommand) {
+    output.innerHTML += `<div><span class="prompt">~/rpa-control $</span> <span class="command">${text}</span></div>`;
+  } else {
+    output.innerHTML += `<div class="output">${text}</div>`;
+  }
+  output.scrollTop = output.scrollHeight;
 }
 
-function deployTeam() {
-  alert('Deploy Agent Team dialog - Select agents and configure workflow');
-}
-
-function syncLinear() {
-  window.open('https://linear.app/dunson-ai/team/DUN/active', '_blank');
-}
-
-function loadSession() {
-  alert('Loading last session from .local-state/');
-}
-
-function saveSession() {
-  const sessionData = {
-    timestamp: new Date().toISOString(),
-    steps: recordedSteps,
-    agents: ['signal', 'committee', 'messaging']
+function processCommand(cmd) {
+  const commands = {
+    'rpa help': () => {
+      terminalLog('Available commands:');
+      terminalLog('  rpa status     - Show system status');
+      terminalLog('  rpa agents     - List active agents');
+      terminalLog('  rpa deploy     - Deploy all changes');
+      terminalLog('  rpa research   - Start deep research');
+      terminalLog('  clear          - Clear terminal');
+    },
+    'rpa status': () => {
+      terminalLog('RPA Engine v2.1.0 | Status: ACTIVE');
+      terminalLog(`Uptime: ${Math.floor(Math.random() * 24)}h ${Math.floor(Math.random() * 60)}m`);
+      terminalLog('Queue: 0 | Processed today: ' + Math.floor(Math.random() * 500 + 1000));
+    },
+    'rpa agents': () => {
+      terminalLog('[1] Deep Signal Analyst    | READY');
+      terminalLog('[2] Buying Committee       | READY');
+      terminalLog('[3] Messaging Generator    | READY');
+      terminalLog('[4] Website Enhancer       | ACTIVE');
+    },
+    'rpa deploy': () => {
+      terminalLog('Initiating deployment sequence...');
+      setTimeout(() => terminalLog('Building assets...'), 500);
+      setTimeout(() => terminalLog('Pushing to GitHub...'), 1000);
+      setTimeout(() => { terminalLog('Deployed successfully!'); addFeedItem('deploy', 'Deployment completed via terminal'); }, 1500);
+    },
+    'rpa research': () => {
+      terminalLog('Starting Deep Signal Analyst...');
+      terminalLog('Target: Enter company name in Ask Anything panel');
+      addFeedItem('deploy', 'Research agent initialized');
+    },
+    'clear': () => {
+      document.getElementById('terminalOutput').innerHTML = '';
+    }
   };
-  console.log('Session saved:', sessionData);
-  alert('Session saved to .local-state/');
+
+  const handler = commands[cmd.toLowerCase()];
+  if (handler) {
+    handler();
+  } else if (cmd.startsWith('rpa research ')) {
+    const target = cmd.replace('rpa research ', '');
+    terminalLog(`Initiating research on: ${target}`);
+    terminalLog('Phase 1: SEC filings, news, executive moves...');
+    addFeedItem('deploy', `Research started for ${target}`);
+  } else {
+    terminalLog(`Command not found: ${cmd}. Try 'rpa help'`);
+  }
 }
+
+// ACTIVITY FEED
+function addFeedItem(type, message) {
+  const feed = document.getElementById('activityFeed');
+  const icons = { github: 'GH', linear: 'LN', tally: 'TY', deploy: '🚀' };
+  const newItem = document.createElement('div');
+  newItem.className = 'feed-item';
+  newItem.innerHTML = `
+    <div class="feed-icon ${type}">${icons[type] || '📡'}</div>
+    <div>
+      <div>${message}</div>
+      <div class="feed-time">Just now</div>
+    </div>
+  `;
+  feed.insertBefore(newItem, feed.firstChild);
+}
+
+// DEPLOY AGENT
+function deployAgent(agentId) {
+  const agents = {
+    'enhancer': 'Website Enhancer',
+    'pipeline': 'Data Pipeline',
+    'analyst': 'Deep Signal Analyst'
+  };
+  terminalLog(`Deploying ${agents[agentId]}...`, true);
+  setTimeout(() => {
+    terminalLog(`${agents[agentId]} deployed successfully`);
+    addFeedItem('deploy', `${agents[agentId]} execution completed`);
+  }, 2000);
+}
+
+// EXECUTE TASK FROM ASK ANYTHING
+function executeTask() {
+  const input = document.getElementById('askInput');
+  const task = input.value.trim();
+  if (!task) return;
+  
+  terminalLog(`Executing task: ${task}`, true);
+  addFeedItem('deploy', `Task received: ${task.substring(0, 50)}...`);
+  
+  if (task.toLowerCase().includes('research')) {
+    terminalLog('Initializing Deep Signal Analyst...');
+    setTimeout(() => terminalLog('Phase 1: Context gathering (5 min)'), 500);
+    setTimeout(() => terminalLog('Phase 2: Systematic scanning (20-30 min)'), 1000);
+    setTimeout(() => terminalLog('Phase 3: Validation & synthesis (10 min)'), 1500);
+  } else if (task.toLowerCase().includes('committee')) {
+    terminalLog('Initializing Buying Committee Builder...');
+    setTimeout(() => terminalLog('Building 6-pillar framework...'), 500);
+    setTimeout(() => terminalLog('Targeting 35-50 leads...'), 1000);
+  } else if (task.toLowerCase().includes('messaging')) {
+    terminalLog('Initializing Messaging Generator...');
+    setTimeout(() => terminalLog('Generating M1/M2/M3 sequences...'), 500);
+  } else if (task.toLowerCase().includes('deploy')) {
+    processCommand('rpa deploy');
+  } else {
+    terminalLog('Processing custom task...');
+    setTimeout(() => terminalLog('Task queued for execution'), 500);
+  }
+  
+  input.value = '';
+}
+
+// GSAP Animations
+if (typeof gsap !== 'undefined') {
+  gsap.from('.platform-card', {
+    duration: 0.5,
+    y: 30,
+    opacity: 0,
+    stagger: 0.1,
+    ease: 'power2.out'
+  });
+  
+  gsap.from('.agent-panel', {
+    duration: 0.5,
+    x: -30,
+    opacity: 0,
+    stagger: 0.15,
+    delay: 0.5,
+    ease: 'power2.out'
+  });
+  
+  gsap.from('.globe-section', {
+    duration: 0.8,
+    scale: 0.9,
+    opacity: 0,
+    delay: 0.3,
+    ease: 'back.out(1.7)'
+  });
+}
+
+console.log('RPA Control Center v2.0 initialized');
+console.log('Globe markers:', locations.map(l => l.name).join(', '));
 </script>
 </body>
 </html>
