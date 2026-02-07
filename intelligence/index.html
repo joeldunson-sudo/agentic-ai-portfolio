@@ -7,547 +7,428 @@
 <script src="https://unpkg.com/globe.gl"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
---bg:#0a0a0f;--bg2:#12121a;--card:#1a1a2e;--card-h:#222240;
---cyan:#00d4ff;--cyan-d:rgba(0,212,255,0.15);
---gold:#c9a84c;--gold-d:rgba(201,168,76,0.15);
---muted:#8892b0;--txt:#e6e6e6;--txt2:#a0a0b8;
---border:rgba(255,255,255,0.06);
---ease:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
-}
+:root{--bg:#060a0f;--bg2:#0a1018;--card:#0c1520;--cyan:#00d4ff;--cyan-d:rgba(0,212,255,0.08);--gold:#c9a84c;--green:#00ff88;--red:#ff3355;--amber:#ffaa00;--muted:#556680;--txt:#d0dde8;--txt2:#7a8fa6;--border:rgba(0,212,255,0.08);--grid:rgba(0,212,255,0.03)}
 html{scroll-behavior:smooth}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;line-height:1.6}
-#particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:3px}
+body{font-family:'Courier New',monospace;background:var(--bg);color:var(--txt);overflow-x:hidden;line-height:1.5}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.2);border-radius:2px}
 
-/* Nav */
-.nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(10,10,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 2rem;transition:var(--ease)}
-.nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
-.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--txt)}
-.nav-logo{width:36px;height:36px;background:linear-gradient(135deg,var(--cyan),var(--gold));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:var(--bg);letter-spacing:-0.5px}
-.nav-title{font-size:1.1rem;font-weight:700;letter-spacing:1px;background:linear-gradient(135deg,var(--cyan),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nav-links{display:flex;gap:1.5rem;align-items:center}
-.nav-link{color:var(--muted);text-decoration:none;font-size:0.8rem;letter-spacing:0.5px;text-transform:uppercase;transition:var(--ease);padding:4px 0}
+/* Tactical Grid Background */
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:60px 60px;z-index:0;pointer-events:none;opacity:0.7}
+body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 50% 0%,rgba(0,212,255,0.04) 0%,transparent 60%);z-index:0;pointer-events:none}
+
+/* Scanline effect */
+.scanline{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,0.008) 2px,rgba(0,212,255,0.008) 4px);z-index:9999;pointer-events:none}
+
+/* HUD Corner Brackets */
+.hud-bracket{position:fixed;width:40px;height:40px;z-index:100;pointer-events:none;opacity:0.3}
+.hud-bracket.tl{top:10px;left:10px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.hud-bracket.tr{top:10px;right:10px;border-top:2px solid var(--cyan);border-right:2px solid var(--cyan)}
+.hud-bracket.bl{bottom:10px;left:10px;border-bottom:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.hud-bracket.br{bottom:10px;right:10px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan)}
+
+/* Nav - Tactical top bar */
+.nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(6,10,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,212,255,0.1);padding:0 1.5rem}
+.nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:50px}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--txt)}
+.nav-logo{width:30px;height:30px;border:1px solid var(--cyan);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--cyan);position:relative}
+.nav-logo::after{content:'';position:absolute;inset:-3px;border:1px solid rgba(0,212,255,0.15);border-radius:6px}
+.nav-title{font-size:0.8rem;font-weight:700;letter-spacing:3px;color:var(--cyan);text-transform:uppercase}
+.nav-links{display:flex;gap:1.5rem}
+.nav-link{color:var(--muted);text-decoration:none;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;transition:all 0.3s;padding:4px 0}
 .nav-link:hover,.nav-link.active{color:var(--cyan)}
-.nav-status{display:flex;align-items:center;gap:8px;font-size:0.7rem;color:var(--muted)}
-.status-dot{width:8px;height:8px;border-radius:50%;background:#00ff88;animation:pulse-dot 2s infinite}
+.nav-status{display:flex;align-items:center;gap:8px;font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:var(--green)}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse-dot 2s infinite;box-shadow:0 0 10px rgba(0,255,136,0.5)}
 
-/* Hero */
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:100px 2rem 60px;overflow:hidden}
-.hero-grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;width:100%}
-.hero-content{position:relative;z-index:2}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--cyan-d);border:1px solid rgba(0,212,255,0.2);border-radius:20px;padding:6px 16px;font-size:0.7rem;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem;animation:fadeInUp 0.8s ease}
-.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse-dot 2s infinite}
-.hero h1{font-size:3.2rem;font-weight:700;line-height:1.1;margin-bottom:1rem;animation:fadeInUp 0.8s ease 0.2s both}
-.hero h1 .accent{background:linear-gradient(135deg,var(--cyan),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-sub{font-size:1rem;color:var(--txt2);max-width:480px;margin-bottom:2rem;animation:fadeInUp 0.8s ease 0.4s both}
-.hero-actions{display:flex;gap:1rem;animation:fadeInUp 0.8s ease 0.6s both}
-.btn{padding:12px 28px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:var(--ease);border:none;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.btn-primary{background:linear-gradient(135deg,var(--cyan),#0099cc);color:var(--bg);box-shadow:0 4px 20px rgba(0,212,255,0.3)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,255,0.4)}
-.btn-outline{background:transparent;border:1px solid var(--cyan);color:var(--cyan)}
-.btn-outline:hover{background:var(--cyan-d);transform:translateY(-2px)}
+/* Command Theater - Hero */
+.theater{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:60px 1.5rem 20px;overflow:hidden}
+.theater-grid{max-width:1400px;width:100%;display:grid;grid-template-columns:1fr 1.2fr;gap:2rem;align-items:center}
 
-/* Globe */
-.globe-wrap{position:relative;width:100%;height:500px;display:flex;align-items:center;justify-content:center;animation:fadeIn 1s ease 0.8s both}
-.globe-wrap #globeViz{width:100%;height:100%;cursor:grab}
-.globe-glow{position:absolute;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,0.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:gPulse 4s ease-in-out infinite}
+/* Globe Battlefield */
+.battlefield{position:relative;width:100%;height:600px;display:flex;align-items:center;justify-content:center}
+.battlefield #globeViz{width:100%;height:100%;cursor:crosshair}
+.battlefield-glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,0.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:gPulse 4s ease-in-out infinite}
 
-/* Mini Terminal in Hero */
-.mini-term{background:rgba(10,10,15,0.9);border:1px solid var(--border);border-radius:12px;padding:0;margin-top:1.5rem;max-width:420px;overflow:hidden;animation:fadeInUp 0.8s ease 1s both;font-family:'Courier New',monospace}
-.mini-term-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border)}
-.mini-term-dot{width:8px;height:8px;border-radius:50%}
-.mini-term-bar span{font-size:0.65rem;color:var(--muted);margin-left:auto}
-.mini-term-body{padding:10px 14px;font-size:0.7rem;color:var(--cyan);line-height:1.8;max-height:100px;overflow:hidden}
-.mini-term-body .line{opacity:0;animation:termLine 0.3s ease forwards}
-.mini-term-body .muted{color:var(--muted)}
-.mini-term-body .gold{color:var(--gold)}
-.mini-term-body .orange{color:#e8722a}
+/* Radar sweep on globe */
+.radar-sweep{position:absolute;top:50%;left:50%;width:300px;height:300px;transform:translate(-50%,-50%);pointer-events:none;z-index:5}
+.radar-sweep::before{content:'';position:absolute;top:0;left:50%;width:50%;height:50%;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.08));transform-origin:bottom left;animation:radarSweep 6s linear infinite;border-radius:0 100% 0 0}
+.radar-ring{position:absolute;border:1px solid rgba(0,212,255,0.06);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%)}
+.radar-ring.r1{width:100px;height:100px}
+.radar-ring.r2{width:200px;height:200px}
+.radar-ring.r3{width:300px;height:300px}
+.radar-ring.r4{width:400px;height:400px}
+.radar-crosshair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:5}
+.radar-crosshair::before,.radar-crosshair::after{content:'';position:absolute;background:rgba(0,212,255,0.1)}
+.radar-crosshair::before{width:1px;height:400px;top:-200px;left:0}
+.radar-crosshair::after{width:400px;height:1px;top:0;left:-200px}
 
-/* Hero Stats */
-.hero-stats{display:flex;gap:2rem;margin-top:1.5rem;animation:fadeInUp 0.8s ease 0.8s both}
-.hero-stat{text-align:center}
-.hero-stat-value{font-size:1.6rem;font-weight:700;color:var(--cyan)}
-.hero-stat-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:2px}
+/* Stealth Drone SVG overlays */
+.drone-unit{position:absolute;z-index:10;pointer-events:none;animation:droneFloat 8s ease-in-out infinite}
+.drone-unit svg{filter:drop-shadow(0 0 8px rgba(0,212,255,0.4))}
+.drone-unit .drone-label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:0.5rem;color:var(--cyan);white-space:nowrap;letter-spacing:1px;text-transform:uppercase;opacity:0.7}
+.drone-unit.d1{top:15%;right:20%;animation-delay:0s}
+.drone-unit.d2{top:60%;left:15%;animation-delay:2s;animation-duration:10s}
+.drone-unit.d3{bottom:25%;right:30%;animation-delay:4s;animation-duration:7s}
 
-/* Sections */
-.section{padding:80px 2rem;position:relative;z-index:1}
-.section-header{text-align:center;max-width:700px;margin:0 auto 3rem}
-.section-badge{display:inline-flex;align-items:center;gap:6px;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:1rem}
-.section-badge::before,.section-badge::after{content:'';width:20px;height:1px;background:var(--gold)}
-.section-title{font-size:2.2rem;font-weight:700;margin-bottom:0.8rem}
-.section-title .accent{background:linear-gradient(135deg,var(--cyan),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.section-desc{color:var(--txt2);font-size:0.9rem}
+/* Target Lock animation */
+.target-lock{position:absolute;pointer-events:none;z-index:8}
+.target-lock-ring{width:40px;height:40px;border:1px solid var(--red);border-radius:50%;animation:targetPulse 2s ease-in-out infinite;position:relative}
+.target-lock-ring::before,.target-lock-ring::after{content:'';position:absolute;background:var(--red)}
+.target-lock-ring::before{width:10px;height:1px;top:50%;left:-12px}
+.target-lock-ring::after{width:1px;height:10px;left:50%;top:-12px}
+.target-lock-label{font-size:0.45rem;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-top:4px;text-align:center}
 
-/* Filter */
-.filter-bar{display:flex;justify-content:center;gap:0.75rem;margin-bottom:2.5rem;flex-wrap:wrap}
-.filter-btn{padding:8px 20px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:0.75rem;cursor:pointer;transition:var(--ease);text-transform:uppercase;letter-spacing:0.5px}
-.filter-btn:hover,.filter-btn.active{background:var(--cyan-d);border-color:var(--cyan);color:var(--cyan)}
+/* Command Panel - Left side */
+.cmd-panel{position:relative;z-index:2}
+.cmd-badge{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(0,212,255,0.15);padding:4px 12px;font-size:0.55rem;color:var(--cyan);text-transform:uppercase;letter-spacing:2px;margin-bottom:1.5rem}
+.cmd-badge::before{content:'';width:6px;height:6px;background:var(--cyan);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);animation:pulse-dot 2s infinite}
+.cmd-panel h1{font-family:'Segoe UI',system-ui,sans-serif;font-size:2.8rem;font-weight:700;line-height:1.05;margin-bottom:0.8rem;color:var(--txt)}
+.cmd-panel h1 .accent{color:var(--cyan);text-shadow:0 0 30px rgba(0,212,255,0.3)}
+.cmd-sub{font-size:0.8rem;color:var(--txt2);max-width:420px;margin-bottom:1.5rem;line-height:1.6}
+.cmd-actions{display:flex;gap:0.8rem;margin-bottom:2rem}
+.btn-tac{padding:10px 24px;font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-family:'Courier New',monospace}
+.btn-primary{background:rgba(0,212,255,0.12);color:var(--cyan);border:1px solid rgba(0,212,255,0.3)}
+.btn-primary:hover{background:rgba(0,212,255,0.2);box-shadow:0 0 30px rgba(0,212,255,0.15)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08)}
+.btn-ghost:hover{color:var(--cyan);border-color:rgba(0,212,255,0.2)}
 
-/* Cards */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;max-width:1400px;margin:0 auto}
-.cap-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;cursor:pointer;transition:var(--ease);position:relative;overflow:hidden}
-.cap-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--cyan),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease}
-.cap-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.3);background:var(--card-h);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-.cap-card:hover::before{transform:scaleX(1)}
-.cap-card-status{position:absolute;top:1.2rem;right:1.2rem;display:flex;align-items:center;gap:5px;font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
-.cap-card-status .live-dot{width:6px;height:6px;border-radius:50%;background:#00ff88;animation:pulse-dot 2s infinite}
-.cap-card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:1rem}
-.cap-card-icon.blue{background:var(--cyan-d);color:var(--cyan)}
-.cap-card-icon.gold{background:var(--gold-d);color:var(--gold)}
-.cap-card h3{font-size:1rem;font-weight:600;margin-bottom:0.4rem}
-.cap-card p{color:var(--txt2);font-size:0.8rem;line-height:1.6;margin-bottom:0.8rem}
-.cap-card-tags{display:flex;gap:0.4rem;flex-wrap:wrap}
-.cap-tag{padding:3px 8px;border-radius:10px;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.5px;background:rgba(255,255,255,0.05);color:var(--muted)}
+/* Tactical Readout - stats bar */
+.tac-readout{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(0,212,255,0.05);border:1px solid var(--border);margin-bottom:1.5rem}
+.tac-stat{padding:12px;text-align:center;background:var(--bg)}
+.tac-stat-val{font-size:1.1rem;font-weight:700;color:var(--cyan);font-family:'Courier New',monospace}
+.tac-stat-val.gold{color:var(--gold)}
+.tac-stat-val.green{color:var(--green)}
+.tac-stat-val.amber{color:var(--amber)}
+.tac-stat-label{font-size:0.5rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-top:2px}
 
-/* Metrics */
-.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;max-width:1400px;margin:0 auto}
-.metric-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;text-align:center;transition:var(--ease);overflow:hidden}
-.metric-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.2);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-.metric-value{font-size:2.2rem;font-weight:700;background:linear-gradient(135deg,var(--cyan),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.metric-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:0.4rem}
-.metric-bar{width:100%;height:3px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:0.8rem;overflow:hidden}
-.metric-bar-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--gold));border-radius:2px;transition:width 1.5s ease}
+/* Mission Feed - styled as ops briefings */
+.ops-feed{position:relative;z-index:1;padding:40px 1.5rem;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.ops-feed-inner{max-width:1400px;margin:0 auto}
+.ops-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.ops-title{font-size:0.7rem;text-transform:uppercase;letter-spacing:3px;color:var(--cyan)}
+.ops-title::before{content:'[';color:var(--muted)}
+.ops-title::after{content:']';color:var(--muted)}
+.ops-live{font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:var(--green);display:flex;align-items:center;gap:6px}
 
-/* Modal - Terminal Style */
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);z-index:2000;align-items:center;justify-content:center}
-.modal.active{display:flex}
-.modal-content{background:var(--bg2);border:1px solid var(--border);border-radius:16px;max-width:750px;width:92%;max-height:85vh;overflow:hidden;position:relative;animation:modalIn 0.3s ease}
-.modal-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02)}
-.modal-header h2{font-size:1.1rem;font-weight:600}
-.modal-header h2 .accent{background:linear-gradient(135deg,var(--cyan),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.modal-close{background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;transition:var(--ease);width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%}
-.modal-close:hover{color:var(--cyan);background:var(--cyan-d)}
-.modal-body{padding:1.5rem;overflow-y:auto;max-height:calc(85vh - 60px)}
+/* Mission entries */
+.mission-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(0,212,255,0.04)}
+.mission-entry{background:var(--bg2);padding:1.2rem;border-left:2px solid transparent;transition:all 0.3s;cursor:pointer;position:relative}
+.mission-entry:hover{background:rgba(0,212,255,0.03);border-left-color:var(--cyan)}
+.mission-entry.priority-high{border-left-color:var(--red)}
+.mission-entry.priority-med{border-left-color:var(--amber)}
+.mission-entry.priority-low{border-left-color:var(--green)}
+.mission-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem}
+.mission-type{font-size:0.5rem;text-transform:uppercase;letter-spacing:1.5px;padding:2px 8px;border:1px solid}
+.mission-type.intel{color:var(--cyan);border-color:rgba(0,212,255,0.2)}
+.mission-type.alert{color:var(--red);border-color:rgba(255,51,85,0.2)}
+.mission-type.signal{color:var(--amber);border-color:rgba(255,170,0,0.2)}
+.mission-type.recon{color:var(--green);border-color:rgba(0,255,136,0.2)}
+.mission-time{font-size:0.5rem;color:var(--muted)}
+.mission-target{font-size:0.75rem;font-weight:600;color:var(--txt);margin-bottom:0.3rem}
+.mission-brief{font-size:0.65rem;color:var(--txt2);line-height:1.5}
+.mission-coords{font-size:0.5rem;color:var(--muted);margin-top:0.5rem;letter-spacing:0.5px}
 
-/* Terminal Animation in Modal */
-.term-sim{background:rgba(10,10,15,0.95);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1.2rem}
-.term-sim-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border)}
-.term-sim-bar .dot{width:8px;height:8px;border-radius:50%}
-.term-sim-bar .title{font-size:0.65rem;color:var(--muted);margin-left:auto;font-family:'Courier New',monospace}
-.term-sim-body{padding:14px;font-family:'Courier New',monospace;font-size:0.72rem;line-height:1.9;color:var(--cyan);min-height:160px}
-.term-sim-body .t-line{opacity:0;transform:translateX(-5px);white-space:nowrap;overflow:hidden}
-.term-sim-body .t-line.visible{opacity:1;transform:translateX(0);transition:all 0.3s ease}
-.term-sim-body .t-muted{color:var(--muted)}
-.term-sim-body .t-gold{color:var(--gold)}
-.term-sim-body .t-green{color:#00ff88}
-.term-sim-body .t-orange{color:#e8722a}
-.term-sim-body .t-cursor{display:inline-block;width:7px;height:14px;background:var(--cyan);animation:blink 1s step-end infinite;vertical-align:middle;margin-left:2px}
-
-/* Progress bar in modal */
-.sim-progress{margin:1rem 0;height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden}
-.sim-progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),#00ff88);border-radius:3px;transition:width 0.3s ease}
-.sim-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
-.sim-stat{text-align:center;padding:0.8rem;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid var(--border)}
-.sim-stat-val{font-size:1.1rem;font-weight:700;color:var(--cyan)}
-.sim-stat-lbl{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px}
-
-/* Modal capability description */
-.modal-desc{color:var(--txt2);font-size:0.85rem;line-height:1.7;margin-bottom:1.2rem}
-.modal-features{list-style:none;padding:0;margin-bottom:1.2rem}
-.modal-features li{padding:0.4rem 0 0.4rem 1.2rem;position:relative;color:var(--txt2);font-size:0.8rem}
-.modal-features li::before{content:'';position:absolute;left:0;top:50%;width:5px;height:5px;border-radius:50%;background:var(--cyan);transform:translateY(-50%)}
-
-/* Live Activity Feed */
-.live-feed{position:fixed;bottom:0;left:0;width:100%;z-index:900;background:rgba(10,10,15,0.95);border-top:1px solid var(--border);backdrop-filter:blur(10px);padding:0;overflow:hidden;height:32px}
-.feed-track{display:flex;align-items:center;height:32px;animation:feedScroll 60s linear infinite;white-space:nowrap}
-.feed-item{display:inline-flex;align-items:center;gap:6px;padding:0 2rem;font-size:0.65rem;color:var(--muted);white-space:nowrap}
-.feed-item .f-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.feed-item .f-dot.green{background:#00ff88}
-.feed-item .f-dot.cyan{background:var(--cyan)}
-.feed-item .f-dot.gold{background:var(--gold)}
-.feed-item .f-dot.orange{background:#e8722a}
-.feed-item .f-time{color:rgba(255,255,255,0.2)}
-.feed-item .f-action{color:var(--txt2)}
-
-/* Timeline */
-.timeline{max-width:800px;margin:0 auto;position:relative;padding-left:40px}
-.timeline::before{content:'';position:absolute;left:15px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--cyan),var(--gold),transparent)}
-.timeline-item{position:relative;margin-bottom:2rem;padding-left:2rem}
-.timeline-item::before{content:'';position:absolute;left:-33px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--cyan);border:3px solid var(--bg);z-index:1}
-.timeline-item h3{font-size:0.95rem;font-weight:600;margin-bottom:0.2rem}
-.timeline-item .date{font-size:0.7rem;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.4rem}
-.timeline-item p{color:var(--txt2);font-size:0.8rem;line-height:1.6}
+/* Capabilities - Arsenal */
+.arsenal{position:relative;z-index:1;padding:60px 1.5rem}
+.arsenal-inner{max-width:1400px;margin:0 auto}
+.arsenal-header{text-align:center;margin-bottom:2.5rem}
+.arsenal-title{font-size:0.7rem;text-transform:uppercase;letter-spacing:3px;color:var(--cyan);margin-bottom:0.5rem}
+.arsenal-sub{font-family:'Segoe UI',system-ui,sans-serif;font-size:1.6rem;font-weight:700;color:var(--txt)}
+.arsenal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(0,212,255,0.04)}
+.weapon-card{background:var(--bg);padding:2rem 1.5rem;transition:all 0.3s;cursor:pointer;position:relative;overflow:hidden}
+.weapon-card:hover{background:rgba(0,212,255,0.02)}
+.weapon-card::after{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity 0.3s}
+.weapon-card:hover::after{opacity:0.5}
+.weapon-icon{font-size:1.5rem;margin-bottom:1rem}
+.weapon-name{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--cyan);margin-bottom:0.5rem}
+.weapon-desc{font-size:0.7rem;color:var(--txt2);line-height:1.6}
+.weapon-status{display:flex;align-items:center;gap:6px;margin-top:0.8rem;font-size:0.5rem;text-transform:uppercase;letter-spacing:1px}
+.weapon-status.online{color:var(--green)}
+.weapon-status.armed{color:var(--amber)}
 
 /* Footer */
-.footer{padding:3rem 2rem 4rem;border-top:1px solid var(--border);text-align:center;position:relative;z-index:1}
-.footer p{color:var(--muted);font-size:0.75rem}
-.footer-links{display:flex;justify-content:center;gap:2rem;margin-bottom:1rem}
-.footer-links a{color:var(--muted);text-decoration:none;font-size:0.75rem;transition:var(--ease)}
-.footer-links a:hover{color:var(--cyan)}
+.footer{padding:30px 1.5rem;border-top:1px solid var(--border);text-align:center;font-size:0.55rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
 
-/* Reveal */
-.reveal{opacity:0;transform:translateY(25px);transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-
-/* Keyframes */
+/* Animations */
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes gPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.5}50%{transform:translate(-50%,-50%) scale(1.1);opacity:0.8}}
+@keyframes radarSweep{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes droneFloat{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(15px,-10px) rotate(2deg)}50%{transform:translate(-5px,-20px) rotate(-1deg)}75%{transform:translate(-15px,-5px) rotate(1deg)}}
+@keyframes targetPulse{0%,100%{transform:scale(1);opacity:0.8}50%{transform:scale(1.3);opacity:0.3}}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.5)}}
-@keyframes gPulse{0%,100%{opacity:0.3;transform:translate(-50%,-50%) scale(1)}50%{opacity:0.5;transform:translate(-50%,-50%) scale(1.08)}}
-@keyframes modalIn{from{opacity:0;transform:scale(0.96) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-@keyframes termLine{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:translateX(0)}}
-@keyframes feedScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-/* Responsive */
-@media(max-width:968px){
-.hero-grid{grid-template-columns:1fr;text-align:center}
-.globe-wrap{height:300px}
-.hero h1{font-size:2.4rem}
-.metrics-grid{grid-template-columns:repeat(2,1fr)}
-.hero-stats{justify-content:center}
-.hero-actions{justify-content:center}
-.nav-links{display:none}
-.mini-term{margin:1.5rem auto 0}
-}
-@media(max-width:600px){
-.metrics-grid{grid-template-columns:1fr}
-.cards-grid{grid-template-columns:1fr}
-.hero h1{font-size:1.8rem}
-.sim-stats{grid-template-columns:1fr}
-}
+@keyframes botPulse{0%,100%{box-shadow:0 0 6px rgba(0,212,255,0.6)}50%{box-shadow:0 0 16px rgba(0,212,255,0.9)}}
+@keyframes scanDown{0%{top:-10%}100%{top:110%}}
+.scan-beam{position:absolute;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.15;animation:scanDown 8s linear infinite;z-index:3;pointer-events:none}
 </style>
 </head>
 <body>
-<canvas id="particles-canvas"></canvas>
+<div class="scanline"></div>
+<div class="hud-bracket tl"></div>
+<div class="hud-bracket tr"></div>
+<div class="hud-bracket bl"></div>
+<div class="hud-bracket br"></div>
 
+<!-- Nav -->
 <nav class="nav">
 <div class="nav-inner">
 <a href="#" class="nav-brand">
 <div class="nav-logo">D</div>
-<span class="nav-title">DUNSONATOR</span>
+<span class="nav-title">Dunsonator</span>
 </a>
 <div class="nav-links">
-<a href="#capabilities" class="nav-link active">Systems</a>
-<a href="#metrics" class="nav-link">Metrics</a>
-<a href="#roadmap" class="nav-link">Roadmap</a>
+<a href="#theater" class="nav-link active">Command</a>
+<a href="#ops" class="nav-link">Operations</a>
+<a href="#arsenal" class="nav-link">Arsenal</a>
+<a href="https://www.instagram.com/dunsonator/" target="_blank" class="nav-link">Signal</a>
 </div>
 <div class="nav-status">
 <span class="status-dot"></span>
-<span>225 Accounts Active</span>
+All Systems Operational
 </div>
 </div>
 </nav>
 
-<section class="hero">
-<div class="hero-grid">
-<div class="hero-content">
-<div class="hero-badge">
-<span class="hero-badge-dot"></span>
-Autonomous Intelligence Network
+<!-- Command Theater -->
+<section id="theater" class="theater">
+<div class="scan-beam"></div>
+<div class="theater-grid">
+
+<!-- Left: Command Panel -->
+<div class="cmd-panel">
+<div class="cmd-badge">Autonomous Intelligence Platform</div>
+<h1>Mission Control<br><span class="accent">Dunsonator</span></h1>
+<p class="cmd-sub">Autonomous AI agents conducting persistent surveillance across your enterprise battlefield. Real-time target acquisition, signal intelligence, and precision engagement.</p>
+<div class="cmd-actions">
+<a href="#ops" class="btn-tac btn-primary">&#9656; Enter Operations</a>
+<a href="#arsenal" class="btn-tac btn-ghost">View Arsenal</a>
 </div>
-<h1>The<br><span class="accent">Dunsonator</span></h1>
-<p class="hero-sub">Autonomous agentic AI platform running real intelligence operations across 225 accounts with military-grade precision.</p>
-<div class="hero-actions">
-<button class="btn btn-primary" onclick="document.getElementById('capabilities').scrollIntoView({behavior:'smooth'})">Explore Systems</button>
-<button class="btn btn-outline" onclick="openModal('about')">About Platform</button>
+
+<!-- Tactical Readout -->
+<div class="tac-readout">
+<div class="tac-stat">
+<div class="tac-stat-val" id="pipelineVal">$1.02M</div>
+<div class="tac-stat-label">Pipeline Value</div>
 </div>
-<div class="hero-stats">
-<div class="hero-stat"><div class="hero-stat-value" id="agentCount">0</div><div class="hero-stat-label">Active Agents</div></div>
-<div class="hero-stat"><div class="hero-stat-value" id="acctCount">0</div><div class="hero-stat-label">Accounts</div></div>
-<div class="hero-stat"><div class="hero-stat-value" id="uptimeCount">0%</div><div class="hero-stat-label">Uptime</div></div>
+<div class="tac-stat">
+<div class="tac-stat-val gold" id="accountsVal">42</div>
+<div class="tac-stat-label">Active Targets</div>
 </div>
-<div class="mini-term">
-<div class="mini-term-bar">
-<div class="mini-term-dot" style="background:#ff5f56"></div>
-<div class="mini-term-dot" style="background:#ffbd2e"></div>
-<div class="mini-term-dot" style="background:#27c93f"></div>
-<span>dunsonator-core v3.2</span>
+<div class="tac-stat">
+<div class="tac-stat-val green" id="renewalVal">$302K</div>
+<div class="tac-stat-label">Renewal Intel</div>
 </div>
-<div class="mini-term-body" id="heroTerm"></div>
+<div class="tac-stat">
+<div class="tac-stat-val amber" id="intentVal">361</div>
+<div class="tac-stat-label">Intent Score</div>
 </div>
 </div>
-<div class="globe-wrap">
-<div class="globe-glow"></div>
+</div>
+
+<!-- Right: Globe Battlefield -->
+<div class="battlefield">
+<div class="battlefield-glow"></div>
+<div class="radar-sweep">
+<div class="radar-ring r1"></div>
+<div class="radar-ring r2"></div>
+<div class="radar-ring r3"></div>
+<div class="radar-ring r4"></div>
+</div>
+<div class="radar-crosshair"></div>
 <div id="globeViz"></div>
-</div>
-</div>
-</section>
 
-<section class="section" id="capabilities">
-<div class="section-header reveal">
-<div class="section-badge">Core Systems</div>
-<h2 class="section-title">Platform <span class="accent">Capabilities</span></h2>
-<p class="section-desc">Real autonomous intelligence systems running live across your 225-account instance.</p>
+<!-- Stealth Drone Units -->
+<div class="drone-unit d1">
+<svg width="50" height="20" viewBox="0 0 50 20" fill="none">
+<path d="M25 2L48 10L25 14L2 10Z" fill="rgba(0,212,255,0.15)" stroke="rgba(0,212,255,0.5)" stroke-width="0.5"/>
+<path d="M20 10L25 18L30 10" fill="none" stroke="rgba(0,212,255,0.4)" stroke-width="0.5"/>
+<circle cx="25" cy="10" r="2" fill="rgba(0,212,255,0.6)"/>
+</svg>
+<div class="drone-label">UAV-01 Recon</div>
 </div>
-<div class="filter-bar reveal">
-<button class="filter-btn active" onclick="filterCards('all')">All Systems</button>
-<button class="filter-btn" onclick="filterCards('intelligence')">Intelligence</button>
-<button class="filter-btn" onclick="filterCards('operations')">Operations</button>
-<button class="filter-btn" onclick="filterCards('security')">Security</button>
+<div class="drone-unit d2">
+<svg width="60" height="24" viewBox="0 0 60 24" fill="none">
+<path d="M30 1L58 12L30 17L2 12Z" fill="rgba(201,168,76,0.12)" stroke="rgba(201,168,76,0.4)" stroke-width="0.5"/>
+<path d="M24 12L30 22L36 12" fill="none" stroke="rgba(201,168,76,0.3)" stroke-width="0.5"/>
+<circle cx="30" cy="12" r="2" fill="rgba(201,168,76,0.5)"/>
+</svg>
+<div class="drone-label">UAV-02 Strike</div>
 </div>
-<div class="cards-grid" id="cardsGrid">
-
-<div class="cap-card reveal" data-category="intelligence" onclick="openModal('nlp')">
-<div class="cap-card-status"><span class="live-dot"></span>Running</div>
-<div class="cap-card-icon blue">&#9672;</div>
-<h3>Natural Language Processing</h3>
-<p>Real-time NLP engine processing signals across all 225 accounts. Sentiment analysis, entity extraction, and contextual summarization.</p>
-<div class="cap-card-tags"><span class="cap-tag">NLP</span><span class="cap-tag">Signals</span><span class="cap-tag">Real-time</span></div>
-</div>
-
-<div class="cap-card reveal" data-category="operations" onclick="openModal('orchestration')">
-<div class="cap-card-status"><span class="live-dot"></span>Running</div>
-<div class="cap-card-icon gold">&#9881;</div>
-<h3>Agent Orchestration</h3>
-<p>Multi-agent coordination across parallel workflows. Autonomous task delegation, execution monitoring, and intelligent resource allocation.</p>
-<div class="cap-card-tags"><span class="cap-tag">Agents</span><span class="cap-tag">Parallel</span><span class="cap-tag">Auto</span></div>
+<div class="drone-unit d3">
+<svg width="44" height="18" viewBox="0 0 44 18" fill="none">
+<path d="M22 1L42 9L22 13L2 9Z" fill="rgba(0,255,136,0.1)" stroke="rgba(0,255,136,0.4)" stroke-width="0.5"/>
+<circle cx="22" cy="9" r="2" fill="rgba(0,255,136,0.5)"/>
+</svg>
+<div class="drone-label">UAV-03 Intel</div>
 </div>
 
-<div class="cap-card reveal" data-category="security" onclick="openModal('threat')">
-<div class="cap-card-status"><span class="live-dot"></span>Running</div>
-<div class="cap-card-icon blue">&#9733;</div>
-<h3>Threat Intelligence</h3>
-<p>Continuous threat monitoring with predictive signal analysis. Identifies risk patterns and anomalies across your account landscape.</p>
-<div class="cap-card-tags"><span class="cap-tag">Security</span><span class="cap-tag">Signals</span><span class="cap-tag">Predictive</span></div>
+<!-- Target Locks -->
+<div class="target-lock" style="top:30%;left:25%">
+<div class="target-lock-ring"></div>
+<div class="target-lock-label">TGT-Alpha</div>
 </div>
-
-<div class="cap-card reveal" data-category="intelligence" onclick="openModal('predictive')">
-<div class="cap-card-status"><span class="live-dot"></span>Running</div>
-<div class="cap-card-icon gold">&#9670;</div>
-<h3>Predictive Analytics</h3>
-<p>ML models running outcome prediction across your accounts. Forecasting engagement, pipeline risk, and strategic opportunities.</p>
-<div class="cap-card-tags"><span class="cap-tag">Analytics</span><span class="cap-tag">ML</span><span class="cap-tag">Forecast</span></div>
+<div class="target-lock" style="top:55%;right:20%">
+<div class="target-lock-ring"></div>
+<div class="target-lock-label">TGT-Bravo</div>
 </div>
-
-<div class="cap-card reveal" data-category="operations" onclick="openModal('deploy')">
-<div class="cap-card-status"><span class="live-dot"></span>Running</div>
-<div class="cap-card-icon blue">&#9889;</div>
-<h3>Rapid Deployment</h3>
-<p>Zero-downtime deployment pipeline. Automated rollback, blue-green deployment, and infrastructure-as-code across all environments.</p>
-<div class="cap-card-tags"><span class="cap-tag">DevOps</span><span class="cap-tag">CI/CD</span><span class="cap-tag">Cloud</span></div>
 </div>
 
 </div>
 </section>
 
-<section class="section" id="metrics" style="background:var(--bg2)">
-<div class="section-header reveal">
-<div class="section-badge">Performance</div>
-<h2 class="section-title">System <span class="accent">Metrics</span></h2>
-<p class="section-desc">Live performance across your 225-account instance.</p>
+<!-- Operations Feed -->
+<section id="ops" class="ops-feed">
+<div class="ops-feed-inner">
+<div class="ops-header">
+<div class="ops-title">Live Intelligence Feed</div>
+<div class="ops-live"><span class="status-dot"></span> Real-Time Monitoring Active</div>
 </div>
-<div class="metrics-grid reveal">
-<div class="metric-card"><div class="metric-value">99.97%</div><div class="metric-label">Uptime</div><div class="metric-bar"><div class="metric-bar-fill" style="width:99.97%"></div></div></div>
-<div class="metric-card"><div class="metric-value">2.4ms</div><div class="metric-label">Response Time</div><div class="metric-bar"><div class="metric-bar-fill" style="width:95%"></div></div></div>
-<div class="metric-card"><div class="metric-value">225</div><div class="metric-label">Active Accounts</div><div class="metric-bar"><div class="metric-bar-fill" style="width:100%"></div></div></div>
-<div class="metric-card"><div class="metric-value">97.3%</div><div class="metric-label">Signal Accuracy</div><div class="metric-bar"><div class="metric-bar-fill" style="width:97.3%"></div></div></div>
+<div class="mission-grid" id="missionGrid">
+<!-- Entries populated by JS -->
+</div>
 </div>
 </section>
 
-<section class="section" id="roadmap">
-<div class="section-header reveal">
-<div class="section-badge">Timeline</div>
-<h2 class="section-title">Platform <span class="accent">Roadmap</span></h2>
-<p class="section-desc">Strategic milestones driving the Dunsonator forward.</p>
+<!-- Arsenal / Capabilities -->
+<section id="arsenal" class="arsenal">
+<div class="arsenal-inner">
+<div class="arsenal-header">
+<div class="arsenal-title">Weapons Systems</div>
+<div class="arsenal-sub">Operational Capabilities</div>
 </div>
-<div class="timeline reveal">
-<div class="timeline-item"><div class="date">Q1 2025</div><h3>Foundation Architecture</h3><p>Core agent framework, NLP engine, multi-cloud infrastructure initialization across 225 accounts.</p></div>
-<div class="timeline-item"><div class="date">Q2 2025</div><h3>Intelligence Expansion</h3><p>Predictive analytics engine, advanced threat detection, and signal cross-correlation systems.</p></div>
-<div class="timeline-item"><div class="date">Q3 2025</div><h3>Autonomous Operations</h3><p>Full autonomous agent orchestration, self-healing systems, and real-time decision framework.</p></div>
-<div class="timeline-item"><div class="date">Q4 2025</div><h3>Scale & Harden</h3><p>Enterprise API gateway, advanced compliance automation, and expanded account coverage.</p></div>
+<div class="arsenal-grid">
+<div class="weapon-card">
+<div class="weapon-icon">&#9670;</div>
+<div class="weapon-name">Salesforce Intelligence</div>
+<div class="weapon-desc">Full-spectrum CRM surveillance. Pipeline tracking, opportunity scoring, and autonomous account monitoring across your entire territory.</div>
+<div class="weapon-status online"><span class="status-dot"></span> Deployed</div>
+</div>
+<div class="weapon-card">
+<div class="weapon-icon">&#9678;</div>
+<div class="weapon-name">6sense Signal Intel</div>
+<div class="weapon-desc">Intent-based target acquisition. MEDDPIC scoring, account prioritization, and predictive engagement signals from dark web activity.</div>
+<div class="weapon-status online"><span class="status-dot"></span> Deployed</div>
+</div>
+<div class="weapon-card">
+<div class="weapon-icon">&#9733;</div>
+<div class="weapon-name">SalesLoft Cadence Engine</div>
+<div class="weapon-desc">Precision strike sequencing. Multi-channel engagement cadences deployed autonomously from intent signal to first contact.</div>
+<div class="weapon-status armed">&#9679; Standing By</div>
+</div>
+<div class="weapon-card">
+<div class="weapon-icon">&#8962;</div>
+<div class="weapon-name">Power BI War Room</div>
+<div class="weapon-desc">Real-time battlefield analytics. ARR tracking, pipeline health monitoring, and predictive revenue intelligence with automated reporting.</div>
+<div class="weapon-status online"><span class="status-dot"></span> Deployed</div>
+</div>
+<div class="weapon-card">
+<div class="weapon-icon">&#9881;</div>
+<div class="weapon-name">TotalAgility RPA</div>
+<div class="weapon-desc">Robotic process automation for document-heavy operations. Autonomous workflow orchestration without human intervention.</div>
+<div class="weapon-status online"><span class="status-dot"></span> Deployed</div>
+</div>
+<div class="weapon-card">
+<div class="weapon-icon">&#10042;</div>
+<div class="weapon-name">ML / Deep Learning</div>
+<div class="weapon-desc">Evolving intelligence that learns from every data point without being prompted. Pattern recognition, anomaly detection, and predictive modeling.</div>
+<div class="weapon-status armed">&#9679; Training</div>
+</div>
+</div>
 </div>
 </section>
 
-<div class="modal" id="modal">
-<div class="modal-content">
-<div class="modal-header">
-<h2 id="modalTitle"></h2>
-<button class="modal-close" onclick="closeModal()">&times;</button>
+<!-- Footer -->
+<div class="footer">
+Dunsonator Autonomous Intelligence &middot; Classification: Operational &middot; All Systems Nominal
 </div>
-<div class="modal-body" id="modalBody"></div>
-</div>
-</div>
-
-<div class="live-feed" id="liveFeed">
-<div class="feed-track" id="feedTrack"></div>
-</div>
-
-<footer class="footer">
-<div class="footer-links">
-<a href="#capabilities">Systems</a>
-<a href="#metrics">Metrics</a>
-<a href="#roadmap">Roadmap</a>
-</div>
-<p>&copy; 2025 Dunsonator | Autonomous Intelligence Platform | All Systems Operational</p>
-</footer>
 
 <script>
-// Particles
-const canvas=document.getElementById('particles-canvas'),ctx=canvas.getContext('2d');let pts=[];
-function rz(){canvas.width=innerWidth;canvas.height=innerHeight}rz();addEventListener('resize',rz);
-class P{constructor(){this.r()}r(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.s=Math.random()*1.5+0.5;this.sx=(Math.random()-0.5)*0.3;this.sy=(Math.random()-0.5)*0.3;this.o=Math.random()*0.4+0.1}u(){this.x+=this.sx;this.y+=this.sy;if(this.x<0||this.x>canvas.width||this.y<0||this.y>canvas.height)this.r()}d(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=`rgba(0,212,255,${this.o})`;ctx.fill()}}
-for(let i=0;i<70;i++)pts.push(new P());
-function aP(){ctx.clearRect(0,0,canvas.width,canvas.height);pts.forEach(p=>{p.u();p.d()});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(0,212,255,${0.06*(1-d/100)})`;ctx.lineWidth=0.5;ctx.stroke()}}requestAnimationFrame(aP)}aP();
+// === GLOBE INITIALIZATION ===
+const globeEl=document.getElementById('globeViz');
+if(globeEl){const w=globeEl.parentElement.clientWidth,h=globeEl.parentElement.clientHeight;
+const globe=Globe()(globeEl)
+.globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
+.bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+.backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+.width(w).height(h)
+.atmosphereColor('#00d4ff')
+.atmosphereAltitude(0.2)
+.pointOfView({lat:30,lng:-40,altitude:2.2});
+globe.controls().autoRotate=true;
+globe.controls().autoRotateSpeed=0.4;
+globe.controls().enableZoom=false;
 
-// Globe
-try{const g=Globe().globeImageUrl('https://unpkg.com/three-globe/example/img/earth-dark.jpg').backgroundColor('rgba(0,0,0,0)').arcsData([{startLat:37.77,startLng:-122.42,endLat:51.51,endLng:-0.13,color:['#00d4ff','#c9a84c']},{startLat:35.68,startLng:139.65,endLat:37.77,endLng:-122.42,color:['#00d4ff','#c9a84c']},{startLat:51.51,startLng:-0.13,endLat:1.35,endLng:103.82,color:['#c9a84c','#00d4ff']},{startLat:40.71,startLng:-74.01,endLat:48.86,endLng:2.35,color:['#c9a84c','#00d4ff']},{startLat:25.20,startLng:55.27,endLat:37.77,endLng:-122.42,color:['#00d4ff','#e8722a']},{startLat:-23.55,startLng:-46.63,endLat:40.71,endLng:-74.01,color:['#e8722a','#00d4ff']},{startLat:30.27,startLng:-97.74,endLat:51.51,endLng:-0.13,color:['#e8722a','#c9a84c']}]).arcColor('color').arcDashLength(0.4).arcDashGap(0.2).arcDashAnimateTime(2500).arcStroke(0.5).pointsData([{lat:37.77,lng:-122.42,size:0.7,color:'#00d4ff'},{lat:51.51,lng:-0.13,size:0.5,color:'#c9a84c'},{lat:35.68,lng:139.65,size:0.6,color:'#00d4ff'},{lat:40.71,lng:-74.01,size:0.6,color:'#c9a84c'},{lat:30.27,lng:-97.74,size:0.9,color:'#e8722a'},{lat:25.20,lng:55.27,size:0.4,color:'#00d4ff'},{lat:-23.55,lng:-46.63,size:0.4,color:'#c9a84c'}]).pointAltitude(0.07).pointColor('color').pointRadius('size').atmosphereColor('#00d4ff').atmosphereAltitude(0.15).width(document.getElementById('globeViz').offsetWidth).height(document.getElementById('globeViz').offsetHeight)(document.getElementById('globeViz'));g.controls().autoRotate=true;g.controls().autoRotateSpeed=0.7;g.controls().enableZoom=false}catch(e){}
+// Arc data - connection lines
+const arcs=[{startLat:37.7,startLng:-122.4,endLat:51.5,endLng:-0.1,color:['#00d4ff','#c9a84c']},{startLat:37.7,startLng:-122.4,endLat:35.6,endLng:139.6,color:['#00d4ff','#00ff88']},{startLat:37.7,startLng:-122.4,endLat:-33.8,endLng:151.2,color:['#c9a84c','#00d4ff']},{startLat:40.7,startLng:-74,endLat:48.8,endLng:2.3,color:['#00ff88','#c9a84c']},{startLat:37.7,startLng:-122.4,endLat:1.3,endLng:103.8,color:['#00d4ff','#ff3355']},{startLat:37.7,startLng:-122.4,endLat:55.7,endLng:37.6,color:['#ffaa00','#00d4ff']}];
+globe.arcsData(arcs).arcColor('color').arcDashLength(0.4).arcDashGap(0.2).arcDashAnimateTime(3000).arcStroke(0.3);
 
-// Counters
-function ctr(el,t,s=''){let c=0;const inc=t/50;const tm=setInterval(()=>{c+=inc;if(c>=t){c=t;clearInterval(tm)}el.textContent=Math.floor(c)+s},40)}
-setTimeout(()=>{ctr(document.getElementById('agentCount'),24);ctr(document.getElementById('acctCount'),225);ctr(document.getElementById('uptimeCount'),99,'%')},500);
-
-// Hero Mini Terminal
-const heroLines=['<span class="muted">[00:00:01]</span> Initializing Dunsonator core...','<span class="muted">[00:00:02]</span> Loading <span class="gold">225 accounts</span> into memory','<span class="muted">[00:00:03]</span> Agent swarm <span class="orange">online</span> - 24 active','<span class="muted">[00:00:04]</span> NLP engine ready | Signals <span style="color:#00ff88">streaming</span>'];
-const ht=document.getElementById('heroTerm');
-heroLines.forEach((l,i)=>{setTimeout(()=>{const d=document.createElement('div');d.className='line';d.innerHTML=l;d.style.animationDelay=i*0.3+'s';ht.appendChild(d)},i*800)});
-
-// Scroll Reveal
-const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
-
-// Filter
-function filterCards(cat){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');document.querySelectorAll('.cap-card').forEach(c=>{if(cat==='all'||c.dataset.category===cat){c.style.display='block';c.style.animation='fadeInUp 0.4s ease forwards'}else c.style.display='none'})}
-
-// Nav scroll
-addEventListener('scroll',()=>{const n=document.querySelector('.nav');n.style.background=scrollY>50?'rgba(10,10,15,0.98)':'rgba(10,10,15,0.92)';n.style.boxShadow=scrollY>50?'0 4px 20px rgba(0,0,0,0.3)':'none'});
-
-// Modal Data with Terminal Simulations
-const modalData={
-nlp:{
-title:'NLP <span class="accent">Engine</span>',
-desc:'Real-time natural language processing running across all 225 accounts. Extracts signals, sentiment, and entities from every data stream.',
-features:['Sentiment analysis with 98.2% accuracy','Named entity recognition across all accounts','Contextual summarization with source attribution','Intent classification for automated routing','Multi-language signal processing'],
-termTitle:'nlp-engine --run signal-scan',
-termLines:[
-'<span class="t-muted">$</span> dunsonator nlp --scan-all-accounts',
-'<span class="t-muted">[INFO]</span> Connecting to 225 account streams...',
-'<span class="t-muted">[INFO]</span> NLP pipeline initialized | model: <span class="t-gold">gpt-4-turbo</span>',
-'<span class="t-muted">[SCAN]</span> Processing account <span class="t-orange">AMS-West-047</span>...',
-'<span class="t-muted">[SCAN]</span> Sentiment: <span class="t-green">POSITIVE</span> | Confidence: 0.94',
-'<span class="t-muted">[SCAN]</span> Entities extracted: 12 | Signals: 3 new',
-'<span class="t-muted">[SCAN]</span> Processing account <span class="t-orange">ENT-Central-118</span>...',
-'<span class="t-muted">[DONE]</span> <span class="t-green">225/225 accounts scanned</span> | 847 signals found',
-],stats:[{v:'225',l:'Accounts'},{v:'847',l:'Signals'},{v:'2.1s',l:'Scan Time'}]
-},
-orchestration:{
-title:'Agent <span class="accent">Orchestration</span>',
-desc:'Multi-agent coordination framework managing autonomous task delegation and parallel execution across your entire account base.',
-features:['Dynamic task decomposition and delegation','Real-time agent health monitoring','Automatic failover and load balancing','Priority-based resource allocation','Cross-agent knowledge sharing'],
-termTitle:'agent-swarm --status',
-termLines:[
-'<span class="t-muted">$</span> dunsonator agents --deploy-swarm',
-'<span class="t-muted">[INIT]</span> Spawning agent pool... <span class="t-gold">24 agents</span>',
-'<span class="t-muted">[AGENT-01]</span> Task: signal-aggregation | Status: <span class="t-green">RUNNING</span>',
-'<span class="t-muted">[AGENT-07]</span> Task: threat-scan | Status: <span class="t-green">RUNNING</span>',
-'<span class="t-muted">[AGENT-12]</span> Task: account-enrichment | Status: <span class="t-green">RUNNING</span>',
-'<span class="t-muted">[AGENT-19]</span> Task: predictive-scoring | Status: <span class="t-green">RUNNING</span>',
-'<span class="t-muted">[ORCH]</span> Load balanced across <span class="t-orange">3 regions</span>',
-'<span class="t-muted">[DONE]</span> Swarm operational | <span class="t-green">0 failures</span> | Uptime: 99.97%',
-],stats:[{v:'24',l:'Agents'},{v:'0',l:'Failures'},{v:'99.97%',l:'Uptime'}]
-},
-threat:{
-title:'Threat <span class="accent">Intelligence</span>',
-desc:'Continuous monitoring and predictive threat analysis across your account landscape. Identifies risk before it becomes a problem.',
-features:['24/7 automated threat scanning','Predictive vulnerability assessment','Incident response automation','Compliance monitoring and alerting','Anomaly detection across all signals'],
-termTitle:'threat-intel --monitor',
-termLines:[
-'<span class="t-muted">$</span> dunsonator threat --deep-scan',
-'<span class="t-muted">[SCAN]</span> Analyzing 225 accounts for anomalies...',
-'<span class="t-muted">[ALERT]</span> Account <span class="t-orange">MKT-South-089</span>: unusual pattern detected',
-'<span class="t-muted">[EVAL]</span> Risk score: <span class="t-gold">0.34</span> | Severity: LOW',
-'<span class="t-muted">[SCAN]</span> Cross-referencing signal history...',
-'<span class="t-muted">[CLEAR]</span> Pattern matches known seasonal variance',
-'<span class="t-muted">[SCAN]</span> Remaining accounts: <span class="t-green">CLEAR</span>',
-'<span class="t-muted">[DONE]</span> Threat scan complete | <span class="t-green">0 critical</span> | 1 info',
-],stats:[{v:'0',l:'Critical'},{v:'1',l:'Info'},{v:'4.2s',l:'Scan Time'}]
-},
-predictive:{
-title:'Predictive <span class="accent">Analytics</span>',
-desc:'ML models forecasting outcomes across your 225 accounts. Pipeline risk, engagement probability, and strategic opportunity scoring.',
-features:['Pipeline risk forecasting','Engagement probability modeling','Strategic opportunity identification','Account health scoring','Churn prediction and prevention'],
-termTitle:'predict --run forecast',
-termLines:[
-'<span class="t-muted">$</span> dunsonator predict --all-accounts',
-'<span class="t-muted">[INIT]</span> Loading ML models... <span class="t-gold">v2.8-stable</span>',
-'<span class="t-muted">[PRED]</span> Running forecast on 225 accounts...',
-'<span class="t-muted">[PRED]</span> Account <span class="t-orange">ENT-West-003</span>: 92% close probability',
-'<span class="t-muted">[PRED]</span> Account <span class="t-orange">AMS-East-156</span>: <span class="t-gold">risk elevated</span>',
-'<span class="t-muted">[PRED]</span> 18 high-opportunity accounts identified',
-'<span class="t-muted">[PRED]</span> Model accuracy: <span class="t-green">97.3%</span>',
-'<span class="t-muted">[DONE]</span> Forecast complete | 18 opportunities | 4 at-risk',
-],stats:[{v:'97.3%',l:'Accuracy'},{v:'18',l:'Opportunities'},{v:'4',l:'At-Risk'}]
-},
-deploy:{
-title:'Rapid <span class="accent">Deployment</span>',
-desc:'Zero-downtime CI/CD pipeline. Every update ships with automated testing, blue-green deployment, and instant rollback capability.',
-features:['Blue-green deployment strategy','Automated rollback on failure','Multi-region simultaneous deploy','Infrastructure as Code','Performance baseline validation'],
-termTitle:'deploy --production',
-termLines:[
-'<span class="t-muted">$</span> dunsonator deploy --env production',
-'<span class="t-muted">[BUILD]</span> Compiling assets... <span class="t-green">OK</span>',
-'<span class="t-muted">[TEST]</span> Running 342 tests... <span class="t-green">342 passed</span>',
-'<span class="t-muted">[STAGE]</span> Blue-green swap initiated...',
-'<span class="t-muted">[DEPLOY]</span> Region <span class="t-orange">us-central</span>: <span class="t-green">LIVE</span>',
-'<span class="t-muted">[DEPLOY]</span> Region <span class="t-orange">eu-west</span>: <span class="t-green">LIVE</span>',
-'<span class="t-muted">[HEALTH]</span> All endpoints responding | Latency: 2.4ms',
-'<span class="t-muted">[DONE]</span> Deployed in <span class="t-green">47 seconds</span> | Zero downtime',
-],stats:[{v:'342',l:'Tests'},{v:'47s',l:'Deploy Time'},{v:'0',l:'Downtime'}]
-},
-about:{
-title:'The <span class="accent">Dunsonator</span>',
-desc:'An autonomous intelligence platform built for real operations. Not a demo, not a concept - a live system running across 225 accounts with 24 active AI agents.',
-features:['Built on production-grade transformer architectures','Multi-cloud deployment across AWS and Azure','End-to-end encryption for all data','Real-time monitoring with automated incident response','Designed for scale from day one'],
-termTitle:'dunsonator --version',
-termLines:[
-'<span class="t-muted">$</span> dunsonator --version',
-'Dunsonator v3.2.0 | <span class="t-gold">Autonomous Intelligence Platform</span>',
-'<span class="t-muted">[SYS]</span> Accounts: <span class="t-green">225 active</span>',
-'<span class="t-muted">[SYS]</span> Agents: <span class="t-green">24 online</span>',
-'<span class="t-muted">[SYS]</span> Uptime: <span class="t-green">99.97%</span>',
-'<span class="t-muted">[SYS]</span> Location: <span class="t-orange">Bastrop, TX</span>',
-'<span class="t-muted">[SYS]</span> Status: <span class="t-green">ALL SYSTEMS OPERATIONAL</span>',
-'<span class="t-muted">$</span> <span class="t-cursor"></span>',
-],stats:[{v:'v3.2',l:'Version'},{v:'225',l:'Accounts'},{v:'24',l:'Agents'}]
+// Points - account locations
+const pts=[{lat:37.7,lng:-122.4,size:0.8,color:'#00d4ff',label:'HQ'},{lat:40.7,lng:-74,size:0.6,color:'#c9a84c',label:'NYC'},{lat:51.5,lng:-0.1,size:0.5,color:'#00ff88',label:'LON'},{lat:35.6,lng:139.6,size:0.5,color:'#ffaa00',label:'TKY'},{lat:48.8,lng:2.3,size:0.4,color:'#00d4ff',label:'PAR'},{lat:-33.8,lng:151.2,size:0.4,color:'#c9a84c',label:'SYD'},{lat:1.3,lng:103.8,size:0.4,color:'#00ff88',label:'SGP'},{lat:49.2,lng:-123.1,size:0.5,color:'#ff3355',label:'VAN'}];
+globe.pointsData(pts).pointAltitude('size').pointColor('color').pointRadius(0.15).pointsMerge(true);
 }
-};
 
-// Open Modal with animated terminal
-function openModal(key){
-const d=modalData[key];if(!d)return;
-document.getElementById('modalTitle').innerHTML=d.title;
-let html='<p class="modal-desc">'+d.desc+'</p>';
-html+='<ul class="modal-features">';d.features.forEach(f=>{html+='<li>'+f+'</li>'});html+='</ul>';
-html+='<div class="term-sim"><div class="term-sim-bar"><div class="dot" style="background:#ff5f56"></div><div class="dot" style="background:#ffbd2e"></div><div class="dot" style="background:#27c93f"></div><span class="title">'+d.termTitle+'</span></div><div class="term-sim-body" id="termSim"></div></div>';
-html+='<div class="sim-progress"><div class="sim-progress-fill" id="simBar"></div></div>';
-html+='<div class="sim-stats">';d.stats.forEach(s=>{html+='<div class="sim-stat"><div class="sim-stat-val">'+s.v+'</div><div class="sim-stat-lbl">'+s.l+'</div></div>'});html+='</div>';
-document.getElementById('modalBody').innerHTML=html;
-document.getElementById('modal').classList.add('active');
-document.body.style.overflow='hidden';
-const tb=document.getElementById('termSim');
-const bar=document.getElementById('simBar');
-d.termLines.forEach((line,i)=>{setTimeout(()=>{const el=document.createElement('div');el.className='t-line';el.innerHTML=line;tb.appendChild(el);requestAnimationFrame(()=>el.classList.add('visible'));tb.scrollTop=tb.scrollHeight;bar.style.width=((i+1)/d.termLines.length*100)+'%'},i*450)});
-}
-function closeModal(){document.getElementById('modal').classList.remove('active');document.body.style.overflow=''}
-document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal()});
-
-// Live Activity Feed
-const feedItems=[
-{dot:'green',action:'Agent-07 completed threat scan on AMS-West-047'},
-{dot:'cyan',action:'NLP engine processed 12 new signals'},
-{dot:'gold',action:'Predictive model updated for ENT-Central-118'},
-{dot:'green',action:'Agent-12 enrichment cycle complete'},
-{dot:'orange',action:'Deploy v3.2.1 pushed to us-central'},
-{dot:'cyan',action:'Sentiment analysis flagged 3 positive signals'},
-{dot:'green',action:'Agent-01 aggregation pass: 847 signals indexed'},
-{dot:'gold',action:'Account health scores refreshed (225/225)'},
-{dot:'orange',action:'Infrastructure scaling event: +2 containers'},
-{dot:'cyan',action:'Cross-correlation detected new opportunity pattern'},
-{dot:'green',action:'Threat monitor: all 225 accounts clear'},
-{dot:'gold',action:'Pipeline risk model retrained on latest data'},
-{dot:'orange',action:'Agent-19 predictive scoring batch complete'},
-{dot:'cyan',action:'NLP: 4 new entities extracted from signal stream'},
-{dot:'green',action:'System health check: all endpoints nominal'},
-{dot:'gold',action:'Forecast accuracy verified: 97.3% confirmed'},
+// === REAL-TIME INTELLIGENCE FEED ===
+const missionGrid=document.getElementById('missionGrid');
+const RSS_SOURCES=[
+{url:'https://api.rss2json.com/v1/api.json?rss_url=https://news.google.com/rss/search?q=Salesforce+OR+Microsoft+OR+SAP+enterprise+AI&hl=en-US',type:'intel',priority:'priority-high'},
+{url:'https://api.rss2json.com/v1/api.json?rss_url=https://news.google.com/rss/search?q=CTO+OR+VP+OR+CEO+technology+announcement+2025&hl=en-US',type:'alert',priority:'priority-med'},
+{url:'https://api.rss2json.com/v1/api.json?rss_url=https://news.google.com/rss/search?q=automation+RPA+AI+agents+enterprise&hl=en-US',type:'recon',priority:'priority-low'}
 ];
-function buildFeed(){const track=document.getElementById('feedTrack');let html='';for(let r=0;r<3;r++){feedItems.forEach(item=>{const t=new Date();const ts=t.getHours().toString().padStart(2,'0')+':'+t.getMinutes().toString().padStart(2,'0');html+='<div class="feed-item"><span class="f-dot '+item.dot+'"></span><span class="f-time">'+ts+'</span><span class="f-action">'+item.action+'</span></div>';})}track.innerHTML=html}
-buildFeed();
+
+function timeAgo(d){const s=Math.floor((new Date()-new Date(d))/1000);if(s<60)return s+'s ago';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago'}
+
+function renderMission(item,type,priority){
+const el=document.createElement('div');
+el.className='mission-entry '+priority;
+el.innerHTML=`<div class="mission-meta"><span class="mission-type ${type}">${type}</span><span class="mission-time">${timeAgo(item.pubDate)}</span></div><div class="mission-target">${item.title.substring(0,80)}</div><div class="mission-brief">${(item.description||'').replace(/<[^>]*>/g,'').substring(0,120)}...</div><div class="mission-coords">SRC: ${item.link?new URL(item.link).hostname:'SIGINT'} // PRIORITY: ${priority.replace('priority-','').toUpperCase()}</div>`;
+el.onclick=()=>window.open(item.link,'_blank');
+return el}
+
+async function loadIntel(){
+let allItems=[];
+for(const src of RSS_SOURCES){
+try{const r=await fetch(src.url);const d=await r.json();
+if(d.items)d.items.slice(0,3).forEach(i=>allItems.push({...i,type:src.type,priority:src.priority}));
+}catch(e){console.log('Feed unavailable:',src.url)}}
+allItems.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
+if(missionGrid){missionGrid.innerHTML='';
+allItems.slice(0,9).forEach(item=>{missionGrid.appendChild(renderMission(item,item.type,item.priority))});
+if(allItems.length===0){missionGrid.innerHTML='<div class="mission-entry priority-med" style="grid-column:1/-1;text-align:center"><div class="mission-target">Awaiting Signal Intelligence...</div><div class="mission-brief">Drone reconnaissance active. Monitoring all channels for target activity.</div></div>'}}}
+loadIntel();
+setInterval(loadIntel,120000);
+
+// === DRONE AGENT SPAWN ON GLOBE ===
+// When live intel arrives, spawn agent bots from globe
+function spawnDroneAgent(text,color){
+const bf=document.querySelector('.battlefield');
+if(!bf)return;
+const bot=document.createElement('div');
+bot.style.cssText=`position:absolute;z-index:15;pointer-events:none;top:${30+Math.random()*40}%;left:${20+Math.random()*50}%;opacity:0;transition:all 1s ease`;
+bot.innerHTML=`<div style="display:flex;align-items:center;gap:6px"><div style="width:6px;height:6px;border-radius:50%;background:${color};box-shadow:0 0 10px ${color}"></div><div style="background:rgba(6,10,15,0.9);border:1px solid ${color}33;border-radius:4px;padding:3px 8px;font-size:0.5rem;color:${color};white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis">${text}</div></div>`;
+bf.appendChild(bot);
+requestAnimationFrame(()=>{bot.style.opacity='1';bot.style.transform='translateY(-10px)'});
+setTimeout(()=>{bot.style.opacity='0';bot.style.transform='translateY(-30px)'},4000);
+setTimeout(()=>bot.remove(),5000)}
+
+// Periodically spawn agents based on real feed
+setInterval(()=>{
+const entries=document.querySelectorAll('.mission-entry');
+if(entries.length>0){
+const e=entries[Math.floor(Math.random()*entries.length)];
+const t=e.querySelector('.mission-target');
+const type=e.querySelector('.mission-type');
+let color='#00d4ff';
+if(type&&type.classList.contains('alert'))color='#ff3355';
+else if(type&&type.classList.contains('signal'))color='#ffaa00';
+else if(type&&type.classList.contains('recon'))color='#00ff88';
+if(t)spawnDroneAgent(t.textContent.substring(0,50),color)}
+},6000);
+
+// Initial spawn burst
+setTimeout(()=>{spawnDroneAgent('Initializing reconnaissance..','#00d4ff')},2000);
+setTimeout(()=>{spawnDroneAgent('Signal acquired - scanning..','#00ff88')},3500);
+setTimeout(()=>{spawnDroneAgent('Target lock established','#ffaa00')},5000);
 </script>
 </body>
 </html>
-
-<!-- v3 -->
