@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROI Calculator Engine | Joel Dunson</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#0a0e17;color:#e0e0e0;min-height:100vh}
+.nav{display:flex;gap:12px;padding:20px 32px;border-bottom:1px solid #1a2332}
+.nav a{color:#00e5ff;text-decoration:none;padding:8px 16px;border:1px solid #1a2332;border-radius:8px;font-size:14px}
+.nav a:hover,.nav a.active{background:#00e5ff;color:#000}
+.container{max-width:1200px;margin:0 auto;padding:32px}
+h1{color:#00e5ff;font-size:32px;margin-bottom:8px}
+.sub{color:#888;margin-bottom:32px}
+.card{background:#0d1420;border:1px solid #1a2332;border-radius:12px;padding:24px;margin-bottom:20px}
+h2{color:#00e5ff;font-size:20px;margin-bottom:16px}
+label{display:block;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin:16px 0 6px}
+input{width:100%;padding:10px 14px;background:#111927;border:1px solid #1a2332;border-radius:8px;color:#e0e0e0;font-size:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn{display:inline-block;padding:12px 24px;background:#00e5ff;color:#000;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:16px}
+.btn:hover{background:#00b8d4}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+.m{text-align:center;padding:20px;background:#111927;border:1px solid #1a2332;border-radius:12px}
+.m .v{font-size:36px;font-weight:700;color:#00e5ff;margin:8px 0}
+.m .l{font-size:12px;color:#888;text-transform:uppercase}
+table{width:100%;border-collapse:collapse;margin-top:16px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #1a2332;font-size:14px}
+th{color:#00e5ff;background:#111927}
+.pos{color:#69f0ae}
+.out{background:#111927;border:1px solid #1a2332;border-radius:8px;padding:16px;margin-top:16px;font-family:monospace;font-size:13px;line-height:1.8;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<div class="nav">
+<a href="../hub.html">Hub</a>
+<a href="../command-center.html">Command Center</a>
+<a href="index.html">Tools</a>
+<a href="../intelligence/index.html">Intelligence</a>
+<a href="roi-calculator.html" class="active">ROI Calculator</a>
+</div>
+<div class="container">
+<h1>ROI Calculator Engine</h1>
+<p class="sub">Custom ROI modeling tool. Input deal parameters, output financial projections for executive stakeholder presentations.</p>
+<div class="grid">
+<div>
+<div class="card">
+<h2>Deal Parameters</h2>
+<label>Account Name</label>
+<input type="text" id="acct" value="Snowflake">
+<label>Annual Contract Value (ACV)</label>
+<input type="number" id="acv" value="500000">
+<label>Processes Automated</label>
+<input type="number" id="procs" value="12">
+<label>Avg FTEs per Process</label>
+<input type="number" id="fte" value="3" step="0.5">
+<label>Fully-Loaded FTE Cost</label>
+<input type="number" id="ftecost" value="85000">
+<label>Current Error Rate (%)</label>
+<input type="number" id="err" value="8" step="0.5">
+<label>Cost per Error ($)</label>
+<input type="number" id="errcost" value="250">
+<label>Transactions per Year</label>
+<input type="number" id="txn" value="50000">
+<label>Implementation Cost</label>
+<input type="number" id="impl" value="150000">
+<button class="btn" onclick="calc()">Calculate ROI</button>
+</div>
+</div>
+<div>
+<div class="card">
+<h2>ROI Summary</h2>
+<div class="g4">
+<div class="m"><div class="l">3-Year ROI</div><div class="v" id="roi">--</div></div>
+<div class="m"><div class="l">Net Benefit Y1</div><div class="v" id="net">--</div></div>
+<div class="m"><div class="l">Payback</div><div class="v" id="payback">--</div></div>
+<div class="m"><div class="l">Annual Savings</div><div class="v" id="savings">--</div></div>
+</div>
+</div>
+<div class="card">
+<h2>3-Year Projection</h2>
+<table>
+<thead><tr><th></th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Total</th></tr></thead>
+<tbody id="proj"><tr><td colspan="5" style="color:#888;text-align:center;padding:40px">Click Calculate ROI to generate projections</td></tr></tbody>
+</table>
+</div>
+<div class="card">
+<h2>Executive Summary</h2>
+<div id="exec" class="out">Configure parameters and calculate to generate an executive-ready summary.</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+function fmt(n){return "$"+Math.round(n).toLocaleString()}
+function calc(){
+var acv=+document.getElementById("acv").value;
+var procs=+document.getElementById("procs").value;
+var fte=+document.getElementById("fte").value;
+var ftecost=+document.getElementById("ftecost").value;
+var err=+document.getElementById("err").value/100;
+var errcost=+document.getElementById("errcost").value;
+var txn=+document.getElementById("txn").value;
+var impl=+document.getElementById("impl").value;
+var acct=document.getElementById("acct").value;
+var laborSave=procs*fte*ftecost*0.65;
+var errSave=txn*err*errcost*0.80;
+var totalSave=laborSave+errSave;
+var y1net=totalSave-acv-impl;
+var y2net=totalSave-acv;
+var y3net=totalSave-acv;
+var total3=y1net+y2net+y3net;
+var totalCost3=acv*3+impl;
+var roi3=Math.round((total3/totalCost3)*100);
+var payMo=Math.ceil((acv+impl)/totalSave*12);
+document.getElementById("roi").textContent=roi3+"%";
+document.getElementById("net").textContent=fmt(y1net);
+document.getElementById("payback").textContent=payMo+" mo";
+document.getElementById("savings").textContent=fmt(totalSave);
+var tb=document.getElementById("proj");
+tb.innerHTML="<tr><td>Savings</td><td class='pos'>"+fmt(totalSave)+"</td><td class='pos'>"+fmt(totalSave)+"</td><td class='pos'>"+fmt(totalSave)+"</td><td class='pos'>"+fmt(totalSave*3)+"</td></tr><tr><td>Platform Cost</td><td>"+fmt(acv)+"</td><td>"+fmt(acv)+"</td><td>"+fmt(acv)+"</td><td>"+fmt(acv*3)+"</td></tr><tr><td>Implementation</td><td>"+fmt(impl)+"</td><td>$0</td><td>$0</td><td>"+fmt(impl)+"</td></tr><tr><td><strong>Net Benefit</strong></td><td class='pos'><strong>"+fmt(y1net)+"</strong></td><td class='pos'><strong>"+fmt(y2net)+"</strong></td><td class='pos'><strong>"+fmt(y3net)+"</strong></td><td class='pos'><strong>"+fmt(total3)+"</strong></td></tr>";
+document.getElementById("exec").textContent="EXECUTIVE ROI SUMMARY: "+acct+"\n"+"=".repeat(50)+"\n\nInvestment:\n  Platform (3-year): "+fmt(acv*3)+"\n  Implementation: "+fmt(impl)+"\n  Total Investment: "+fmt(totalCost3)+"\n\nReturns:\n  Labor Efficiency (65% automation): "+fmt(laborSave)+"/yr\n  Error Reduction (80% improvement): "+fmt(errSave)+"/yr\n  Total Annual Savings: "+fmt(totalSave)+"\n\nFinancials:\n  3-Year ROI: "+roi3+"%\n  Payback Period: "+payMo+" months\n  3-Year Net Benefit: "+fmt(total3)+"\n\nRecommendation:\n  PROCEED - Strong positive ROI with payback under "+(payMo<=12?"12 months":"18 months")+".";
+}
+</script>
+</body>
+</html>
