@@ -1,0 +1,41 @@
+{
+  "webhooks": {
+    "github": {
+      "events": {
+        "push": { "actions": ["updateGlobeActivity", "triggerLinearSync", "deployIfMain"] },
+        "pull_request": { "actions": ["createLinearIssue", "addGlobeMarker", "notifyTeam"] },
+        "issues": { "actions": ["syncToLinear", "assignCursorAgent"] }
+      }
+    },
+    "gitlab": {
+      "events": {
+        "merge_request": { "actions": ["syncToLinear", "updateGlobeActivity", "mirrorToGitHub"] },
+        "pipeline": { "actions": ["updateLinearIssueStatus", "addGlobePipelineMarker", "notifyOnFailure"] }
+      }
+    },
+    "tally": {
+      "events": {
+        "form.submission.created": { "actions": ["verifySignature", "createLinearIssue", "routeToAgent", "addGlobeMarker", "sendConfirmation"] }
+      }
+    },
+    "linear": {
+      "events": {
+        "issue.create": { "actions": ["assignCursorAgent", "addGlobeMarker"] },
+        "issue.update": { "actions": ["syncToGitHub", "syncToGitLab", "updateGlobeStatus"] },
+        "issue.remove": { "actions": ["removeGlobeMarker", "archiveRelatedData"] }
+      }
+    }
+  },
+  "globeVisualization": {
+    "dataEndpoint": "/docs/globe-activity.json",
+    "updateFrequency": "realtime",
+    "markerTypes": {
+      "commit": { "color": "#00A0FB", "size": 0.04 },
+      "mergeRequest": { "color": "#FC6D26", "size": 0.05 },
+      "tallySubmission": { "color": "#32C8C1", "size": 0.06 },
+      "cursorAgentActivity": { "color": "#9B59B6", "size": 0.05 },
+      "pipelineSuccess": { "color": "#2ECC71", "size": 0.04 },
+      "pipelineFailure": { "color": "#E74C3C", "size": 0.04 }
+    }
+  }
+}
