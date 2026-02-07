@@ -1,0 +1,55 @@
+{
+  "agents": [
+    {
+      "id": "website-enhancer-agent",
+      "name": "Website Enhancement Specialist",
+      "version": "1.0.0",
+      "platform": "cursor",
+      "triggers": {
+        "linear": { "labels": ["website-enhancement", "animation", "ui-update"] },
+        "github": { "paths": ["intelligence/*", "tools/*", "assets/*"] }
+      },
+      "capabilities": ["COBE globe", "GSAP animations", "Particle effects", "Responsive design"],
+      "nfrs": { "maxExecutionTime": "10min", "lighthouseScore": 90 }
+    },
+    {
+      "id": "data-processor-agent",
+      "name": "Data Pipeline Specialist",
+      "version": "1.0.0",
+      "platform": "cursor",
+      "triggers": {
+        "linear": { "labels": ["data-pipeline", "integration", "api"] }
+      },
+      "capabilities": ["API integration", "Data transformation", "Webhook config"],
+      "nfrs": { "maxExecutionTime": "12min", "testCoverage": 80 }
+    },
+    {
+      "id": "gitlab-sync-agent",
+      "name": "GitLab Synchronization Agent",
+      "version": "1.0.0",
+      "platform": "github-actions",
+      "triggers": {
+        "gitlab": { "events": ["merge_request", "pipeline_success", "pipeline_failure"] }
+      },
+      "capabilities": ["Bidirectional sync", "Linear updates", "CI/CD visualization"],
+      "nfrs": { "maxExecutionTime": "2min", "reliability": "99.9%" }
+    },
+    {
+      "id": "tally-intake-agent",
+      "name": "Tally Form Intake Processor",
+      "version": "1.0.0",
+      "platform": "github-actions",
+      "triggers": {
+        "tally": { "events": ["form.submission.created"] }
+      },
+      "capabilities": ["Parse submissions", "Create Linear issues", "Route to agents", "Globe markers"],
+      "nfrs": { "maxExecutionTime": "90s", "responseTime": "< 10s" }
+    }
+  ],
+  "agentOrchestration": {
+    "primaryHub": "linear",
+    "priorityQueue": true,
+    "maxRetries": 3,
+    "fallbackBehavior": "create-manual-issue"
+  }
+}
