@@ -1,0 +1,53 @@
+{
+  "tallyIntegration": {
+    "formId": "wkRE5r",
+    "webhookSecret": "TALLY_WEBHOOK_SECRET",
+    "endpoint": "/.github/workflows/tally-webhook-handler.yml",
+    "fieldMapping": {
+      "projectName": "field_project_name",
+      "clientEmail": "field_client_email",
+      "engagementType": "field_engagement_type",
+      "priority": "field_priority",
+      "description": "field_description",
+      "budgetRange": "field_budget_range",
+      "timeline": "field_timeline"
+    },
+    "actions": {
+      "onSubmission": [
+        "create-linear-issue",
+        "update-globe-marker",
+        "notify-slack",
+        "route-to-agent"
+      ],
+      "onUpdate": [
+        "sync-linear-status",
+        "update-dashboard"
+      ]
+    },
+    "validation": {
+      "requiredFields": ["projectName", "clientEmail", "engagementType"],
+      "emailVerification": true,
+      "spamProtection": {
+        "enabled": true,
+        "provider": "tally-native"
+      }
+    }
+  },
+  "linearMapping": {
+    "teamId": "AGENTIC-AI",
+    "defaultLabels": ["tally-intake", "auto-created"],
+    "priorityMapping": {
+      "urgent": 1,
+      "high": 2,
+      "medium": 3,
+      "low": 4
+    },
+    "templateId": "client-intake-template"
+  },
+  "globeIntegration": {
+    "enabled": true,
+    "markerType": "client-inquiry",
+    "geocodingProvider": "nominatim",
+    "activityFeed": true
+  }
+}
