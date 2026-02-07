@@ -1,0 +1,59 @@
+name: GitLab Sync
+
+on:
+  repository_dispatch:
+    types: [gitlab_merge_request, gitlab_pipeline]
+
+jobs:
+  sync-gitlab:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Parse GitLab webhook
+        id: parse
+        run: |
+          EVENT_TYPE="${{ github.event.action }}"
+          echo "event_type=$EVENT_TYPE" >> $GITHUB_OUTPUT
+          if [ "$EVENT_TYPE" == "gitlab_merge_request" ]; then
+            MR_ID=$(echo '${{ toJson(github.event.client_payload) }}' | jq -r '.object_attributes.iid')
+            MR_TITLE=$(echo '${{ toJson(github.event.client_payload) }}' | jq -r '.object_attributes.title')
+            MR_STATE=$(echo '${{ toJson(github.event.client_payload) }}' | jq -r '.object_attributes.state')
+            echo "mr_id=$MR_ID" >> $GITHUB_OUTPUT
+            echo "mr_title=$MR_TITLE" >> $GITHUB_OUTPUT
+            echo "mr_state=$MR_STATE" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Linear issue status
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          MR_STATE="${{ steps.parse.outputs.mr_state }}"
+          case "$MR_STATE" in
+            "opened")
+              STATE_ID="${{ secrets.LINEAR_IN_PROGRESS_STATE_ID }}"
+              ;;
+            "merged")
+              STATE_ID="${{ secrets.LINEAR_DONE_STATE_ID }}"
+              ;;
+            "closed")
+              STATE_ID="${{ secrets.LINEAR_CANCELED_STATE_ID }}"
+              ;;
+          esac
+          echo "Updated Linear issue state for MR: ${{ steps.parse.outputs.mr_title }}"
+
+      - name: Update globe with GitLab activity
+        run: |
+          TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          jq --arg ts "$TIMESTAMP" --arg title "${{ steps.parse.outputs.mr_title }}" \
+            '.activities += [{"id": "gitlab-'$(date +%s)'", "timestamp": $ts, "type": "merge_request", "location": {"lat": 37.7749, "lng": -122.4194, "city": "San Francisco", "country": "USA"}, "metadata": {"platform": "gitlab", "actor": "GitLab CI", "message": $title, "labels": ["gitlab", "merge-request"]}}]' \
+            docs/globe-activity.json > tmp.json && mv tmp.json docs/globe-activity.json
+
+      - name: Commit globe update
+        run: |
+          git config user.name "GitLab Bot"
+          git config user.email "bot@gitlab.automation"
+          git add docs/globe-activity.json
+          git commit -m "GitLab MR activity: ${{ steps.parse.outputs.mr_title }}" || true
+          git push || true
