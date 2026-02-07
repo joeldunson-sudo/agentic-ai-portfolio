@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-02-07T22:13:05Z",
+  "updated_utc": "2026-02-07T22:16:21Z",
   "mode": "terminal_build",
   "territory": {
     "name": "AMS West",
@@ -263,7 +263,7 @@
     }
   ],
   "real_time_signals": {
-    "last_scan": "2026-02-07T22:13:05Z",
+    "last_scan": "2026-02-07T22:16:21Z",
     "press_releases": 0,
     "blog_posts_detected": 0,
     "job_postings_relevant": 0,
