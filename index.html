@@ -675,138 +675,8 @@
                 width: 100%;
             }
         }
-    </style>
-</head>
-<body>
-    <header class="header" style="position: relative;">
 
-                /* === GLOBE-INSPIRED GLOBAL ENHANCEMENTS === */
-
-        /* Scrollbar styling */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--color-bg); }
-        ::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
-
-        /* Glass card effect */
-        .card, .stat-card, .meta-item {
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-color: var(--color-glow) !important;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 var(--color-glow);
-        }
-
-        .card:hover, .stat-card:hover {
-            box-shadow: 0 8px 32px var(--color-glow-strong), inset 0 1px 0 var(--color-glow), 0 0 20px var(--color-glow);
-        }
-
-        /* Gradient headings for all section titles */
-        .section-title, h2, h3 {
-            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Atmospheric glow behind hero */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(ellipse at center, rgba(0,160,251,0.06) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        /* Pulse animation for status indicators */
-        @keyframes pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--color-glow-strong); }
-            50% { opacity: 0.7; box-shadow: 0 0 12px 4px var(--color-glow); }
-        }
-
-        @keyframes glow-pulse {
-            0%, 100% { box-shadow: 0 0 5px var(--color-glow); }
-            50% { box-shadow: 0 0 20px var(--color-glow-strong), 0 0 40px var(--color-glow); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-
-        @keyframes data-flow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-
-        @keyframes typing-cursor {
-            0%, 100% { border-right-color: var(--color-primary); }
-            50% { border-right-color: transparent; }
-        }
-
-        /* Workflow step enhancements */
-        .workflow-step {
-            border-left: 3px solid transparent;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .workflow-step:hover {
-            border-left-color: var(--color-primary);
-            box-shadow: -4px 0 16px var(--color-glow);
-        }
-
-        .workflow-step.active {
-            border-left-color: var(--color-success);
-            box-shadow: -4px 0 16px rgba(0, 200, 83, 0.2);
-        }
-
-        /* Animated workflow arrows */
-        .workflow-arrow {
-            animation: float 2s ease-in-out infinite;
-            text-shadow: 0 0 10px var(--color-glow);
-        }
-
-        /* Badge glow effects */
-        .badge-success { box-shadow: 0 0 8px rgba(0, 200, 83, 0.3); }
-        .badge-primary { box-shadow: 0 0 8px var(--color-glow); }
-        .badge-warning { box-shadow: 0 0 8px rgba(255, 152, 0, 0.3); }
-
-        /* Interactive demo box glow */
-        .interactive-demo {
-            box-shadow: 0 0 30px rgba(0,160,251,0.05), inset 0 1px 0 var(--color-glow);
-            border-color: var(--color-glow) !important;
-        }
-
-        /* CTA section particle background */
-        .cta-section {
-            background-image: radial-gradient(circle at 20% 50%, rgba(0,160,251,0.08) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(50,184,198,0.06) 0%, transparent 50%), radial-gradient(circle at 50% 80%, rgba(0,160,251,0.04) 0%, transparent 50%), linear-gradient(135deg, var(--color-secondary), var(--color-bg-elevated));
-            box-shadow: 0 0 40px var(--color-glow), inset 0 0 60px rgba(0,0,0,0.3);
-        }
-
-        /* Progress bar glow */
-        .progress-fill, .metric-fill {
-            box-shadow: 0 0 8px var(--color-glow);
-        }
-
-        /* Table row hover glow */
-        tr:hover {
-            box-shadow: inset 0 0 20px var(--color-glow);
-        }
-
-        /* Quote box enhancement */
-        .quote-box {
-            border-left-width: 3px;
-            box-shadow: -4px 0 16px var(--color-glow), 0 4px 16px rgba(0,0,0,0.2);
-        }
+                /* === GLOBE-INSPIRE DESIGN ENHANCEMENTS === */
 
         /* Timeline node glow */
         .timeline-item::before {
@@ -852,7 +722,143 @@
         .slider-input::-webkit-slider-thumb {
             box-shadow: 0 0 10px var(--color-glow-strong);
         }
-        <div class="container">
+
+        /* Card hover lift effect */
+        .card, .deal-card-interactive, .evidence-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover, .deal-card-interactive:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px var(--color-glow);
+        }
+
+        /* Section fade-in on scroll */
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .section.active, .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Gradient text shimmer for hero */
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .hero h1 {
+            background-size: 200% auto;
+            animation: shimmer 4s linear infinite;
+        }
+
+        /* Fade in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pulse animation for values */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .stat-value, .value {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        /* Progress bar animation */
+        @keyframes fillBar {
+            from { width: 0; }
+            to { width: var(--fill-width, 100%); }
+        }
+
+        /* Table row hover */
+        tbody tr:hover {
+            background: var(--color-bg-elevated);
+            box-shadow: inset 4px 0 0 var(--color-primary);
+        }
+
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-glow-strong);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
+        }
+
+        /* CTA section styles */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(180deg, transparent, var(--color-bg-elevated) 30%, var(--color-bg-elevated) 70%, transparent);
+            border-top: 1px solid var(--color-border);
+            margin-top: 2rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cta-section p {
+            color: var(--color-text-muted);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px var(--color-glow);
+        }
+
+        .stat-label {
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header" style="position: relative;">
+
+                <div class="container">
             <div class="hero">
                 <h1>Director, Agentic AI Sales Execution Strategy</h1>
                 <p class="subtitle">Capability Portfolio - Role Approval Evidence</p>
@@ -1691,6 +1697,30 @@
                 </table>
             </div>
         </section>
+
+                <!-- CTA Section -->
+        <div class="cta-section">
+            <h2>The Position That Doesn't Exist</h2>
+            <p>Agentic AI sales execution layer for enterprise SaaS &ndash; architected, operational, ready to scale field-wide</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Workstreams</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">40%</div>
+                    <div class="stat-label">Demand Play Design</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">25%</div>
+                    <div class="stat-label">Agentic AI Development</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">15%</div>
+                    <div class="stat-label">West Coast IC R&amp;D Lab</div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer style="background: var(--color-bg-card); border-top: 2px solid var(--color-primary); padding: 3rem 0; margin-top: 0;">
@@ -2031,6 +2061,39 @@
 
         // Initialize adoption display
         updateAdoption(60);
+
+                    // === GLOBE-INSPIRE: Scroll-based section reveal ===
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const sectionObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                sectionObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.section, section').forEach(function(section) {
+        section.classList.add('visible');
+    });
+
+    // Animate stat values on scroll
+    const statObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'pulse 3s ease-in-out infinite';
+                statObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-value, .value').forEach(function(el) {
+        statObserver.observe(el);
+    });
     </script>
 </body>
 </html>
