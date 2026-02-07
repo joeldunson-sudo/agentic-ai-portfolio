@@ -1,168 +1,383 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>Sales Execution Strategy | Joel Dunson</title>
-  <link rel="stylesheet" href="./assets/hub.css" />
-  <style>
-    .process-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;margin:2.5rem 0}
-    .phase-node{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:1.2rem 1.5rem;text-align:center;min-width:160px;transition:border-color .3s,transform .3s}
-    .phase-node:hover{border-color:var(--accent);transform:translateY(-3px)}         .phase-node.expanded{border-color:var(--accent);background:rgba(0,160,251,.08);transform:scale(1.02)}         .phase-node.expanded .phase-sub{max-height:200px;padding-top:.5rem}
-    .phase-num{font-size:.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:.35rem}
-    .phase-title{font-size:1.05rem;font-weight:600;color:var(--fg)}
-    .phase-sub{font-size:.8rem;color:var(--muted);margin-top:.25rem}
-    .phase-arrow{font-size:1.4rem;color:var(--accent);padding:0 .5rem;flex-shrink:0}
-    .hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:2rem}
-    .hub-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;transition:border-color .3s,transform .3s}
-    .hub-card:hover{border-color:var(--accent);transform:translateY(-4px)}
-    .hub-card h3{font-size:1.2rem;color:var(--fg);margin-bottom:.5rem}
-    .hub-card .tag{display:inline-block;font-size:.7rem;padding:.25rem .6rem;border-radius:12px;font-weight:600;margin-bottom:.75rem}
-    .tag-live{background:rgba(0,200,83,.15);color:#00c853;border:1px solid #00c853}
-    .tag-concept{background:rgba(0,160,251,.15);color:#00a0fb;border:1px solid #00a0fb}
-    .tag-policy{background:rgba(255,152,0,.15);color:#ff9800;border:1px solid #ff9800}
-    .hub-card p{color:var(--muted);font-size:.9rem;line-height:1.6;margin-bottom:1rem}
-    .hub-card .card-link{display:inline-block;color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;transition:color .2s}
-    .hub-card .card-link:hover{color:var(--fg)}
-    .section-label{font-size:.75rem;text-transform:uppercase;letter-spacing:3px;color:var(--muted);margin-bottom:.5rem}
-    .section-title{font-size:2rem;font-weight:700;color:var(--fg);margin-bottom:.5rem}
-    .section-sub{color:var(--muted);font-size:1rem;margin-bottom:2rem;max-width:640px}
-    .divider{height:1px;background:var(--border);margin:3rem 0}
-    @media(max-width:680px){.process-flow{flex-direction:column}.phase-arrow{transform:rotate(90deg);padding:.3rem 0}}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sales Execution Strategy | Joel Dunson</title>
+<link rel="stylesheet" href="./assets/hub.css" />
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0A0E27;color:#fff;line-height:1.6}
+.header{background:linear-gradient(135deg,#002854 0%,#0A0E27 100%);border-bottom:2px solid #00A0FB;padding:1.5rem 0;text-align:center}
+.header h1{font-size:2.2rem;background:linear-gradient(135deg,#00A0FB,#32B8C6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header .sub{color:#B0B8CC;font-size:.95rem;margin-top:.25rem}
+.status-bar{display:flex;justify-content:center;gap:24px;margin-top:12px;flex-wrap:wrap}
+.status-item{display:flex;align-items:center;gap:6px;font-size:.8rem;color:#B0B8CC}
+.status-dot{width:8px;height:8px;border-radius:50%;animation:pulse 2s infinite}
+.status-dot.green{background:#00C853}
+.status-dot.blue{background:#00A0FB}
+.status-dot.amber{background:#FF9800}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.container{max-width:1400px;margin:0 auto;padding:0 1rem}
+.nav-bar{display:flex;gap:8px;justify-content:center;margin:1rem 0;flex-wrap:wrap}
+.nav-bar a{padding:.5rem 1rem;background:#141B3A;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#B0B8CC;text-decoration:none;font-size:.85rem;transition:.3s}
+.nav-bar a:hover,.nav-bar a.active{background:#00A0FB;color:#fff;border-color:#00A0FB}
+.ops-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:1rem}
+@media(max-width:900px){.ops-grid{grid-template-columns:1fr}}
+.ops-panel{background:#141B3A;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px;position:relative;overflow:hidden}
+.ops-panel h3{font-size:.85rem;text-transform:uppercase;letter-spacing:2px;color:#00A0FB;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.ops-panel h3 .live-dot{width:6px;height:6px;border-radius:50%;background:#ff4444;animation:pulse 1s infinite}
+.signal-feed{max-height:220px;overflow-y:auto;font-size:.82rem}
+.signal-item{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;transition:.2s}
+.signal-item:hover{background:rgba(0,160,251,.06)}
+.signal-company{font-weight:600;color:#fff}
+.signal-score{font-weight:700;padding:2px 8px;border-radius:4px;font-size:.75rem}
+.signal-score.high{background:rgba(0,200,83,.15);color:#00C853}
+.signal-score.med{background:rgba(0,160,251,.15);color:#00A0FB}
+.signal-score.low{background:rgba(255,152,0,.15);color:#FF9800}
+.signal-meta{color:#B0B8CC;font-size:.75rem}
+.alert-item{padding:10px;border-radius:6px;margin-bottom:8px;font-size:.82rem;border-left:3px solid}
+.alert-item.urgent{background:rgba(255,68,68,.08);border-color:#ff4444}
+.alert-item.warning{background:rgba(255,152,0,.08);border-color:#FF9800}
+.alert-item.info{background:rgba(0,160,251,.08);border-color:#00A0FB}
+.alert-badge{font-size:.65rem;font-weight:700;padding:2px 6px;border-radius:3px;margin-right:6px;text-transform:uppercase}
+.alert-badge.urgent{background:#ff4444;color:#fff}
+.alert-badge.warning{background:#FF9800;color:#fff}
+.alert-badge.info{background:#00A0FB;color:#fff}
+.agent-console{background:#0A0E27;border-radius:6px;padding:12px;font-family:'Courier New',monospace;font-size:.78rem;color:#00C853;min-height:180px;position:relative;overflow:hidden}
+.agent-line{padding:2px 0;opacity:0;animation:fadeInLine .3s forwards}
+.agent-line .timestamp{color:#555;margin-right:8px}
+.agent-line .action{color:#00A0FB}
+.agent-line .result{color:#00C853}
+.agent-line .thinking{color:#FF9800}
+@keyframes fadeInLine{to{opacity:1}}
+.agent-cursor{display:inline-block;width:8px;height:14px;background:#00C853;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.workflow-canvas{width:100%;height:200px;position:relative;overflow:hidden}
+.wf-node{position:absolute;width:60px;height:60px;border-radius:50%;border:2px solid #00A0FB;display:flex;align-items:center;justify-content:center;font-size:.65rem;text-align:center;color:#fff;transition:.3s}
+.wf-node.active{background:rgba(0,160,251,.2);box-shadow:0 0 20px rgba(0,160,251,.4)}
+.wf-line{position:absolute;height:2px;background:linear-gradient(90deg,transparent,#00A0FB,transparent);animation:flowLine 2s infinite linear}
+@keyframes flowLine{0%{background-position:-200px 0}100%{background-position:200px 0}}
+.data-packet{position:absolute;width:6px;height:6px;border-radius:50%;background:#00A0FB;box-shadow:0 0 8px #00A0FB}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:1rem 0}
+.kpi-card{background:#141B3A;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:14px;text-align:center}
+.kpi-val{font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,#00A0FB,#32B8C6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-label{font-size:.75rem;color:#B0B8CC;margin-top:4px}
+.kpi-trend{font-size:.7rem;margin-top:2px}
+.kpi-trend.up{color:#00C853}
+.kpi-trend.down{color:#ff4444}
+.section-divider{height:1px;background:rgba(255,255,255,.06);margin:1.5rem 0}
+.section-label{font-size:.7rem;text-transform:uppercase;letter-spacing:3px;color:#B0B8CC;margin-bottom:.4rem}
+.section-title{font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:.4rem}
+.section-sub{color:#B0B8CC;font-size:.85rem;margin-bottom:1rem}
+.tungsten-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:1rem}
+.tungsten-card{background:#141B3A;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px}
+.tungsten-card h4{color:#00A0FB;font-size:.9rem;margin-bottom:8px}
+.tungsten-card .metric-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem}
+.tungsten-card .metric-row .label{color:#B0B8CC}
+.tungsten-card .metric-row .val{font-weight:600}
+.bar{height:6px;background:#1A2348;border-radius:3px;margin-top:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width 1s}
+.territory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:1rem}
+.territory-card{background:#141B3A;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px;transition:.3s}
+.territory-card:hover{border-color:#00A0FB;transform:translateY(-2px)}
+.territory-card h4{font-size:1rem;margin-bottom:4px}
+.territory-card .stage{font-size:.75rem;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:8px}
+.territory-card .stage.decision{background:rgba(0,200,83,.15);color:#00C853}
+.territory-card .stage.research{background:rgba(0,160,251,.15);color:#00A0FB}
+.territory-card .stage.purchase{background:rgba(255,152,0,.15);color:#FF9800}
+.mini-window{background:#0A0E27;border:1px solid rgba(0,160,251,.2);border-radius:6px;margin-top:10px;overflow:hidden}
+.mini-window .mini-bar{background:#141B3A;padding:4px 8px;font-size:.65rem;color:#B0B8CC;display:flex;align-items:center;gap:6px}
+.mini-window .mini-bar .dot{width:6px;height:6px;border-radius:50%}
+.mini-window .mini-content{padding:8px;font-family:'Courier New',monospace;font-size:.7rem;color:#00C853;max-height:100px;overflow:hidden}
+.footer{text-align:center;padding:2rem;color:#555;font-size:.8rem;border-top:1px solid rgba(255,255,255,.05);margin-top:2rem}
+</style>
 </head>
 <body>
+<!-- HEADER -->
+<div class="header">
+<div class="container">
+<h1>Sales Execution Strategy</h1>
+<p class="sub">Agentic AI Operations Center -- Tungsten Automation Intelligence Platform</p>
+<div class="status-bar">
+<div class="status-item"><div class="status-dot green"></div>Pipeline Active</div>
+<div class="status-item"><div class="status-dot blue"></div>Agents Running</div>
+<div class="status-item"><div class="status-dot amber"></div>3 Priority Alerts</div>
+<div class="status-item"><div class="status-dot green"></div>ML Processing</div>
+</div>
+<div class="nav-bar" style="margin-top:12px">
+<a href="./index.html">Portfolio</a>
+<a href="./intelligence/">Intelligence</a>
+<a href="./tools/">Tools</a>
+<a href="./intelligence/6sense-ticker.html">6sense Ticker</a>
+</div>
+</div>
+</div>
 
-  <div class="header">
-    <div class="container">
-              <div class="h1">Sales Execution Strategy</div>
-                  <!-- Stealth UAV Targeting Graphic -->
-            <div style="position:relative;width:120px;height:120px;margin:1.5rem auto 0">
-                <svg viewBox="0 0 120 120" style="width:100%;height:100%">
-                    <circle cx="60" cy="60" r="55" fill="none" stroke="#00A0FB" stroke-width="1" opacity="0.3">
-                        <animate attributeName="r" values="45;55;45" dur="3s" repeatCount="indefinite"/>
-                        <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
-                    </circle>
-                    <circle cx="60" cy="60" r="35" fill="none" stroke="#00A0FB" stroke-width="1.5" opacity="0.5">
-                        <animate attributeName="r" values="30;35;30" dur="2s" repeatCount="indefinite"/>
-                    </circle>
-                    <line x1="60" y1="10" x2="60" y2="110" stroke="#00A0FB" stroke-width="0.5" opacity="0.2"/>
-                    <line x1="10" y1="60" x2="110" y2="60" stroke="#00A0FB" stroke-width="0.5" opacity="0.2"/>
-                    <path d="M60 30 L50 55 L35 60 L50 65 L60 90 L70 65 L85 60 L70 55 Z" fill="#00A0FB" opacity="0.8"/>
-                    <circle cx="60" cy="60" r="4" fill="#00A0FB">
-                        <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/>
-                    </circle>
-                </svg>
-            </div>
-      <p class="sub">Agentic AI Sales Execution -- operational systems, live intelligence, deployment tools.</p>
-      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn secondary" href="./index.html">Back to Portfolio</a>
-        <a class="btn" href="./intelligence/">Intelligence</a>
-        <a class="btn" href="./tools/">Tools</a>
-      </div>
-    </div>
-  </div>
+<div class="container">
 
-  <div class="container">
+<!-- KPI DASHBOARD -->
+<div class="kpi-grid">
+<div class="kpi-card"><div class="kpi-val" id="kpiSignals">847</div><div class="kpi-label">Signals Processed</div><div class="kpi-trend up">+12% today</div></div>
+<div class="kpi-card"><div class="kpi-val" id="kpiAccounts">23</div><div class="kpi-label">Active Accounts</div><div class="kpi-trend up">+3 new</div></div>
+<div class="kpi-card"><div class="kpi-val" id="kpiPipeline">$4.2M</div><div class="kpi-label">Pipeline Influenced</div><div class="kpi-trend up">+$380K</div></div>
+<div class="kpi-card"><div class="kpi-val" id="kpiWinRate">34%</div><div class="kpi-label">Win Rate Lift</div><div class="kpi-trend up">+4.2pts</div></div>
+<div class="kpi-card"><div class="kpi-val" id="kpiAlerts">7</div><div class="kpi-label">Active Alerts</div><div class="kpi-trend down">2 urgent</div></div>
+<div class="kpi-card"><div class="kpi-val" id="kpiAgents">4</div><div class="kpi-label">Agents Deployed</div><div class="kpi-trend up">All active</div></div>
+</div>
 
-    <!-- 6-Phase Agentic Process -->
-    <div style="margin-top:3rem">
-      <div class="section-label">Execution Architecture</div>
-      <div class="section-title">6-Phase Agentic Process</div>
-      <div class="section-sub">End-to-end autonomous pipeline: from deep research to closed revenue. Each phase is operational today.</div>
+<!-- OPERATIONS GRID -->
+<div class="ops-grid">
 
-      <div class="process-flow">
-        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
-          <div class="phase-num">Phase 1</div>
-          <div class="phase-title">Deep Research</div>
-          <div class="phase-sub">AI agent generates competitive intelligence framework</div>
-        </div>
-        <div class="phase-arrow">&#8594;</div>
-        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
-          <div class="phase-num">Phase 2</div>
-          <div class="phase-title">JSON Handoff</div>
-          <div class="phase-sub">Structured data export for downstream systems</div>
-        </div>
-        <div class="phase-arrow">&#8594;</div>
-        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
-          <div class="phase-num">Phase 3</div>
-          <div class="phase-title">LinkedIn Intel</div>
-          <div class="phase-sub">Persona mapping, buying committee ID</div>
-        </div>
-        <div class="phase-arrow">&#8594;</div>
-        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
-          <div class="phase-num">Phase 4</div>
-          <div class="phase-title">ZoomInfo Enrich</div>
-          <div class="phase-sub">Intent signals, contact validation</div>
-        </div>
-        <div class="phase-arrow">&#8594;</div>
-        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
-          <div class="phase-num">Phase 5</div>
-          <div class="phase-title">6sense Scoring</div>
-          <div class="phase-sub">Buying stage, account prioritization</div>
-        </div>
-        <div class="phase-arrow">&#8594;</div>
-        <div class="phase-node" style="cursor:pointer" onclick="this.classList.toggle('expanded')">
-          <div class="phase-num">Phase 6</div>
-          <div class="phase-title">Salesloft Execute</div>
-          <div class="phase-sub">Cadence activation, play deployment</div>
-        </div>
-      </div>
-    </div>
+<!-- LIVE INTENT SIGNALS -->
+<div class="ops-panel">
+<h3><span class="live-dot"></span>Live Intent Signals</h3>
+<div class="signal-feed" id="signalFeed"></div>
+</div>
 
-    <div class="divider"></div>
+<!-- CROSS-CORRELATED ALERTS -->
+<div class="ops-panel">
+<h3><span class="live-dot"></span>Cross-Correlated Alerts</h3>
+<div id="alertFeed"></div>
+</div>
 
-    <!-- Systems & Intelligence -->
-    <div class="section-label">Operational Systems</div>
-    <div class="section-title">Live Infrastructure</div>
-    <div class="section-sub">Each card links to a deployed, functional system. No mockups.</div>
+<!-- AGENT: DEEP RESEARCH -->
+<div class="ops-panel">
+<h3><span class="live-dot"></span>Agent: Deep Research Analyst</h3>
+<div class="agent-console" id="agentConsole1"></div>
+<div class="mini-window" style="margin-top:8px">
+<div class="mini-bar"><div class="dot" style="background:#00C853"></div>6-Phase Pipeline Output</div>
+<div class="mini-content" id="miniOutput1"></div>
+</div>
+</div>
 
-    <div class="hub-grid">
+<!-- AGENT: KNOWLEDGE DISCOVERY -->
+<div class="ops-panel">
+<h3><span class="live-dot"></span>Knowledge Discovery Workflow</h3>
+<div class="workflow-canvas" id="workflowCanvas">
+<svg width="100%" height="200" viewBox="0 0 600 200">
+<defs><linearGradient id="flowGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="transparent"/><stop offset=".5" stop-color="#00A0FB"/><stop offset="1" stop-color="transparent"/></linearGradient></defs>
+<!-- Nodes -->
+<circle cx="60" cy="100" r="24" fill="none" stroke="#00A0FB" stroke-width="2" id="wfN1"/><text x="60" y="104" fill="#fff" font-size="9" text-anchor="middle">Ingest</text>
+<circle cx="180" cy="100" r="24" fill="none" stroke="#00A0FB" stroke-width="2" id="wfN2"/><text x="180" y="104" fill="#fff" font-size="9" text-anchor="middle">Parse</text>
+<circle cx="300" cy="100" r="24" fill="none" stroke="#00A0FB" stroke-width="2" id="wfN3"/><text x="300" y="104" fill="#fff" font-size="9" text-anchor="middle">Correlate</text>
+<circle cx="420" cy="100" r="24" fill="none" stroke="#00A0FB" stroke-width="2" id="wfN4"/><text x="420" y="104" fill="#fff" font-size="9" text-anchor="middle">ML Score</text>
+<circle cx="540" cy="100" r="24" fill="none" stroke="#00A0FB" stroke-width="2" id="wfN5"/><text x="540" y="104" fill="#fff" font-size="9" text-anchor="middle">Surface</text>
+<!-- Flow lines -->
+<line x1="84" y1="100" x2="156" y2="100" stroke="rgba(0,160,251,.3)" stroke-width="2"/>
+<line x1="204" y1="100" x2="276" y2="100" stroke="rgba(0,160,251,.3)" stroke-width="2"/>
+<line x1="324" y1="100" x2="396" y2="100" stroke="rgba(0,160,251,.3)" stroke-width="2"/>
+<line x1="444" y1="100" x2="516" y2="100" stroke="rgba(0,160,251,.3)" stroke-width="2"/>
+<!-- Animated packets -->
+<circle r="4" fill="#00A0FB" opacity=".8"><animateMotion dur="2s" repeatCount="indefinite" path="M84,100 L156,100"/></circle>
+<circle r="4" fill="#00C853" opacity=".8"><animateMotion dur="2.5s" repeatCount="indefinite" path="M204,100 L276,100" begin=".5s"/></circle>
+<circle r="4" fill="#FF9800" opacity=".8"><animateMotion dur="1.8s" repeatCount="indefinite" path="M324,100 L396,100" begin="1s"/></circle>
+<circle r="4" fill="#00A0FB" opacity=".8"><animateMotion dur="2.2s" repeatCount="indefinite" path="M444,100 L516,100" begin=".3s"/></circle>
+<!-- Pulse on active node -->
+<circle cx="300" cy="100" r="24" fill="none" stroke="#00A0FB" stroke-width="1" opacity="0"><animate attributeName="r" values="24;40;24" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;0;.6" dur="2s" repeatCount="indefinite"/></circle>
+</svg>
+</div>
+<div class="mini-window">
+<div class="mini-bar"><div class="dot" style="background:#FF9800"></div>ML/DL Analytics Engine</div>
+<div class="mini-content" id="mlOutput"></div>
+</div>
+</div>
 
-      <div class="hub-card">
-        <h3>Intelligence Hub</h3>
-        <div class="tag tag-live">Live</div>
-        <p>Account intelligence dashboard. KPI summaries, deal alerts, and buying-stage data rendered from JSON. Public demo data committed; private overlays gitignored.</p>
-        <a class="card-link" href="./intelligence/">Open Intelligence &#8594;</a>
-      </div>
+</div><!-- /ops-grid -->
 
-      <div class="hub-card">
-        <h3>6sense Live Ticker</h3>
-        <div class="tag tag-live">Live</div>
-        <p>Real-time intent signal feed for AMS West territory. Simulated 6sense data showing buying stages, intent scores, and account movement across the pipeline.</p>
-        <a class="card-link" href="./intelligence/6sense-ticker.html">Open Ticker &#8594;</a>
-      </div>
+<div class="section-divider"></div>
 
-      <div class="hub-card">
-        <h3>Tools -- Perplexity Apps</h3>
-        <div class="tag tag-live">Live</div>
-        <p>Deployed Perplexity app for account research. Stable external links. When Perplexity enables iframe embedding, tools will render inline.</p>
-        <a class="card-link" href="./tools/">Open Tools &#8594;</a>
-      </div>
+<!-- TERRITORY INTELLIGENCE -->
+<div class="section-label">Field Operations</div>
+<div class="section-title">Territory Intelligence</div>
+<div class="section-sub">Live account tracking with intent scoring, buying stage, and engagement signals</div>
+<div class="territory-grid" id="territoryGrid">
+<div class="territory-card">
+<h4>Snowflake</h4><div class="stage purchase">Purchase Stage</div>
+<div class="metric-row"><span class="label">Intent Score</span><span class="val" style="color:#00C853">94</span></div>
+<div class="metric-row"><span class="label">Trigger</span><span class="val">Meta Compute Jan 12</span></div>
+<div class="metric-row"><span class="label">Window</span><span class="val" style="color:#FF9800">30 days</span></div>
+<div class="metric-row"><span class="label">Deal Size</span><span class="val">$1M+</span></div>
+<div class="bar"><div class="bar-fill" style="width:94%;background:linear-gradient(90deg,#00A0FB,#00C853)"></div></div>
+<div class="mini-window" style="margin-top:8px"><div class="mini-bar"><div class="dot" style="background:#00C853"></div>Agent: Monitoring</div><div class="mini-content" id="miniSnow">Scanning procurement filings...</div></div>
+</div>
+<div class="territory-card">
+<h4>Databricks</h4><div class="stage decision">Decision Stage</div>
+<div class="metric-row"><span class="label">Intent Score</span><span class="val" style="color:#00A0FB">79</span></div>
+<div class="metric-row"><span class="label">Trigger</span><span class="val">Systems integration Q1</span></div>
+<div class="metric-row"><span class="label">Window</span><span class="val" style="color:#FF9800">90 days</span></div>
+<div class="metric-row"><span class="label">Deal Size</span><span class="val">$500K+</span></div>
+<div class="bar"><div class="bar-fill" style="width:79%;background:linear-gradient(90deg,#00A0FB,#32B8C6)"></div></div>
+<div class="mini-window" style="margin-top:8px"><div class="mini-bar"><div class="dot" style="background:#00A0FB"></div>Agent: Research</div><div class="mini-content" id="miniData">Mapping buying committee...</div></div>
+</div>
+<div class="territory-card">
+<h4>Pure Storage</h4><div class="stage decision">Decision Stage</div>
+<div class="metric-row"><span class="label">Intent Score</span><span class="val" style="color:#00A0FB">70</span></div>
+<div class="metric-row"><span class="label">Trigger</span><span class="val">Data Cloud + Partnerships</span></div>
+<div class="metric-row"><span class="label">Window</span><span class="val">90-120 days</span></div>
+<div class="metric-row"><span class="label">Deal Size</span><span class="val">$750K+ Y1</span></div>
+<div class="bar"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#00A0FB,#32B8C6)"></div></div>
+<div class="mini-window" style="margin-top:8px"><div class="mini-bar"><div class="dot" style="background:#FF9800"></div>Agent: Battle Card</div><div class="mini-content" id="miniPure">Updating 69-page dossier...</div></div>
+</div>
+<div class="territory-card">
+<h4>Citrix Systems</h4><div class="stage research">Research Stage</div>
+<div class="metric-row"><span class="label">Intent Score</span><span class="val" style="color:#00A0FB">70</span></div>
+<div class="metric-row"><span class="label">Trigger</span><span class="val">License migration Apr 15</span></div>
+<div class="metric-row"><span class="label">Window</span><span class="val" style="color:#FF9800">91 days</span></div>
+<div class="metric-row"><span class="label">Deal Size</span><span class="val">$500K+</span></div>
+<div class="bar"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#FF9800,#00A0FB)"></div></div>
+</div>
+</div>
 
-      <div class="hub-card">
-        <h3>Deep Analyst Agent</h3>
-        <div class="tag tag-concept">Concept</div>
-        <p>Autonomous research agent that ingests target account, runs 6-phase process, and outputs deal-ready intelligence. Architecture documented, build path defined.</p>
-        <a class="card-link" href="./tools/deep-analyst.html">View Concept &#8594;</a>
-      </div>
+<div class="section-divider"></div>
 
-      <div class="hub-card">
-        <h3>Visual Documentation</h3>
-        <div class="tag tag-live">Live</div>
-        <p>Autonomous UI capture system producing 12 screenshots across desktop, tablet, and mobile breakpoints with zero manual effort.</p>
-        <a class="card-link" href="./index.html">View in Portfolio &#8594;</a>
-      </div>
+<!-- TUNGSTEN AUTOMATION MAPPING -->
+<div class="section-label">Platform Intelligence</div>
+<div class="section-title">Tungsten Automation AI Orchestration Mapping</div>
+<div class="section-sub">Every signal maps to platform need. High-confidence correlations driving field strategy.</div>
+<div class="tungsten-map">
+<div class="tungsten-card">
+<h4>Agentic AI Adoption</h4>
+<div class="metric-row"><span class="label">Market Readiness</span><span class="val" style="color:#00C853">High</span></div>
+<div class="metric-row"><span class="label">Accounts Showing Intent</span><span class="val">14</span></div>
+<div class="metric-row"><span class="label">Avg Deal Size</span><span class="val">$680K</span></div>
+<div class="bar"><div class="bar-fill" style="width:85%;background:#00C853"></div></div>
+</div>
+<div class="tungsten-card">
+<h4>Data Platform Spend</h4>
+<div class="metric-row"><span class="label">Budget Signals Detected</span><span class="val" style="color:#00A0FB">23</span></div>
+<div class="metric-row"><span class="label">Procurement Triggers</span><span class="val">8</span></div>
+<div class="metric-row"><span class="label">Pipeline Potential</span><span class="val">$3.4M</span></div>
+<div class="bar"><div class="bar-fill" style="width:72%;background:#00A0FB"></div></div>
+</div>
+<div class="tungsten-card">
+<h4>Legacy RPA Budget</h4>
+<div class="metric-row"><span class="label">Migration Candidates</span><span class="val" style="color:#FF9800">9</span></div>
+<div class="metric-row"><span class="label">Contract Expiry Window</span><span class="val">Q2-Q3 2026</span></div>
+<div class="metric-row"><span class="label">Displacement Revenue</span><span class="val">$2.1M</span></div>
+<div class="bar"><div class="bar-fill" style="width:60%;background:#FF9800"></div></div>
+</div>
+<div class="tungsten-card">
+<h4>High Confidence Plays</h4>
+<div class="metric-row"><span class="label">Validated Plays</span><span class="val" style="color:#00C853">5</span></div>
+<div class="metric-row"><span class="label">Field Adoption</span><span class="val">34%</span></div>
+<div class="metric-row"><span class="label">Win Rate Delta</span><span class="val">+4.2pts</span></div>
+<div class="bar"><div class="bar-fill" style="width:34%;background:linear-gradient(90deg,#00A0FB,#00C853)"></div></div>
+</div>
+</div>
 
-      <div class="hub-card">
-        <h3>Private Ops Policy</h3>
-        <div class="tag tag-policy">Policy</div>
-        <p>No customer data on public Pages. 6sense segments, Salesforce account lists, and intent keywords are never pushed unless sanitized. Private overlays use .gitignore.</p>
-      </div>
+</div><!-- /container -->
 
-    </div>
+<div class="footer">Sales Execution Strategy | Joel Dunson | Tungsten Automation | February 2026</div>
 
-  </div>
+<script>
+// === REAL-TIME DATA ENGINE ===
+const companies=['Snowflake','Databricks','Pure Storage','Citrix','Meta','Confluent','ASU','ServiceNow','Workday','Palantir','CrowdStrike','Palo Alto','Okta','Twilio','HashiCorp','Elastic','Cloudflare','MongoDB','Datadog','Splunk'];
+const sources=['ZoomInfo','6sense','Firmographic','LinkedIn','SEC Filing','Press Release','Job Board','Earnings Call'];
+const stages=['Awareness','Research','Consideration','Decision','Purchase'];
+const events=['CTO hire posted','Q4 earnings beat','Cloud migration RFP','Board approved AI budget','Contract renewal 90 days','M&A integration starting','New VP Engineering hired','Legacy system sunset announced','Partner ecosystem expansion','Data platform consolidation'];
+const agentTasks=['Scanning SEC filings for capex signals...','Cross-referencing LinkedIn hiring with budget data...','Analyzing press releases for M&A triggers...','Mapping buying committee org structure...','Generating competitive positioning matrix...','Correlating job postings with tech stack changes...','Updating account intelligence dossier...','Running firmographic change detection...','Processing intent keyword clusters...','Evaluating procurement cycle timing...'];
+const mlInsights=['Pattern detected: 3 accounts showing correlated hiring + budget signals','Cluster analysis: Data platform spend up 23% in target accounts','Anomaly: Citrix license migration creating 4x normal RFP volume','Prediction: 78% probability Snowflake moves to procurement by Q2','Memory update: 847 signals processed, 12 high-confidence patterns stored','Deep learning: Win rate correlation strongest with multi-signal accounts','Classification: 9 accounts match legacy RPA displacement profile','Regression: Deal velocity increases 34% with 3+ intent signals'];
 
+// SIGNAL FEED
+function addSignal(){
+const co=companies[Math.floor(Math.random()*companies.length)];
+const src=sources[Math.floor(Math.random()*sources.length)];
+const score=Math.floor(Math.random()*40)+60;
+const cls=score>=85?'high':score>=70?'med':'low';
+const feed=document.getElementById('signalFeed');
+const el=document.createElement('div');
+el.className='signal-item';
+el.style.animation='fadeInLine .4s forwards';
+el.innerHTML='<div><span class="signal-company">'+co+'</span><span class="signal-meta"> via '+src+'</span></div><span class="signal-score '+cls+'">'+score+'</span>';
+feed.insertBefore(el,feed.firstChild);
+if(feed.children.length>15)feed.removeChild(feed.lastChild);
+const k=document.getElementById('kpiSignals');
+k.textContent=parseInt(k.textContent)+1;
+}
+
+// ALERT FEED
+const alertTemplates=[
+{type:'urgent',badge:'URGENT',text:function(){return companies[Math.floor(Math.random()*5)]+': '+events[Math.floor(Math.random()*events.length)]+' -- Cross-correlated with budget + hiring signals'}},
+{type:'warning',badge:'WARNING',text:function(){return companies[Math.floor(Math.random()*companies.length)]+': Contract expiry window detected -- Legacy RPA displacement opportunity'}},
+{type:'info',badge:'INTEL',text:function(){return companies[Math.floor(Math.random()*companies.length)]+': New blog post on AI orchestration -- Tungsten platform alignment score: '+Math.floor(Math.random()*20+80)+'%'}}
+];
+function addAlert(){
+const tpl=alertTemplates[Math.floor(Math.random()*alertTemplates.length)];
+const feed=document.getElementById('alertFeed');
+const el=document.createElement('div');
+el.className='alert-item '+tpl.type;
+el.style.animation='fadeInLine .4s forwards';
+el.innerHTML='<span class="alert-badge '+tpl.type+'">'+tpl.badge+'</span>'+tpl.text();
+feed.insertBefore(el,feed.firstChild);
+if(feed.children.length>8)feed.removeChild(feed.lastChild);
+}
+
+// AGENT CONSOLE
+let agentLine=0;
+function addAgentLine(){
+const console1=document.getElementById('agentConsole1');
+const task=agentTasks[agentLine%agentTasks.length];
+const time=new Date().toLocaleTimeString();
+const el=document.createElement('div');
+el.className='agent-line';
+el.innerHTML='<span class="timestamp">['+time+']</span><span class="action">'+task+'</span>';
+console1.appendChild(el);
+console1.scrollTop=console1.scrollHeight;
+if(console1.children.length>20)console1.removeChild(console1.firstChild);
+agentLine++;
+if(agentLine%3===0){
+const r=document.createElement('div');
+r.className='agent-line';
+r.innerHTML='<span class="timestamp">['+time+']</span><span class="result">>>> Pattern found. Confidence: '+Math.floor(Math.random()*15+85)+'%. Storing to memory.</span>';
+console1.appendChild(r);
+console1.scrollTop=console1.scrollHeight;
+}
+}
+
+// ML OUTPUT
+let mlLine=0;
+function addMLInsight(){
+const ml=document.getElementById('mlOutput');
+const insight=mlInsights[mlLine%mlInsights.length];
+ml.textContent=insight;
+mlLine++;
+}
+
+// MINI OUTPUT
+function updateMiniOutputs(){
+const m1=document.getElementById('miniOutput1');
+const outputs=['Phase 1: Deep Research... 23 sources indexed','Phase 2: JSON handoff complete, 847 fields mapped','Phase 3: LinkedIn intel -- 14 personas identified','Phase 4: ZoomInfo enrichment -- 94% match rate','Phase 5: 6sense scoring -- 3 accounts in Purchase stage','Phase 6: Salesloft cadence activated for 8 contacts'];
+m1.textContent=outputs[Math.floor(Math.random()*outputs.length)];
+const ms=document.getElementById('miniSnow');
+if(ms){const st=['Scanning procurement filings...','New RFP detected in federal database','Cross-checking with ZoomInfo contacts','Intent spike: 94 -> monitoring closely'];ms.textContent=st[Math.floor(Math.random()*st.length)];}
+const md=document.getElementById('miniData');
+if(md){const dt=['Mapping buying committee...','CIO Tom Rice identified as champion','Integration timeline confirmed Q1','Budget allocation: $2.3M approved'];md.textContent=dt[Math.floor(Math.random()*dt.length)];}
+const mp=document.getElementById('miniPure');
+if(mp){const pt=['Updating 69-page dossier...','Competitive: UiPath losing ground','CFO messaging framework updated','5 new partnerships cross-referenced'];mp.textContent=pt[Math.floor(Math.random()*pt.length)];}
+}
+
+// WORKFLOW NODE ANIMATION
+let activeNode=1;
+function pulseWorkflow(){
+for(let i=1;i<=5;i++){const n=document.getElementById('wfN'+i);if(n){n.setAttribute('fill',i===activeNode?'rgba(0,160,251,.15)':'none');n.setAttribute('stroke-width',i===activeNode?'3':'2');}}
+activeNode=activeNode%5+1;
+}
+
+// INIT
+for(let i=0;i<8;i++)addSignal();
+for(let i=0;i<4;i++)addAlert();
+for(let i=0;i<5;i++)addAgentLine();
+addMLInsight();
+updateMiniOutputs();
+
+// INTERVALS
+setInterval(addSignal,3000);
+setInterval(addAlert,7000);
+setInterval(addAgentLine,4000);
+setInterval(addMLInsight,6000);
+setInterval(updateMiniOutputs,5000);
+setInterval(pulseWorkflow,2000);
+</script>
 </body>
 </html>
