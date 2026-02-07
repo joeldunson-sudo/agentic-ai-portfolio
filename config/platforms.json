@@ -1,0 +1,53 @@
+{
+  "platforms": {
+    "github": {
+      "enabled": true,
+      "owner": "joeldunson-sudo",
+      "repo": "agentic-ai-portfolio",
+      "baseUrl": "https://api.github.com",
+      "automations": {
+        "deployOnMerge": true,
+        "createLinearIssueOnPR": true,
+        "updateGlobeOnCommit": true
+      }
+    },
+    "gitlab": {
+      "enabled": true,
+      "baseUrl": "https://gitlab.com/api/v4",
+      "automations": {
+        "syncMRToLinear": true,
+        "updateGlobeOnPipeline": true
+      }
+    },
+    "linear": {
+      "enabled": true,
+      "baseUrl": "https://api.linear.app/graphql",
+      "automations": {
+        "assignToCursorOnLabel": true,
+        "closeOnMerge": true,
+        "updateGlobeOnStatusChange": true
+      }
+    },
+    "tally": {
+      "enabled": true,
+      "automations": {
+        "createLinearIssueOnSubmission": true,
+        "notifyOnHighPriority": true,
+        "addGlobeMarkerOnSubmission": true
+      }
+    },
+    "codepin": {
+      "enabled": true,
+      "vscodeExtensionId": "codepin.codepin",
+      "teamCollaboration": true,
+      "syncToRepo": true
+    }
+  },
+  "rpa": {
+    "orchestrationEngine": "linear",
+    "fallbackToManual": false,
+    "maxConcurrentAgents": 5,
+    "retryAttempts": 3,
+    "timeoutSeconds": 600
+  }
+}
