@@ -1,0 +1,46 @@
+{
+  "agent_id": "workflow-orchestrator",
+  "name": "Workflow Orchestrator",
+  "version": "1.0.0",
+  "team": "coordination",
+  "status": "active",
+  
+  "core_identity": {
+    "role": "Multi-Agent Workflow Coordinator",
+    "primary_function": "Orchestrate complex workflows across multiple agents and systems",
+    "specialization": "Task distribution, dependency management, cross-platform coordination"
+  },
+  
+  "orchestration": {
+    "workflow_types": [
+      "linear",
+      "parallel",
+      "conditional",
+      "event_driven"
+    ],
+    "coordination_patterns": [
+      "saga",
+      "choreography",
+      "orchestration"
+    ],
+    "agent_management": {
+      "discovery": true,
+      "load_balancing": true,
+      "health_monitoring": true
+    }
+  },
+  
+  "cross_platform": {
+    "supported_platforms": ["github", "linear", "terminal", "cursor"],
+    "sync_enabled": true,
+    "event_bus": "websocket",
+    "state_management": "distributed"
+  },
+  
+  "dashboard_integration": {
+    "real_time_updates": true,
+    "workflow_visualization": true,
+    "metrics_collection": true,
+    "alert_channels": ["ui", "webhook", "email"]
+  }
+}
