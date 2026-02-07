@@ -3,199 +3,269 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Intelligence | Joel Dunson</title>
+  <title>Territory Intelligence | Joel Dunson</title>
   <link rel="stylesheet" href="../assets/hub.css" />
+  <style>
+    /* Intelligence-specific styles */
+    .territory-header { margin-bottom:2rem; padding:2rem; background:var(--card); border-radius:12px; border:1px solid var(--border); }
+    .territory-stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:1rem; margin-top:1rem; }
+    .stat-box { padding:1rem; background:rgba(0,160,251,.05); border-radius:8px; border:1px solid rgba(0,160,251,.15); }
+    .stat-label { font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:.35rem; }
+    .stat-value { font-size:1.5rem; font-weight:700; color:var(--fg); }
+    .stat-note { font-size:.8rem; color:var(--muted); margin-top:.25rem; }
+    
+    .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:1.2rem; margin-bottom:2.5rem; }
+    .kpi-card { padding:1.5rem; background:var(--card); border-radius:10px; border:1px solid var(--border); position:relative; transition:all .2s; }
+    .kpi-card:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,.2); }
+    .kpi-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; }
+    .kpi-name { font-size:.9rem; font-weight:600; color:var(--fg); margin:0; }
+    .kpi-value { font-size:2rem; font-weight:700; color:var(--accent); margin:0; }
+    .kpi-note { font-size:.8rem; color:var(--muted); margin:.5rem 0 0 0; line-height:1.4; }
+    .kpi-trend { display:inline-flex; align-items:center; gap:.3rem; font-size:.75rem; padding:.25rem .5rem; border-radius:6px; font-weight:600; }
+    .kpi-trend.up { background:rgba(0,200,83,.15); color:#00c853; }
+    .kpi-trend.down { background:rgba(0,200,83,.15); color:#00c853; }
+    .kpi-trend .arrow { font-size:1rem; }
+    .kpi-delta { font-size:.75rem; color:var(--muted); margin-top:.25rem; }
+    
+    .alert-grid { display:flex; flex-direction:column; gap:1rem; margin-bottom:2.5rem; }
+    .alert-card { padding:1.2rem; background:var(--card); border-radius:10px; border-left:4px solid; position:relative; transition:all .2s; display:grid; grid-template-columns:auto 1fr auto; gap:1rem; align-items:start; }
+    .alert-card:hover { transform:translateX(4px); box-shadow:0 2px 8px rgba(0,0,0,.15); }
+    .alert-card.critical { border-left-color:#f44336; background:rgba(244,67,54,.03); }
+    .alert-card.high { border-left-color:#ff9800; background:rgba(255,152,0,.03); }
+    .alert-card.medium { border-left-color:#00a0fb; background:rgba(0,160,251,.03); }
+    .alert-card.low { border-left-color:#888; background:rgba(136,136,136,.03); }
+    .alert-card.info { border-left-color:#888; background:rgba(136,136,136,.03); }
+    .alert-severity { font-size:.7rem; text-transform:uppercase; font-weight:700; padding:.3rem .6rem; border-radius:6px; white-space:nowrap; }
+    .alert-severity.critical { background:#f44336; color:#fff; }
+    .alert-severity.high { background:#ff9800; color:#fff; }
+    .alert-severity.medium { background:#00a0fb; color:#fff; }
+    .alert-severity.low { background:#888; color:#fff; }
+    .alert-severity.info { background:#666; color:#fff; }
+    .alert-content { flex:1; }
+    .alert-message { font-size:.95rem; font-weight:600; color:var(--fg); margin:0 0 .5rem 0; }
+    .alert-meta { display:flex; flex-wrap:wrap; gap:1rem; font-size:.75rem; color:var(--muted); margin-top:.5rem; }
+    .alert-action { font-size:.8rem; background:rgba(0,160,251,.1); padding:.25rem .5rem; border-radius:6px; color:var(--accent); font-weight:600; margin-top:.5rem; display:inline-block; }
+    .alert-confidence { font-size:.85rem; padding:.35rem .7rem; background:rgba(0,200,83,.15); color:#00c853; border-radius:6px; font-weight:700; white-space:nowrap; }
+    
+    .intent-table { width:100%; background:var(--card); border-radius:10px; border:1px solid var(--border); overflow:hidden; margin-bottom:2.5rem; }
+    .intent-table th { background:rgba(0,160,251,.05); padding:1rem; text-align:left; font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; font-weight:600; border-bottom:1px solid var(--border); }
+    .intent-table td { padding:1rem; border-bottom:1px solid var(--border); font-size:.9rem; }
+    .intent-table tr:last-child td { border-bottom:none; }
+    .intent-table tr:hover { background:rgba(0,160,251,.03); }
+    .intent-score { font-weight:700; font-size:1.1rem; }
+    .intent-score.high { color:#00c853; }
+    .intent-score.medium { color:#ff9800; }
+    .intent-score.low { color:#888; }
+    .intent-stage { display:inline-block; padding:.3rem .7rem; border-radius:6px; font-size:.75rem; font-weight:600; }
+    .intent-stage.decision { background:rgba(244,67,54,.15); color:#f44336; }
+    .intent-stage.consideration { background:rgba(255,152,0,.15); color:#ff9800; }
+    .intent-stage.awareness { background:rgba(0,160,251,.15); color:#00a0fb; }
+    .intent-stage.purchase { background:rgba(0,200,83,.15); color:#00c853; }
+    .intent-trend { font-size:.75rem; padding:.25rem .5rem; background:rgba(0,160,251,.1); border-radius:6px; font-weight:600; color:var(--accent); }
+    .days-badge { font-size:.7rem; background:rgba(136,136,136,.15); color:var(--muted); padding:.25rem .5rem; border-radius:6px; font-weight:600; }
+    
+    .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
+    .section-header h2 { margin:0; }
+    .section-count { font-size:.9rem; background:rgba(0,160,251,.1); color:var(--accent); padding:.35rem .7rem; border-radius:6px; font-weight:700; }
+    
+    .real-time-status { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:.8rem; padding:1.5rem; background:var(--card); border-radius:10px; border:1px solid var(--border); margin-bottom:2.5rem; }
+    .status-item { text-align:center; }
+    .status-value { font-size:1.8rem; font-weight:700; color:var(--accent); }
+    .status-label { font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:.25rem; }
+    
+    .updated-line { text-align:right; font-size:.75rem; color:var(--muted); margin-bottom:1rem; }
+  </style>
 </head>
 <body>
   <div class="header">
     <div class="container">
       <div class="h1">Territory Intelligence</div>
-            <p class="sub">Real-time signal aggregation and cross-correlation engine.</p>
-      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+      <p class="sub">Real-time signal aggregation and cross-correlation engine.</p>
+      <div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
         <a class="btn secondary" href="../hub.html">Back to Hub</a>
         <a class="btn secondary" href="../index.html">Back to Portfolio</a>
-                <a class="btn" href="./6sense-ticker.html">6sense Live Ticker</a>
+        <a class="btn" href="./6sense-ticker.html">6sense Live Ticker</a>
       </div>
     </div>
   </div>
 
   <div class="container">
+    <div id="updatedLine" class="updated-line"></div>
     
-
-    <div class="card" style="margin-top:16px">
-      <h2>KPIs</h2>
-      <div id="kpiWrap"></div>
+    <!-- Territory Overview Header -->
+    <div class="territory-header">
+      <h2 style="margin:0 0 .5rem 0;">Territory Overview</h2>
+      <div id="territoryOverview"></div>
     </div>
-
-    <div class="card" style="margin-top:16px">
-      <h2>Alerts</h2>
-      <div id="alertWrap"></div>
+    
+    <!-- Performance KPIs -->
+    <div class="section-header">
+      <h2>Performance Metrics</h2>
+      <span id="kpiCount" class="section-count"></span>
     </div>
-
-        <!-- RPA Orchestration Pipeline -->
-    <div class="card" style="margin-top:16px">
-        <h2>RPA Orchestration Pipeline</h2>
-        <p class="small" style="margin-bottom:12px">Automated workflow stages from signal detection through execution.</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-            <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;flex:1;min-width:120px">
-                <div style="color:#00A0FB;font-weight:600;font-size:.85rem">Signal Capture</div>
-                <div style="color:var(--muted);font-size:.7rem;margin-top:4px">6sense + LinkedIn</div>
-            </div>
-            <div style="color:var(--accent);font-size:1.2rem">&rarr;</div>
-            <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;flex:1;min-width:120px">
-                <div style="color:#00A0FB;font-weight:600;font-size:.85rem">Enrichment</div>
-                <div style="color:var(--muted);font-size:.7rem;margin-top:4px">Perplexity Deep Research</div>
-            </div>
-            <div style="color:var(--accent);font-size:1.2rem">&rarr;</div>
-            <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;flex:1;min-width:120px">
-                <div style="color:#00A0FB;font-weight:600;font-size:.85rem">Analysis</div>
-                <div style="color:var(--muted);font-size:.7rem;margin-top:4px">Pattern Extraction</div>
-            </div>
-            <div style="color:var(--accent);font-size:1.2rem">&rarr;</div>
-            <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;flex:1;min-width:120px">
-                <div style="color:#00A0FB;font-weight:600;font-size:.85rem">Deployment</div>
-                <div style="color:var(--muted);font-size:.7rem;margin-top:4px">Battle Card Output</div>
-            </div>
-        </div>
+    <div id="kpiWrap" class="kpi-grid"></div>
+    
+    <!-- Critical Alerts -->
+    <div class="section-header">
+      <h2>Active Alerts</h2>
+      <span id="alertCount" class="section-count"></span>
     </div>
-
-    <!-- Knowledge Discovery Workflow -->
-    <div class="card" style="margin-top:16px">
-        <h2>Knowledge Discovery Workflow</h2>
-        <p class="small" style="margin-bottom:12px">Multi-source intelligence aggregation and synthesis engine.</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
-            <div style="background:rgba(0,160,251,.06);border:1px solid rgba(0,160,251,.2);border-radius:8px;padding:14px">
-                <div style="color:#00A0FB;font-weight:600;margin-bottom:6px">Source Ingestion</div>
-                <div style="color:var(--muted);font-size:.8rem">SEC filings, earnings calls, patent databases, job postings, tech stack signals</div>
-            </div>
-            <div style="background:rgba(0,160,251,.06);border:1px solid rgba(0,160,251,.2);border-radius:8px;padding:14px">
-                <div style="color:#00A0FB;font-weight:600;margin-bottom:6px">Entity Resolution</div>
-                <div style="color:var(--muted);font-size:.8rem">Cross-reference accounts, contacts, and buying signals across platforms</div>
-            </div>
-            <div style="background:rgba(0,160,251,.06);border:1px solid rgba(0,160,251,.2);border-radius:8px;padding:14px">
-                <div style="color:#00A0FB;font-weight:600;margin-bottom:6px">Insight Synthesis</div>
-                <div style="color:var(--muted);font-size:.8rem">Generate actionable narratives with confidence scoring and evidence chains</div>
-            </div>
-        </div>
+    <div id="alertWrap" class="alert-grid"></div>
+    
+    <!-- Intent Signals Table -->
+    <div class="section-header">
+      <h2>Intent Signals</h2>
+      <span id="intentCount" class="section-count"></span>
     </div>
-
-    <!-- Pattern Extraction & Root Problem Clustering -->
-    <div class="card" style="margin-top:16px">
-        <h2>Pattern Extraction &amp; Root Problem Clustering</h2>
-        <p class="small" style="margin-bottom:12px">Identify recurring themes and cluster accounts by common pain points.</p>
-        <div style="display:flex;gap:16px;flex-wrap:wrap">
-            <div style="flex:1;min-width:200px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px">
-                <div style="color:#ff9800;font-weight:600;margin-bottom:8px">Cluster A: Data Silos</div>
-                <div style="color:var(--muted);font-size:.8rem">42% of target accounts show fragmented data infrastructure signals</div>
-                <div style="margin-top:8px;height:4px;background:var(--border);border-radius:2px"><div style="width:42%;height:100%;background:#ff9800;border-radius:2px"></div></div>
-            </div>
-            <div style="flex:1;min-width:200px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px">
-                <div style="color:#00A0FB;font-weight:600;margin-bottom:8px">Cluster B: Manual Processes</div>
-                <div style="color:var(--muted);font-size:.8rem">31% exhibit high-volume manual workflow indicators</div>
-                <div style="margin-top:8px;height:4px;background:var(--border);border-radius:2px"><div style="width:31%;height:100%;background:#00A0FB;border-radius:2px"></div></div>
-            </div>
-            <div style="flex:1;min-width:200px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px">
-                <div style="color:#4caf50;font-weight:600;margin-bottom:8px">Cluster C: Scale Bottlenecks</div>
-                <div style="color:var(--muted);font-size:.8rem">27% demonstrate infrastructure scaling challenges</div>
-                <div style="margin-top:8px;height:4px;background:var(--border);border-radius:2px"><div style="width:27%;height:100%;background:#4caf50;border-radius:2px"></div></div>
-            </div>
-        </div>
+    <table id="intentTable" class="intent-table"></table>
+    
+    <!-- Real-Time Signals Status -->
+    <div class="section-header">
+      <h2>Real-Time Signal Processing</h2>
     </div>
-
-    <!-- Market Direction Prediction -->
-    <div class="card" style="margin-top:16px">
-        <h2>Market Direction Prediction</h2>
-        <p class="small" style="margin-bottom:12px">AI-driven trend analysis with confidence intervals.</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
-            <div style="text-align:center;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:8px">
-                <div style="font-size:2rem;font-weight:700;color:#4caf50">&#8593; 23%</div>
-                <div style="color:var(--muted);font-size:.8rem;margin-top:4px">Agentic AI Adoption</div>
-                <div style="color:var(--accent);font-size:.7rem">High Confidence</div>
-            </div>
-            <div style="text-align:center;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:8px">
-                <div style="font-size:2rem;font-weight:700;color:#ff9800">&#8593; 15%</div>
-                <div style="color:var(--muted);font-size:.8rem;margin-top:4px">Data Platform Spend</div>
-                <div style="color:var(--accent);font-size:.7rem">Medium Confidence</div>
-            </div>
-            <div style="text-align:center;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:8px">
-                <div style="font-size:2rem;font-weight:700;color:#00A0FB">&#8595; 8%</div>
-                <div style="color:var(--muted);font-size:.8rem;margin-top:4px">Legacy RPA Budget</div>
-                <div style="color:var(--accent);font-size:.7rem">High Confidence</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Geographic Signal Density Heatmap -->
-    <div class="card" style="margin-top:16px">
-        <h2>Geographic Signal Density</h2>
-        <p class="small" style="margin-bottom:12px">Territory signal concentration by region.</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
-            <div style="padding:12px;border-radius:8px;background:rgba(0,160,251,.15);border:1px solid rgba(0,160,251,.3)">
-                <div style="font-weight:600;color:#00A0FB">SF Bay Area</div>
-                <div style="font-size:.8rem;color:var(--muted)">Signal Density: <span style="color:#4caf50;font-weight:600">Very High</span></div>
-                <div style="margin-top:6px;height:6px;background:var(--border);border-radius:3px"><div style="width:92%;height:100%;background:#00A0FB;border-radius:3px"></div></div>
-            </div>
-            <div style="padding:12px;border-radius:8px;background:rgba(0,160,251,.10);border:1px solid rgba(0,160,251,.2)">
-                <div style="font-weight:600;color:#00A0FB">Seattle / PNW</div>
-                <div style="font-size:.8rem;color:var(--muted)">Signal Density: <span style="color:#ff9800;font-weight:600">High</span></div>
-                <div style="margin-top:6px;height:6px;background:var(--border);border-radius:3px"><div style="width:78%;height:100%;background:#00A0FB;border-radius:3px"></div></div>
-            </div>
-            <div style="padding:12px;border-radius:8px;background:rgba(0,160,251,.08);border:1px solid rgba(0,160,251,.15)">
-                <div style="font-weight:600;color:#00A0FB">NYC Metro</div>
-                <div style="font-size:.8rem;color:var(--muted)">Signal Density: <span style="color:#ff9800;font-weight:600">High</span></div>
-                <div style="margin-top:6px;height:6px;background:var(--border);border-radius:3px"><div style="width:71%;height:100%;background:#00A0FB;border-radius:3px"></div></div>
-            </div>
-            <div style="padding:12px;border-radius:8px;background:rgba(0,160,251,.05);border:1px solid rgba(0,160,251,.1)">
-                <div style="font-weight:600;color:#00A0FB">Austin / Texas</div>
-                <div style="font-size:.8rem;color:var(--muted)">Signal Density: <span style="color:var(--muted);font-weight:600">Moderate</span></div>
-                <div style="margin-top:6px;height:6px;background:var(--border);border-radius:3px"><div style="width:54%;height:100%;background:#00A0FB;border-radius:3px"></div></div>
-            </div>
-        </div>
-    </div>
+    <div id="realTimeStatus" class="real-time-status"></div>
   </div>
 
-<script>
-async function loadJson(url){
-  const r = await fetch(url + "?ts=" + Date.now(), {cache:"no-store"});
-  if(!r.ok) throw new Error("HTTP " + r.status);
-  return await r.json();
-}
-
-function render(data){
-  document.getElementById("modePill").textContent = data.mode || "unknown";
-  document.getElementById("updatedLine").textContent = "Updated (UTC): " + (data.updated_utc || "unknown");
-
-  const kpiWrap = document.getElementById("kpiWrap");
-  kpiWrap.innerHTML = "";
-  (data.kpis || []).forEach(k => {
-    const div = document.createElement("div");
-    div.className = "kpi";
-    div.innerHTML = `<div><div class="k">${k.name}</div><div class="small">${k.note || ""}</div></div><div class="v">${k.value}</div>`;
-    kpiWrap.appendChild(div);
-  });
-
-  const alertWrap = document.getElementById("alertWrap");
-  alertWrap.innerHTML = "";
-  (data.alerts || []).forEach(a => {
-    const div = document.createElement("div");
-    div.className = "kpi";
-    div.innerHTML = `<div><div class="k">${a.severity || "info"}</div><div class="v">${a.message || ""}</div></div><div class="pill">signal</div>`;
-    alertWrap.appendChild(div);
-  });
-}
-
-(async () => {
-  const pub = await loadJson("./data/public_demo.json");
-  let merged = pub;
-
-  try{
-    const priv = await loadJson("./data/private_local.json");
-    merged = {...pub, ...priv, mode: (priv.mode || "private_local")};
-  }catch(e){
-    // no private overlay
-  }
-  render(merged);
-})();
-</script>
+  <script>
+    // Load and render data
+    async function loadJson(url){
+      const r = await fetch(url + "?ts=" + Date.now(), {cache:"no-store"});
+      if(!r.ok) throw new Error("HTTP " + r.status);
+      return await r.json();
+    }
+    
+    function formatTimestamp(ts) {
+      if (!ts) return '';
+      const d = new Date(ts);
+      return d.toLocaleString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+    }
+    
+    function render(data){
+      // Updated line
+      document.getElementById("updatedLine").textContent = "Updated (UTC): " + (data.updated_utc || "unknown");
+      
+      // Territory overview
+      const terr = data.territory || {};
+      const territoryHTML = `
+        <div class="territory-stats">
+          <div class="stat-box"><div class="stat-label">Territory</div><div class="stat-value">${terr.name || 'N/A'}</div><div class="stat-note">${terr.segment || ''}</div></div>
+          <div class="stat-box"><div class="stat-label">Rep</div><div class="stat-value">${terr.rep || 'N/A'}</div></div>
+          <div class="stat-box"><div class="stat-label">Accounts Tracked</div><div class="stat-value">${terr.accounts_tracked || 0}</div></div>
+          <div class="stat-box"><div class="stat-label">Active Pursuits</div><div class="stat-value">${terr.active_pursuits || 0}</div></div>
+          <div class="stat-box"><div class="stat-label">Pipeline Value</div><div class="stat-value">${terr.pipeline_value || 'N/A'}</div></div>
+          <div class="stat-box"><div class="stat-label">Quota Attainment</div><div class="stat-value">${terr.quota_attainment || 'N/A'}</div></div>
+        </div>
+      `;
+      document.getElementById("territoryOverview").innerHTML = territoryHTML;
+      
+      // KPIs
+      const kpiWrap = document.getElementById("kpiWrap");
+      const kpis = data.kpis || [];
+      document.getElementById("kpiCount").textContent = kpis.length + " KPIs";
+      kpiWrap.innerHTML = "";
+      kpis.forEach(k => {
+        const div = document.createElement("div");
+        div.className = "kpi-card";
+        const trendClass = k.trend || 'up';
+        const trendArrow = trendClass === 'up' ? '↑' : '↓';
+        div.innerHTML = `
+          <div class="kpi-header">
+            <h3 class="kpi-name">${k.name}</h3>
+            <span class="kpi-trend ${trendClass}"><span class="arrow">${trendArrow}</span></span>
+          </div>
+          <div class="kpi-value">${k.value}</div>
+          <p class="kpi-note">${k.note || ""}</p>
+          ${k.delta ? '<div class="kpi-delta">' + k.delta + '</div>' : ''}
+        `;
+        kpiWrap.appendChild(div);
+      });
+      
+      // Alerts
+      const alertWrap = document.getElementById("alertWrap");
+      const alerts = data.alerts || [];
+      document.getElementById("alertCount").textContent = alerts.length + " alerts";
+      alertWrap.innerHTML = "";
+      alerts.forEach(a => {
+        const div = document.createElement("div");
+        div.className = "alert-card " + (a.severity || 'info');
+        const confidencePercent = Math.round((a.confidence || 0) * 100);
+        div.innerHTML = `
+          <div class="alert-severity ${a.severity || 'info'}">${a.severity || 'info'}</div>
+          <div class="alert-content">
+            <p class="alert-message">${a.message || ""}</p>
+            <div class="alert-meta">
+              <span><strong>Type:</strong> ${a.type || 'N/A'}</span>
+              <span><strong>Source:</strong> ${a.source || 'N/A'}</span>
+              <span><strong>Time:</strong> ${formatTimestamp(a.timestamp)}</span>
+            </div>
+            ${a.action ? '<div class="alert-action">→ ' + a.action + '</div>' : ''}
+          </div>
+          <div class="alert-confidence">${confidencePercent}%</div>
+        `;
+        alertWrap.appendChild(div);
+      });
+      
+      // Intent Signals
+      const intentTable = document.getElementById("intentTable");
+      const intentSignals = data.intent_signals || [];
+      document.getElementById("intentCount").textContent = intentSignals.length + " signals";
+      let tableHTML = `
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th>Topic</th>
+            <th>Score</th>
+            <th>Stage</th>
+            <th>Trend</th>
+            <th>Days in Stage</th>
+            <th>Sources</th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+      intentSignals.forEach(sig => {
+        const scoreClass = sig.score >= 80 ? 'high' : (sig.score >= 60 ? 'medium' : 'low');
+        const stageClass = (sig.stage || '').toLowerCase();
+        tableHTML += `
+          <tr>
+            <td><strong>${sig.account}</strong></td>
+            <td>${sig.topic}</td>
+            <td><span class="intent-score ${scoreClass}">${sig.score}</span></td>
+            <td><span class="intent-stage ${stageClass}">${sig.stage}</span></td>
+            <td><span class="intent-trend">${sig.trend}</span></td>
+            <td><span class="days-badge">${sig.days_in_stage}d</span></td>
+            <td style="font-size:.75rem;color:var(--muted);">${(sig.sources || []).join(', ')}</td>
+          </tr>
+        `;
+      });
+      tableHTML += '</tbody>';
+      intentTable.innerHTML = tableHTML;
+      
+      // Real-Time Signals
+      const realTimeStatus = document.getElementById("realTimeStatus");
+      const rts = data.real_time_signals || {};
+      realTimeStatus.innerHTML = `
+        <div class="status-item"><div class="status-value">${rts.press_releases || 0}</div><div class="status-label">Press Releases</div></div>
+        <div class="status-item"><div class="status-value">${rts.blog_posts_detected || 0}</div><div class="status-label">Blog Posts</div></div>
+        <div class="status-item"><div class="status-value">${rts.job_postings_relevant || 0}</div><div class="status-label">Job Postings</div></div>
+        <div class="status-item"><div class="status-value">${rts.financial_filings || 0}</div><div class="status-label">Financial Filings</div></div>
+        <div class="status-item"><div class="status-value">${rts.patent_filings || 0}</div><div class="status-label">Patents</div></div>
+        <div class="status-item"><div class="status-value">${rts.social_mentions || 0}</div><div class="status-label">Social Mentions</div></div>
+        <div class="status-item"><div class="status-value">${rts.total_signals_processed || 0}</div><div class="status-label">Total Processed</div></div>
+      `;
+    }
+    
+    (async () => {
+      const pub = await loadJson("./data/public_demo.json");
+      let merged = pub;
+      try{
+        const priv = await loadJson("./data/private_local.json");
+        merged = {...pub, ...priv, mode: (priv.mode || "private_local")};
+      }catch(e){
+        // no private overlay
+      }
+      render(merged);
+    })();
+  </script>
 </body>
 </html>
