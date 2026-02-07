@@ -7,6 +7,10 @@
     <style>
         :root {
             --color-primary: #00A0FB;
+                        --color-glow: rgba(0, 160, 251, 0.15);
+            --color-glow-strong: rgba(0, 160, 251, 0.3);
+            --color-teal-glow: rgba(50, 184, 198, 0.15);
+            --color-atmosphere: rgba(25, 50, 75, 0.6);
             --color-secondary: #002854;
             --color-accent: #32B8C6;
             --color-success: #00C853;
@@ -28,6 +32,8 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--color-bg);
+                        background-image: radial-gradient(1px 1px at 10% 20%, rgba(0,160,251,0.12) 50%, transparent 50%), radial-gradient(1px 1px at 80% 10%, rgba(50,184,198,0.1) 50%, transparent 50%), radial-gradient(1px 1px at 30% 80%, rgba(0,160,251,0.08) 50%, transparent 50%), radial-gradient(1px 1px at 70% 60%, rgba(50,184,198,0.06) 50%, transparent 50%), radial-gradient(1px 1px at 50% 40%, rgba(0,160,251,0.1) 50%, transparent 50%), radial-gradient(1px 1px at 20% 50%, rgba(50,184,198,0.08) 50%, transparent 50%), radial-gradient(1px 1px at 90% 30%, rgba(0,160,251,0.07) 50%, transparent 50%), radial-gradient(1px 1px at 40% 90%, rgba(50,184,198,0.09) 50%, transparent 50%);
+            background-size: 200px 200px, 300px 300px, 250px 250px, 350px 350px, 180px 180px, 280px 280px, 320px 320px, 220px 220px;
             color: var(--color-text);
             line-height: 1.6;
         }
@@ -672,6 +678,179 @@
 </head>
 <body>
     <header class="header" style="position: relative;">
+
+                /* === GLOBE-INSPIRED GLOBAL ENHANCEMENTS === */
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
+
+        /* Glass card effect */
+        .card, .stat-card, .meta-item {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-color: var(--color-glow) !important;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 var(--color-glow);
+        }
+
+        .card:hover, .stat-card:hover {
+            box-shadow: 0 8px 32px var(--color-glow-strong), inset 0 1px 0 var(--color-glow), 0 0 20px var(--color-glow);
+        }
+
+        /* Gradient headings for all section titles */
+        .section-title, h2, h3 {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Atmospheric glow behind hero */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(ellipse at center, rgba(0,160,251,0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Pulse animation for status indicators */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--color-glow-strong); }
+            50% { opacity: 0.7; box-shadow: 0 0 12px 4px var(--color-glow); }
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 5px var(--color-glow); }
+            50% { box-shadow: 0 0 20px var(--color-glow-strong), 0 0 40px var(--color-glow); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes data-flow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        @keyframes typing-cursor {
+            0%, 100% { border-right-color: var(--color-primary); }
+            50% { border-right-color: transparent; }
+        }
+
+        /* Workflow step enhancements */
+        .workflow-step {
+            border-left: 3px solid transparent;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .workflow-step:hover {
+            border-left-color: var(--color-primary);
+            box-shadow: -4px 0 16px var(--color-glow);
+        }
+
+        .workflow-step.active {
+            border-left-color: var(--color-success);
+            box-shadow: -4px 0 16px rgba(0, 200, 83, 0.2);
+        }
+
+        /* Animated workflow arrows */
+        .workflow-arrow {
+            animation: float 2s ease-in-out infinite;
+            text-shadow: 0 0 10px var(--color-glow);
+        }
+
+        /* Badge glow effects */
+        .badge-success { box-shadow: 0 0 8px rgba(0, 200, 83, 0.3); }
+        .badge-primary { box-shadow: 0 0 8px var(--color-glow); }
+        .badge-warning { box-shadow: 0 0 8px rgba(255, 152, 0, 0.3); }
+
+        /* Interactive demo box glow */
+        .interactive-demo {
+            box-shadow: 0 0 30px rgba(0,160,251,0.05), inset 0 1px 0 var(--color-glow);
+            border-color: var(--color-glow) !important;
+        }
+
+        /* CTA section particle background */
+        .cta-section {
+            background-image: radial-gradient(circle at 20% 50%, rgba(0,160,251,0.08) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(50,184,198,0.06) 0%, transparent 50%), radial-gradient(circle at 50% 80%, rgba(0,160,251,0.04) 0%, transparent 50%), linear-gradient(135deg, var(--color-secondary), var(--color-bg-elevated));
+            box-shadow: 0 0 40px var(--color-glow), inset 0 0 60px rgba(0,0,0,0.3);
+        }
+
+        /* Progress bar glow */
+        .progress-fill, .metric-fill {
+            box-shadow: 0 0 8px var(--color-glow);
+        }
+
+        /* Table row hover glow */
+        tr:hover {
+            box-shadow: inset 0 0 20px var(--color-glow);
+        }
+
+        /* Quote box enhancement */
+        .quote-box {
+            border-left-width: 3px;
+            box-shadow: -4px 0 16px var(--color-glow), 0 4px 16px rgba(0,0,0,0.2);
+        }
+
+        /* Timeline node glow */
+        .timeline-item::before {
+            box-shadow: 0 0 10px var(--color-glow-strong);
+        }
+
+        /* Button glow enhancement */
+        .btn {
+            box-shadow: 0 4px 16px var(--color-glow-strong);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn:hover {
+            box-shadow: 0 8px 32px var(--color-glow-strong), 0 0 20px var(--color-glow);
+        }
+
+        /* Page load animation */
+        main, .container {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Deal card glow on expand */
+        .deal-card-interactive.expanded {
+            box-shadow: 0 0 30px rgba(0, 200, 83, 0.15), inset 0 1px 0 rgba(0, 200, 83, 0.1);
+        }
+
+        /* Evidence item check glow */
+        .evidence-item.checked {
+            box-shadow: 0 0 16px rgba(0, 200, 83, 0.2);
+        }
+
+        /* Calculator output glow */
+        .calculator-output {
+            box-shadow: 0 0 30px var(--color-glow-strong);
+        }
+
+        /* Nav button active glow */
+        nav button.active {
+            box-shadow: 0 0 12px var(--color-glow-strong);
+        }
+
+        /* Slider thumb glow */
+        .slider-input::-webkit-slider-thumb {
+            box-shadow: 0 0 10px var(--color-glow-strong);
+        }
         <div class="container">
             <div class="hero">
                 <h1>Director, Agentic AI Sales Execution Strategy</h1>
