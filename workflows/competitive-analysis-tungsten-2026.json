@@ -1,0 +1,212 @@
+{
+  "project_id": "competitive-analysis-tungsten-2026",
+  "objective": "Build a competitive analysis report for Tungsten Automation vs UiPath, Automation Anywhere, and Microsoft Power Automate covering product capabilities, pricing, market positioning, and customer sentiment.",
+  "constraints": [
+    "Complete in one session",
+    "SPEED priority",
+    "Max 4 teams",
+    "Max 3 workers per team"
+  ],
+  "priority": "SPEED",
+  "teams": [
+    {
+      "team_id": "T1",
+      "team_name": "Product Intelligence Team",
+      "team_objective": "Extract product capabilities, features, and technical specifications for all 4 vendors",
+      "dependencies": [],
+      "priority_rank": 1,
+      "supervisor": {
+        "name": "Product Research Supervisor",
+        "role": "Supervisor",
+        "specialization": "Technical product analysis and feature comparison"
+      },
+      "workers": [
+        {
+          "worker_id": "T1-W1",
+          "name": "Tungsten Feature Analyst",
+          "role": "Research Agent",
+          "task": "Extract Tungsten Automation product capabilities, IDP features, workflow automation, integrations",
+          "output_format": "structured_json",
+          "system_target": "web_browser",
+          "credential_scope": "public_web",
+          "is_parallel_seed": true
+        },
+        {
+          "worker_id": "T1-W2",
+          "name": "UiPath/AA Feature Analyst",
+          "role": "Research Agent",
+          "task": "Extract UiPath and Automation Anywhere product capabilities, features, platform architecture",
+          "output_format": "structured_json",
+          "system_target": "web_browser",
+          "credential_scope": "public_web",
+          "is_parallel_seed": true
+        },
+        {
+          "worker_id": "T1-W3",
+          "name": "Power Automate Feature Analyst",
+          "role": "Research Agent",
+          "task": "Extract Microsoft Power Automate capabilities, M365 integration, citizen developer features",
+          "output_format": "structured_json",
+          "system_target": "web_browser",
+          "credential_scope": "public_web",
+          "is_parallel_seed": true
+        }
+      ]
+    },
+    {
+      "team_id": "T2",
+      "team_name": "Pricing & Market Position Team",
+      "team_objective": "Gather pricing models, market share data, analyst reports, and positioning strategies",
+      "dependencies": [],
+      "priority_rank": 1,
+      "supervisor": {
+        "name": "Market Intelligence Supervisor",
+        "role": "Supervisor",
+        "specialization": "Pricing analysis and competitive positioning"
+      },
+      "workers": [
+        {
+          "worker_id": "T2-W1",
+          "name": "Pricing Research Agent",
+          "role": "Research Agent",
+          "task": "Extract pricing tiers, licensing models, TCO data for all 4 vendors from public sources",
+          "output_format": "pricing_table_json",
+          "system_target": "web_browser",
+          "credential_scope": "public_web",
+          "is_parallel_seed": true
+        },
+        {
+          "worker_id": "T2-W2",
+          "name": "Analyst Report Miner",
+          "role": "Research Agent",
+          "task": "Find Gartner, Forrester, IDC reports on RPA/IDP market positioning and vendor rankings",
+          "output_format": "analyst_summary_json",
+          "system_target": "web_browser",
+          "credential_scope": "public_web",
+          "is_parallel_seed": true
+        },
+        {
+          "worker_id": "T2-W3",
+          "name": "Market Share Analyst",
+          "role": "Research Agent",
+          "task": "Extract market share data, growth rates, TAM/SAM figures for document automation market",
+          "output_format": "market_data_json",
+          "system_target": "web_browser",
+          "credential_scope": "public_web",
+          "is_parallel_seed": true
+        }
+      ]
+    },
+    {
+      "team_id": "T3",
+      "team_name": "Customer Sentiment Team",
+      "team_objective": "Analyze customer reviews, case studies, user feedback, and social sentiment",
+      "dependencies": [],
+      "priority_rank": 1,
+      "supervisor": {
+        "name": "Sentiment Analysis Supervisor",
+        "role": "Supervisor",
+        "specialization": "Customer feedback aggregation and sentiment scoring"
+      },
+      "workers": [
+        {
+          "worker_id": "T3-W1",
+          "name": "Review Aggregator",
+          "role": "Research Agent",
+          "task": "Scrape G2, Capterra, TrustRadius reviews for all 4 vendors - ratings, pros/cons, verified user feedback",
+          "output_format": "review_summary_json",
+          "system_target": "web_browser",
+          "credential_scope": "public_web",
+          "is_parallel_seed": true
+        },
+        {
+          "worker_id": "T3-W2",
+          "name": "Case Study Analyst",
+          "role": "Research Agent",
+          "task": "Find published case studies, ROI claims, deployment success stories for each vendor",
+          "output_format": "case_study_json",
+          "system_target": "web_browser",
+          "credential_scope": "public_web",
+          "is_parallel_seed": true
+        },
+        {
+          "worker_id": "T3-W3",
+          "name": "Social Media Listener",
+          "role": "Research Agent",
+          "task": "Monitor LinkedIn, Twitter/X, Reddit discussions about vendor experiences and sentiment trends",
+          "output_format": "sentiment_score_json",
+          "system_target": "web_browser",
+          "credential_scope": "public_web",
+          "is_parallel_seed": true
+        }
+      ]
+    },
+    {
+      "team_id": "T4",
+      "team_name": "Synthesis & Report Assembly Team",
+      "team_objective": "Synthesize all research into final competitive analysis report with visualizations",
+      "dependencies": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "priority_rank": 2,
+      "supervisor": {
+        "name": "Report Synthesis Supervisor",
+        "role": "Supervisor",
+        "specialization": "Competitive analysis writing and data visualization"
+      },
+      "workers": [
+        {
+          "worker_id": "T4-W1",
+          "name": "Data Aggregator",
+          "role": "Synthesis Agent",
+          "task": "Merge all T1/T2/T3 outputs, resolve conflicts, create unified data model",
+          "output_format": "merged_dataset_json",
+          "system_target": "local_processing",
+          "credential_scope": "internal_only",
+          "is_parallel_seed": false
+        },
+        {
+          "worker_id": "T4-W2",
+          "name": "Report Writer",
+          "role": "Writing Agent",
+          "task": "Generate markdown report with executive summary, feature comparison, pricing analysis, sentiment findings",
+          "output_format": "markdown_report",
+          "system_target": "github_file",
+          "credential_scope": "github_repo",
+          "is_parallel_seed": false
+        },
+        {
+          "worker_id": "T4-W3",
+          "name": "Visualization Generator",
+          "role": "Chart Agent",
+          "task": "Create comparison matrices, pricing charts, sentiment radar plots for report",
+          "output_format": "html_visualizations",
+          "system_target": "github_pages",
+          "credential_scope": "github_repo",
+          "is_parallel_seed": false
+        }
+      ]
+    }
+  ],
+  "parallel_groups": [
+    {
+      "group": 1,
+      "team_ids": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "note": "All research teams run in parallel with parallel_seeding enabled for critical tasks"
+    },
+    {
+      "group": 2,
+      "team_ids": [
+        "T4"
+      ],
+      "note": "Synthesis team waits for T1/T2/T3 completion, then assembles final report"
+    }
+  ],
+  "estimated_speedup": "3.5x faster than sequential execution due to parallel research teams with seeded workers"
+}
