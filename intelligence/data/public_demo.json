@@ -1,17 +1,64 @@
 {
   "updated_utc": "2026-02-06T23:00:00Z",
   "mode": "public_demo",
+  "territory": {
+    "name": "AMS West",
+    "rep": "Joel Dunson",
+    "segment": "Enterprise",
+    "focus": "Agentic AI & Intelligent Automation",
+    "accounts_tracked": 225,
+    "active_pursuits": 12,
+    "pipeline_value": "$4.2M",
+    "quota_attainment": "118%"
+  },
   "kpis": [
-    {"name": "Target account universe", "value": 225, "note": "AMS West territory  |  6sense segment  |  Active monitoring"},
-    {"name": "Active $500K+ pursuits", "value": 12, "note": "Pipeline  |  Deal intelligence deployed  |  Battle cards generated"},
-    {"name": "Next-30-day intent spikes", "value": 8, "note": "Bombora + 6sense cross-validated  |  3 high-confidence"}
+    {"name": "Target account universe", "value": 225, "note": "AMS West territory | 6sense segment | Active monitoring", "trend": "up", "delta": "+12 accounts this quarter"},
+    {"name": "Active $500K+ pursuits", "value": 12, "note": "Pipeline | Deal intelligence deployed | Battle cards generated", "trend": "up", "delta": "+3 from last month"},
+    {"name": "Next-30-day intent spikes", "value": 8, "note": "Bombora + 6sense cross-validated | 3 high-confidence", "trend": "up", "delta": "+2 vs prior period"},
+    {"name": "Pipeline velocity", "value": "47 days", "note": "Avg deal cycle | Down from 62 days", "trend": "down", "delta": "-15 days improvement"},
+    {"name": "Win rate (qualified)", "value": "34%", "note": "Above 28% territory avg | Signal-driven outreach", "trend": "up", "delta": "+6pp YoY"},
+    {"name": "Engagement score", "value": "8.4/10", "note": "Multi-touch attribution | Cross-channel", "trend": "up", "delta": "+1.2 from baseline"}
   ],
   "alerts": [
-    {"severity": "critical", "message": "Meta Platforms: 3 new AI orchestration job postings + press release on automation strategy", "type": "cross_correlation", "timestamp": "2026-02-06T21:30:00Z"},
-    {"severity": "high", "message": "Confluent: Earnings call mentions RPA modernization — 90-day buying window detected", "type": "financial_signal", "timestamp": "2026-02-06T20:15:00Z"},
-    {"severity": "high", "message": "Snowflake: VP of Data Engineering posted about legacy system migration challenges", "type": "social_signal", "timestamp": "2026-02-06T19:45:00Z"},
-    {"severity": "medium", "message": "Pure Storage: Patent filing detected — AI-driven workflow automation (cross-ref with 6sense Decision stage)", "type": "patent_signal", "timestamp": "2026-02-06T18:00:00Z"},
-    {"severity": "medium", "message": "Citrix: 91-day entry window closing — validated Tungsten orchestration fit", "type": "timing_alert", "timestamp": "2026-02-06T17:30:00Z"},
-    {"severity": "info", "message": "Territory scan complete: 65 military aircraft tracked, 42 companies showing data silo signals, 8 intent spikes", "type": "system_status", "timestamp": "2026-02-06T17:00:00Z"}
-  ]
+    {"severity": "critical", "message": "Meta Platforms: 3 new AI orchestration job postings + press release on automation strategy", "type": "cross_correlation", "timestamp": "2026-02-06T21:30:00Z", "source": "LinkedIn + PR Newswire", "action": "Initiate multi-thread outreach to VP Infra + Head of AI Ops", "confidence": 0.94},
+    {"severity": "critical", "message": "Confluent: Earnings call mentions RPA modernization — 90-day buying window detected", "type": "financial_signal", "timestamp": "2026-02-06T20:15:00Z", "source": "SEC Filing + 6sense", "action": "Deploy battle card v3 + schedule exec briefing", "confidence": 0.91},
+    {"severity": "high", "message": "Snowflake: VP of Data Engineering posted about legacy system migration challenges", "type": "social_signal", "timestamp": "2026-02-06T19:45:00Z", "source": "LinkedIn + Glassdoor", "action": "Engage with content + send migration framework asset", "confidence": 0.87},
+    {"severity": "high", "message": "Databricks: New CTO hire from Google Cloud signals platform consolidation", "type": "leadership_change", "timestamp": "2026-02-06T18:30:00Z", "source": "LinkedIn + Press", "action": "Update org chart + initiate new stakeholder mapping", "confidence": 0.85},
+    {"severity": "medium", "message": "Pure Storage: Patent filing detected — AI-driven workflow automation (cross-ref with 6sense Decision stage)", "type": "patent_signal", "timestamp": "2026-02-06T18:00:00Z", "source": "USPTO + 6sense", "action": "Cross-ref with product roadmap intelligence", "confidence": 0.82},
+    {"severity": "medium", "message": "Citrix: 91-day entry window closing — validated Tungsten orchestration fit", "type": "timing_alert", "timestamp": "2026-02-06T17:30:00Z", "source": "6sense + CRM", "action": "Escalate to AE for proposal acceleration", "confidence": 0.79},
+    {"severity": "medium", "message": "ServiceNow: Blog post signals expansion into agentic workflow automation", "type": "content_signal", "timestamp": "2026-02-06T16:45:00Z", "source": "Company Blog + Bombora", "action": "Add to watchlist + deploy comparison framework", "confidence": 0.76},
+    {"severity": "low", "message": "Palo Alto Networks: Job posting for AI/ML platform engineer — potential new initiative", "type": "hiring_signal", "timestamp": "2026-02-06T16:00:00Z", "source": "LinkedIn", "action": "Monitor for additional signals", "confidence": 0.68},
+    {"severity": "info", "message": "Territory scan complete: 65 signals tracked, 42 companies showing data silo signals, 8 intent spikes", "type": "system_status", "timestamp": "2026-02-06T17:00:00Z", "source": "System", "action": "Review daily briefing", "confidence": 1.0}
+  ],
+  "intent_signals": [
+    {"account": "Meta Platforms", "topic": "AI Orchestration", "score": 94, "stage": "Decision", "trend": "surging", "sources": ["6sense", "Bombora", "LinkedIn"], "days_in_stage": 12},
+    {"account": "Confluent", "topic": "RPA Modernization", "score": 89, "stage": "Decision", "trend": "increasing", "sources": ["6sense", "SEC Filings"], "days_in_stage": 18},
+    {"account": "Snowflake", "topic": "Legacy Migration", "score": 82, "stage": "Consideration", "trend": "increasing", "sources": ["LinkedIn", "Bombora"], "days_in_stage": 25},
+    {"account": "Databricks", "topic": "Platform Consolidation", "score": 78, "stage": "Consideration", "trend": "new", "sources": ["6sense", "Press"], "days_in_stage": 5},
+    {"account": "Pure Storage", "topic": "Workflow Automation", "score": 75, "stage": "Decision", "trend": "stable", "sources": ["USPTO", "6sense"], "days_in_stage": 34},
+    {"account": "Citrix", "topic": "Workspace Orchestration", "score": 71, "stage": "Purchase", "trend": "increasing", "sources": ["6sense", "CRM"], "days_in_stage": 8},
+    {"account": "ServiceNow", "topic": "Agentic Workflows", "score": 68, "stage": "Awareness", "trend": "new", "sources": ["Bombora", "Blog"], "days_in_stage": 3},
+    {"account": "Palo Alto Networks", "topic": "AI/ML Platform", "score": 62, "stage": "Awareness", "trend": "emerging", "sources": ["LinkedIn"], "days_in_stage": 7}
+  ],
+  "firmographics": [
+    {"account": "Meta Platforms", "industry": "Technology", "employees": "86,000+", "revenue": "$134.9B", "hq": "Menlo Park, CA", "tech_stack": ["PyTorch", "Llama", "Custom Infra"], "buying_committee_size": 7, "champion_identified": true},
+    {"account": "Confluent", "industry": "Data Infrastructure", "employees": "3,500+", "revenue": "$1.1B", "hq": "Mountain View, CA", "tech_stack": ["Apache Kafka", "Flink", "AWS"], "buying_committee_size": 5, "champion_identified": true},
+    {"account": "Snowflake", "industry": "Cloud Data Platform", "employees": "7,000+", "revenue": "$3.4B", "hq": "Bozeman, MT", "tech_stack": ["Snowflake", "dbt", "AWS/Azure"], "buying_committee_size": 6, "champion_identified": false},
+    {"account": "Databricks", "industry": "Data & AI", "employees": "7,000+", "revenue": "$2.4B", "hq": "San Francisco, CA", "tech_stack": ["Spark", "Delta Lake", "MLflow"], "buying_committee_size": 5, "champion_identified": false},
+    {"account": "Pure Storage", "industry": "Data Storage", "employees": "5,800+", "revenue": "$3.1B", "hq": "Santa Clara, CA", "tech_stack": ["FlashArray", "FlashBlade", "Portworx"], "buying_committee_size": 4, "champion_identified": true},
+    {"account": "Citrix", "industry": "Virtualization", "employees": "9,500+", "revenue": "$3.2B", "hq": "Fort Lauderdale, FL", "tech_stack": ["Citrix Workspace", "NetScaler", "Azure"], "buying_committee_size": 6, "champion_identified": true},
+    {"account": "ServiceNow", "industry": "Enterprise Software", "employees": "22,000+", "revenue": "$10.9B", "hq": "Santa Clara, CA", "tech_stack": ["Now Platform", "ITSM", "AI Agents"], "buying_committee_size": 8, "champion_identified": false},
+    {"account": "Palo Alto Networks", "industry": "Cybersecurity", "employees": "15,500+", "revenue": "$8.2B", "hq": "Santa Clara, CA", "tech_stack": ["Cortex XSIAM", "Prisma", "Strata"], "buying_committee_size": 5, "champion_identified": false}
+  ],
+  "real_time_signals": {
+    "last_scan": "2026-02-06T23:00:00Z",
+    "press_releases": 14,
+    "blog_posts_detected": 23,
+    "job_postings_relevant": 47,
+    "financial_filings": 6,
+    "patent_filings": 3,
+    "social_mentions": 89,
+    "companies_with_data_silo_signals": 42,
+    "total_signals_processed": 1247
+  }
 }
