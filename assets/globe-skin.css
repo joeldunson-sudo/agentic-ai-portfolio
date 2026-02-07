@@ -1,0 +1,185 @@
+/* ============================================
+   GLOBE-SKIN: Rotating Earth Theme Overlay
+   Matches the dot-matrix globe aesthetic
+   ============================================ */
+
+/* === CSS VARIABLES === */
+:root {
+  --gs-bg: #070b14;
+  --gs-card: rgba(0,160,251,.04);
+  --gs-border: rgba(0,160,251,.2);
+  --gs-glow: rgba(0,160,251,.08);
+  --gs-glow-hover: rgba(0,160,251,.15);
+  --gs-accent: #00a0fb;
+  --gs-accent-dim: rgba(0,160,251,.5);
+  --gs-success: #00c853;
+  --gs-warning: #ff9800;
+  --gs-danger: #f44336;
+}
+
+/* === STAR-FIELD BACKGROUND === */
+body {
+  background: var(--gs-bg) !important;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(1px 1px at 10% 20%, rgba(0,160,251,.4), transparent),
+    radial-gradient(1px 1px at 30% 60%, rgba(0,200,83,.3), transparent),
+    radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,.3), transparent),
+    radial-gradient(1px 1px at 70% 80%, rgba(0,160,251,.3), transparent),
+    radial-gradient(1px 1px at 90% 40%, rgba(255,152,0,.2), transparent),
+    radial-gradient(1px 1px at 15% 85%, rgba(0,160,251,.3), transparent),
+    radial-gradient(1px 1px at 45% 45%, rgba(255,255,255,.2), transparent),
+    radial-gradient(1px 1px at 80% 15%, rgba(0,200,83,.2), transparent),
+    radial-gradient(1px 1px at 60% 70%, rgba(0,160,251,.25), transparent),
+    radial-gradient(1px 1px at 25% 35%, rgba(255,255,255,.15), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+body > * { position: relative; z-index: 1; }
+
+/* === HEADER ENHANCEMENTS === */
+.header {
+  background: linear-gradient(135deg, #070b14 0%, #0a1628 50%, #070b14 100%) !important;
+  border-bottom: 1px solid var(--gs-border) !important;
+  box-shadow: 0 4px 30px rgba(0,160,251,.1);
+}
+.header .h1, .header h1 {
+  text-shadow: 0 0 20px var(--gs-accent-dim), 0 0 40px rgba(0,160,251,.2);
+}
+.header .sub {
+  color: rgba(0,160,251,.7) !important;
+}
+
+/* === GLASS CARD EFFECTS === */
+.card, .kpi-card, .stat-box, .territory-header,
+.alert-card, .intent-table, .real-time-status,
+.tool-card, .ticker-card, .signal-card {
+  background: var(--gs-card) !important;
+  border-color: var(--gs-border) !important;
+  box-shadow: 0 0 15px var(--gs-glow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.card:hover, .kpi-card:hover, .stat-box:hover,
+.tool-card:hover, .ticker-card:hover, .signal-card:hover {
+  box-shadow: 0 0 25px var(--gs-glow-hover);
+  border-color: rgba(0,160,251,.4) !important;
+}
+
+/* === VALUE & STAT GLOW === */
+.stat-value, .kpi-value, .status-value,
+.ticker-value, .metric-value {
+  text-shadow: 0 0 10px var(--gs-accent-dim);
+}
+.section-count {
+  background: rgba(0,160,251,.15) !important;
+  border: 1px solid rgba(0,160,251,.3);
+}
+
+/* === ALERT ENHANCEMENTS === */
+.alert-card.critical {
+  box-shadow: inset 3px 0 0 var(--gs-danger), 0 0 25px rgba(244,67,54,.08);
+}
+.alert-card.high {
+  box-shadow: inset 3px 0 0 var(--gs-warning), 0 0 25px rgba(255,152,0,.08);
+}
+.alert-card.medium {
+  box-shadow: inset 3px 0 0 var(--gs-accent), 0 0 25px rgba(0,160,251,.08);
+}
+.alert-severity.critical {
+  box-shadow: inset 0 0 8px rgba(244,67,54,.3);
+}
+.alert-severity.high {
+  box-shadow: inset 0 0 8px rgba(255,152,0,.3);
+}
+
+/* === TABLE ENHANCEMENTS === */
+.intent-table th, table th {
+  background: rgba(0,160,251,.1) !important;
+  text-shadow: 0 0 8px rgba(0,160,251,.4);
+}
+.intent-table tr:hover, table tr:hover {
+  box-shadow: 0 0 15px var(--gs-glow);
+}
+.intent-score.high {
+  text-shadow: 0 0 8px rgba(0,200,83,.5);
+}
+
+/* === BUTTON ENHANCEMENTS === */
+.btn {
+  border: 1px solid var(--gs-border) !important;
+  box-shadow: 0 0 10px var(--gs-glow);
+  transition: all .3s ease;
+}
+.btn:hover {
+  box-shadow: 0 0 20px var(--gs-glow-hover), 0 0 40px rgba(0,160,251,.1);
+  text-shadow: 0 0 8px var(--gs-accent-dim);
+}
+.btn.secondary {
+  border-color: rgba(0,160,251,.15) !important;
+}
+.btn.secondary:hover {
+  border-color: rgba(0,160,251,.4) !important;
+  background: rgba(0,160,251,.08) !important;
+}
+
+/* === OPS STATUS BAR === */
+.ops-status-bar {
+  background: rgba(0,160,251,.06) !important;
+  border-color: rgba(0,160,251,.25) !important;
+}
+.live-ops-log {
+  border-color: rgba(0,160,251,.3) !important;
+  box-shadow: 0 0 20px rgba(0,160,251,.1);
+}
+
+/* === NAVIGATION LINKS === */
+a {
+  transition: all .3s ease;
+}
+a:hover {
+  text-shadow: 0 0 8px var(--gs-accent-dim);
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,160,251,.03);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0,160,251,.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,160,251,.4);
+}
+
+/* === PULSE ANIMATION FOR LIVE ELEMENTS === */
+@keyframes gs-pulse {
+  0%, 100% { box-shadow: 0 0 10px var(--gs-glow); }
+  50% { box-shadow: 0 0 25px var(--gs-glow-hover); }
+}
+@keyframes gs-glow-text {
+  0%, 100% { text-shadow: 0 0 10px var(--gs-accent-dim); }
+  50% { text-shadow: 0 0 20px rgba(0,160,251,.8); }
+}
+
+/* === CONTAINER REFINEMENT === */
+.container {
+  position: relative;
+}
+
+/* === RESPONSIVE ADJUSTMENTS === */
+@media (max-width: 768px) {
+  body::before {
+    opacity: 0.5;
+  }
+}
