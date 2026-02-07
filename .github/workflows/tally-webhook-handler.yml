@@ -1,0 +1,76 @@
+name: Tally Form Submission Handler
+
+on:
+  repository_dispatch:
+    types: [tally_submission]
+
+jobs:
+  process-tally-submission:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Parse Tally submission
+        id: parse
+        run: |
+          echo "Parsing Tally webhook payload..."
+          FORM_DATA='${{ toJson(github.event.client_payload) }}'
+          REQUEST_TYPE=$(echo $FORM_DATA | jq -r '.data.fields[] | select(.key=="requestType") | .value')
+          NAME=$(echo $FORM_DATA | jq -r '.data.fields[] | select(.key=="name") | .value')
+          EMAIL=$(echo $FORM_DATA | jq -r '.data.fields[] | select(.key=="email") | .value')
+          PRIORITY=$(echo $FORM_DATA | jq -r '.data.fields[] | select(.key=="priority") | .value')
+          echo "request_type=$REQUEST_TYPE" >> $GITHUB_OUTPUT
+          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "email=$EMAIL" >> $GITHUB_OUTPUT
+          echo "priority=$PRIORITY" >> $GITHUB_OUTPUT
+
+      - name: Determine agent assignment
+        id: agent
+        run: |
+          REQUEST_TYPE="${{ steps.parse.outputs.request_type }}"
+          case "$REQUEST_TYPE" in
+            "Website Enhancement")
+              echo "agent_id=website-enhancer-agent" >> $GITHUB_OUTPUT
+              echo "linear_label=website-enhancement" >> $GITHUB_OUTPUT
+              ;;
+            "Data Integration")
+              echo "agent_id=data-processor-agent" >> $GITHUB_OUTPUT
+              echo "linear_label=data-pipeline" >> $GITHUB_OUTPUT
+              ;;
+            "Bug Report")
+              echo "agent_id=bug-fix-agent" >> $GITHUB_OUTPUT
+              echo "linear_label=bug" >> $GITHUB_OUTPUT
+              ;;
+            *)
+              echo "agent_id=general-agent" >> $GITHUB_OUTPUT
+              echo "linear_label=general" >> $GITHUB_OUTPUT
+              ;;
+          esac
+
+      - name: Create Linear issue
+        id: linear
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          RESPONSE=$(curl -s -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"query": "mutation { issueCreate(input: { teamId: \"'${{ secrets.LINEAR_TEAM_ID }}'\", title: \"'${{ steps.parse.outputs.request_type }}': '${{ steps.parse.outputs.name }}'\", priority: 3 }) { success issue { id identifier url } } }"}')
+          ISSUE_URL=$(echo $RESPONSE | jq -r '.data.issueCreate.issue.url')
+          echo "issue_url=$ISSUE_URL" >> $GITHUB_OUTPUT
+
+      - name: Update globe activity
+        run: |
+          TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          jq --arg ts "$TIMESTAMP" --arg name "${{ steps.parse.outputs.name }}" --arg type "${{ steps.parse.outputs.request_type }}" \
+            '.activities += [{"id": "tally-'$(date +%s)'", "timestamp": $ts, "type": "tally_submission", "location": {"lat": 30.6587, "lng": -97.9253, "city": "Liberty Hill", "country": "USA"}, "metadata": {"platform": "tally", "actor": $name, "message": ($type + " request"), "labels": ["tally"]}}]' \
+            docs/globe-activity.json > tmp.json && mv tmp.json docs/globe-activity.json
+
+      - name: Commit globe update
+        run: |
+          git config user.name "Tally Bot"
+          git config user.email "bot@tally.automation"
+          git add docs/globe-activity.json
+          git commit -m "New Tally submission: ${{ steps.parse.outputs.request_type }}"
+          git push
