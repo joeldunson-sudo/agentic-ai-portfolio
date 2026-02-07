@@ -1,0 +1,53 @@
+name: Linear-Cursor Agent Sync
+
+on:
+  repository_dispatch:
+    types: [linear_issue_created, linear_issue_updated]
+
+jobs:
+  sync-to-cursor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse Linear webhook
+        id: parse
+        run: |
+          ISSUE_DATA='${{ toJson(github.event.client_payload) }}'
+          ISSUE_ID=$(echo $ISSUE_DATA | jq -r '.data.id')
+          ISSUE_TITLE=$(echo $ISSUE_DATA | jq -r '.data.title')
+          LABELS=$(echo $ISSUE_DATA | jq -r '.data.labels | map(.name) | join(",")')
+          echo "issue_id=$ISSUE_ID" >> $GITHUB_OUTPUT
+          echo "issue_title=$ISSUE_TITLE" >> $GITHUB_OUTPUT
+          echo "labels=$LABELS" >> $GITHUB_OUTPUT
+
+      - name: Determine Cursor agent
+        id: agent
+        run: |
+          LABELS="${{ steps.parse.outputs.labels }}"
+          if echo "$LABELS" | grep -q "website-enhancement"; then
+            echo "agent=website-enhancer-agent" >> $GITHUB_OUTPUT
+          elif echo "$LABELS" | grep -q "data-pipeline"; then
+            echo "agent=data-processor-agent" >> $GITHUB_OUTPUT
+          elif echo "$LABELS" | grep -q "bug"; then
+            echo "agent=bug-fix-agent" >> $GITHUB_OUTPUT
+          else
+            echo "agent=general-agent" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Assign to Cursor agent via Linear API
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          curl -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"query": "mutation { issueUpdate(id: \"'${{ steps.parse.outputs.issue_id }}'\", input: { assigneeId: \"'${{ secrets.CURSOR_AGENT_LINEAR_USER_ID }}'\", stateId: \"'${{ secrets.LINEAR_IN_PROGRESS_STATE_ID }}'\" }) { success } }"}'
+
+      - name: Notify Cursor via Linear comment
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          COMMENT="@Cursor assigned to ${{ steps.agent.outputs.agent }}. Expected completion: 10 minutes."
+          curl -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"query": "mutation { commentCreate(input: { issueId: \"'${{ steps.parse.outputs.issue_id }}'\", body: \"'"$COMMENT"'\" }) { success } }"}'
