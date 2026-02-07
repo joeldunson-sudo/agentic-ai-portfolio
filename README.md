@@ -1,96 +1,91 @@
-# agentic-ai-portfolio
-Director, Agentic AI Sales Execution Strategy - Capability Portfolio
+# Agentic AI Portfolio
 
-## Live Portfolio
+**Director, Sales Execution Strategy - Capability Demonstration**
+Joel Dunson | Tungsten Automation | February 2026
 
-- **Main Site**: [joeldunson-sudo.github.io/agentic-ai-portfolio](https://joeldunson-sudo.github.io/agentic-ai-portfolio/)
-- **RPA Control Center**: [RPA Dashboard](https://joeldunson-sudo.github.io/agentic-ai-portfolio/rpa-control-center.html)
-- **Command Center**: [Command Center](https://joeldunson-sudo.github.io/agentic-ai-portfolio/command-center.html)
+## Live Demo
+
+| Page | URL |
+|------|-----|
+| Portfolio Landing | [joeldunson-sudo.github.io/agentic-ai-portfolio](https://joeldunson-sudo.github.io/agentic-ai-portfolio/) |
+| Operations Hub | [hub.html](https://joeldunson-sudo.github.io/agentic-ai-portfolio/hub.html) |
+| Agent Command Center | [command-center.html](https://joeldunson-sudo.github.io/agentic-ai-portfolio/command-center.html) |
+| RPA Control Center | [rpa-control-center.html](https://joeldunson-sudo.github.io/agentic-ai-portfolio/rpa-control-center.html) |
+| Intelligence Dashboard | [intelligence/](https://joeldunson-sudo.github.io/agentic-ai-portfolio/intelligence/) |
+| Tools Portal | [tools/](https://joeldunson-sudo.github.io/agentic-ai-portfolio/tools/) |
+
+## What This Demonstrates
+
+This portfolio is a working prototype of the systems described in the **Scalable Process Modeling Agentic Prompt Engineering Reference System v1.0**. It shows:
+
+1. **Multi-agent orchestration** - 4 specialized agents (Deep Signal Analyst, RPA Task Executor, Workflow Orchestrator, Website Enhancer) coordinating through a central hub
+2. **Webhook-driven automation** - Tally forms trigger GitHub Actions workflows that create Linear issues and update a live globe visualization
+3. **Territory intelligence** - Real-time signal feeds, intent scoring, and buying stage tracking for enterprise accounts
+4. **Process modeling in practice** - Every component maps to the 15-Section Agent Architecture framework
 
 ## Architecture
 
-This portfolio demonstrates a multi-agent RPA orchestration system with real-time globe visualization, webhook-driven automation, and cross-platform integration.
-
-### System Flow
-
 ```
-Tally Form -> Webhook -> GitHub Actions -> Linear Issue -> Cursor Agent -> Auto-Commit
-     |                        |                |                          |
-     v                        v                v                          v
- Globe Marker          Pipeline Run      Status Update            Code Changes
+Tally Form --> [Webhook Relay] --> GitHub Actions --> Linear Issue
+                                       |                  |
+                                       v                  v
+                                  Globe Activity     Status Update
+                                       |
+                                       v
+                                  GitHub Pages
 ```
+
+Full architecture documentation: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
 
 ## Project Structure
 
 ```
 agentic-ai-portfolio/
-|-- .github/workflows/          # CI/CD automation
+|-- .github/workflows/       # GitHub Actions automation
 |   |-- tally-webhook-handler.yml
-|   |-- linear-cursor-sync.yml
-|   |-- gitlab-sync.yml
-|-- agents/                     # Agent configurations
-|   |-- agent-registry.json
+|-- agents/                  # Agent configuration files
 |   |-- deep-signal-analyst.json
 |   |-- rpa-task-executor.json
 |   |-- workflow-orchestrator.json
-|-- assets/                     # Frontend assets
-|   |-- rpa-bridge.js           # Webhook routing & globe integration
-|   |-- enhance.js / enhance.css
-|   |-- globe-skin.css
-|-- config/                     # Integration configurations
-|   |-- platforms.json
-|   |-- linear-cursor.json
-|   |-- webhook-routes.json
-|   |-- tally-forms.json
-|   |-- globe-activity-schema.json
-|-- docs/                       # Data & documentation
-|   |-- globe-activity.json     # Globe visualization seed data
-|-- intelligence/               # Analysis reports
-|-- tools/                      # Utility tools
-|-- workflows/                  # Workflow definitions
-|-- index.html                  # Main portfolio page
-|-- rpa-control-center.html     # RPA dashboard
-|-- command-center.html         # Command center
-|-- hub.html                    # Central hub
+|-- assets/                  # CSS and JS enhancements
+|-- docs/                    # Project documentation
+|   |-- ARCHITECTURE.md      # System architecture & integration map
+|   |-- EXECUTION-RUNBOOK.md # Step-by-step operational guide
+|   |-- SECRETS-CHECKLIST.md # Credentials setup guide
+|   |-- globe-activity.json  # COBE globe marker data
+|-- intelligence/            # Intelligence dashboard pages
+|-- tools/                   # Agent tools interface
+|-- workflows/               # Analysis artifacts
+|-- hub.html                 # Main operations center
+|-- command-center.html      # 4-agent dashboard
+|-- rpa-control-center.html  # RPA task recorder
+|-- index.html               # Portfolio landing page
 ```
 
-## Integrations
+## Quick Start
 
-### Tally Forms
-Inbound client intake via Tally webhooks. Submissions automatically create Linear issues, update globe markers, and route to appropriate agents.
+1. **View the live site**: Visit the [Portfolio Landing](https://joeldunson-sudo.github.io/agentic-ai-portfolio/)
+2. **Set up integrations**: Follow [`docs/EXECUTION-RUNBOOK.md`](docs/EXECUTION-RUNBOOK.md)
+3. **Configure secrets**: Follow [`docs/SECRETS-CHECKLIST.md`](docs/SECRETS-CHECKLIST.md)
 
-### Linear + Cursor
-Bidirectional sync between Linear issue tracker and Cursor AI coding agent. Issues trigger automated code generation and review workflows.
+## Technology
 
-### GitLab Sync
-Cross-platform synchronization for merge requests, pipeline events, and CI/CD visualization.
+- **Frontend**: Static HTML/CSS/JS on GitHub Pages (no build step)
+- **Automation**: GitHub Actions workflows triggered via `repository_dispatch`
+- **Project Management**: Linear (GraphQL API)
+- **Forms**: Tally (webhook integration)
+- **Visualization**: COBE globe, custom CSS animations
+- **Agent Configs**: JSON-based, following 15-Section Agent Architecture
 
-### GitHub Actions
-Three automated workflows handle the complete RPA loop:
-1. **Tally Webhook Handler** - Processes form submissions
-2. **Linear-Cursor Sync** - Bridges issue tracking with AI coding
-3. **GitLab Sync** - Cross-platform pipeline orchestration
+## Framework Alignment
 
-## RPA Bridge
+This project implements patterns from the **Scalable Process Modeling** reference:
 
-The `assets/rpa-bridge.js` module connects the portfolio frontend with backend workflows:
-- Loads configuration from `/config/*.json`
-- Polls `/docs/globe-activity.json` for real-time updates
-- Routes webhooks to appropriate GitHub Actions
-- Manages agent registry and event queue
-- Provides event-driven architecture with pub/sub pattern
-
-## Setup
-
-### Required GitHub Secrets
-
-| Secret | Purpose |
-|--------|--------|
-| `TALLY_WEBHOOK_SECRET` | Verify Tally form submissions |
-| `LINEAR_API_KEY` | Linear issue management |
-| `GITLAB_TOKEN` | GitLab API access |
-| `CURSOR_API_TOKEN` | Cursor AI agent integration |
-
-## License
-
-Private - All rights reserved.
+| Framework Part | Implementation |
+|---------------|---------------|
+| Part II: Agent Architecture | `/agents/*.json` configs |
+| Part III: Confidence System | Intelligence dashboard scoring |
+| Part IV: Execution Patterns | Workflow automation pipelines |
+| Part V: Production Prompts | Deep Analyst tool interface |
+| Part VIII: Website Demo | Full site architecture |
+| Part IX: Versioning | `docs/` folder + git history |
