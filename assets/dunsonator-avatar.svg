@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="helmet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a2a3e"/>
+      <stop offset="100%" stop-color="#0e0e16"/>
+    </linearGradient>
+    <linearGradient id="visor" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff8c00"/>
+      <stop offset="100%" stop-color="#b87333"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff8c00" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ff8c00" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#ff8c00" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="neon">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#0a0a0f"/>
+    </radialGradient>
+  </defs>
+  <!-- Background -->
+  <circle cx="100" cy="100" r="98" fill="url(#bg)" stroke="#ff8c00" stroke-width="2" opacity="0.9"/>
+  <circle cx="100" cy="100" r="94" fill="none" stroke="#ff8c00" stroke-width="0.5" opacity="0.3"/>
+  <!-- Neck/Shoulders -->
+  <path d="M60,155 Q65,140 80,135 L120,135 Q135,140 140,155" fill="url(#helmet)" stroke="#b87333" stroke-width="1"/>
+  <!-- Shoulder armor plates -->
+  <path d="M55,155 L45,165 L50,175 L70,160 Z" fill="#1e1e30" stroke="#ff8c00" stroke-width="0.8" opacity="0.8"/>
+  <path d="M145,155 L155,165 L150,175 L130,160 Z" fill="#1e1e30" stroke="#ff8c00" stroke-width="0.8" opacity="0.8"/>
+  <!-- Chest plate -->
+  <path d="M70,155 L80,175 L100,180 L120,175 L130,155 Z" fill="#14141e" stroke="#b87333" stroke-width="1"/>
+  <line x1="100" y1="155" x2="100" y2="178" stroke="#ff8c00" stroke-width="0.5" opacity="0.6"/>
+  <!-- Chest reactor -->
+  <circle cx="100" cy="165" r="6" fill="#0e0e16" stroke="#ff8c00" stroke-width="1.5" filter="url(#neon)"/>
+  <circle cx="100" cy="165" r="3" fill="#ff8c00" opacity="0.9"/>
+  <!-- Helmet -->
+  <path d="M65,130 Q65,65 100,55 Q135,65 135,130 Q130,138 100,140 Q70,138 65,130Z" fill="url(#helmet)" stroke="#b87333" stroke-width="1.5"/>
+  <!-- Helmet ridge -->
+  <path d="M100,52 Q100,70 100,140" stroke="#b87333" stroke-width="2" fill="none" opacity="0.6"/>
+  <!-- Side vents -->
+  <rect x="63" y="95" width="8" height="3" rx="1" fill="#ff8c00" opacity="0.5"/>
+  <rect x="63" y="100" width="8" height="3" rx="1" fill="#ff8c00" opacity="0.4"/>
+  <rect x="63" y="105" width="8" height="3" rx="1" fill="#ff8c00" opacity="0.3"/>
+  <rect x="129" y="95" width="8" height="3" rx="1" fill="#ff8c00" opacity="0.5"/>
+  <rect x="129" y="100" width="8" height="3" rx="1" fill="#ff8c00" opacity="0.4"/>
+  <rect x="129" y="105" width="8" height="3" rx="1" fill="#ff8c00" opacity="0.3"/>
+  <!-- Visor -->
+  <path d="M72,85 Q80,78 100,76 Q120,78 128,85 L130,100 Q125,112 100,115 Q75,112 70,100 Z" fill="url(#visor)" opacity="0.85" filter="url(#neon)"/>
+  <!-- Visor inner glow -->
+  <path d="M76,88 Q85,82 100,80 Q115,82 124,88 L126,98 Q122,108 100,110 Q78,108 74,98 Z" fill="#ff8c00" opacity="0.15"/>
+  <!-- HUD lines on visor -->
+  <line x1="80" y1="92" x2="95" y2="92" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
+  <line x1="105" y1="92" x2="120" y2="92" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
+  <line x1="85" y1="98" x2="115" y2="98" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+  <circle cx="100" cy="95" r="2" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.5"/>
+  <!-- Antenna -->
+  <line x1="130" y1="70" x2="145" y2="50" stroke="#b87333" stroke-width="1.5"/>
+  <circle cx="145" cy="48" r="3" fill="#ff8c00" filter="url(#neon)"/>
+  <!-- Mouth guard -->
+  <path d="M80,118 Q90,122 100,123 Q110,122 120,118" fill="none" stroke="#b87333" stroke-width="1" opacity="0.6"/>
+  <line x1="88" y1="120" x2="88" y2="126" stroke="#ff8c00" stroke-width="0.5" opacity="0.4"/>
+  <line x1="94" y1="121" x2="94" y2="128" stroke="#ff8c00" stroke-width="0.5" opacity="0.4"/>
+  <line x1="100" y1="121" x2="100" y2="129" stroke="#ff8c00" stroke-width="0.5" opacity="0.4"/>
+  <line x1="106" y1="121" x2="106" y2="128" stroke="#ff8c00" stroke-width="0.5" opacity="0.4"/>
+  <line x1="112" y1="120" x2="112" y2="126" stroke="#ff8c00" stroke-width="0.5" opacity="0.4"/>
+  <!-- Hex pattern decorations -->
+  <text x="100" y="33" text-anchor="middle" font-size="7" fill="#ff8c00" opacity="0.6" font-family="monospace">DUNSONATOR</text>
+  <text x="100" y="195" text-anchor="middle" font-size="5" fill="#b87333" opacity="0.5" font-family="monospace">v2.0 // SIGNAL HUNTER</text>
+</svg>
