@@ -15,6 +15,14 @@
   --gs-success: #00c853;
   --gs-warning: #ff9800;
   --gs-danger: #f44336;
+     /* Glassmorphism variables */
+  --glass-bg: rgba(10, 14, 39, 0.6);
+  --glass-border: rgba(0, 160, 251, 0.12);
+  --glass-blur: 16px;
+  --nebula-purple: rgba(88, 28, 135, 0.15);
+  --nebula-blue: rgba(15, 23, 82, 0.3);
+  --cosmic-deep: #050A1A;
+  --star-color: rgba(200, 220, 255, 0.8);
 }
 
 /* === STAR-FIELD BACKGROUND === */
@@ -182,4 +190,143 @@ a:hover {
   body::before {
     opacity: 0.5;
   }
+}
+
+/* === PINTEREST GLASSMORPHISM SKIN === */
+/* Animated star particles */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+@keyframes nebula-drift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes aurora {
+  0% { opacity: 0.08; transform: translateX(-5%); }
+  50% { opacity: 0.15; transform: translateX(5%); }
+  100% { opacity: 0.08; transform: translateX(-5%); }
+}
+
+/* Cosmic nebula overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, var(--nebula-purple) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, var(--nebula-blue) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(0,160,251,0.05) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+  animation: nebula-drift 20s ease-in-out infinite;
+  background-size: 200% 200%;
+}
+
+body > * { position: relative; z-index: 1; }
+
+/* Glassmorphism card effects */
+.card, .stat-card, .interactive-demo, .deal-card-interactive,
+.meta-item, .quote-box, .table-container, .gs-card, .gs-panel {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.card:hover, .stat-card:hover, .deal-card-interactive:hover, .gs-card:hover {
+  border-color: rgba(0,160,251,0.3) !important;
+  box-shadow: 0 12px 48px rgba(0,160,251,0.15), inset 0 1px 0 rgba(255,255,255,0.08), 0 0 30px rgba(0,160,251,0.1);
+}
+
+/* Header glass */
+.header, header {
+  background: linear-gradient(180deg, rgba(5,10,26,0.95) 0%, rgba(10,14,39,0.8) 100%) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+/* Nav button glass */
+nav button, .nav-btn {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border) !important;
+}
+nav button:hover, nav button.active, .nav-btn:hover, .nav-btn.active {
+  background: rgba(0,160,251,0.15) !important;
+  border-color: rgba(0,160,251,0.4) !important;
+  box-shadow: 0 0 20px rgba(0,160,251,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* CTA section glass */
+.cta-section {
+  background: linear-gradient(135deg, rgba(0,40,84,0.4), rgba(26,35,72,0.4)) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* Footer glass */
+footer {
+  background: rgba(10,14,39,0.8) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--glass-border) !important;
+}
+
+/* Table glass */
+th {
+  background: rgba(26,35,72,0.6) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Glow typography */
+.section-title, h1, h2 {
+  text-shadow: 0 0 30px rgba(0,160,251,0.2);
+}
+
+/* Workflow step glass */
+.workflow-step {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* Progress bar glass */
+.progress-bar {
+  background: rgba(20,27,58,0.5) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Input glass */
+input, select, textarea {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border) !important;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(0,160,251,0.4) !important;
+  box-shadow: 0 0 16px rgba(0,160,251,0.15);
+}
+
+/* Badge glass */
+.badge {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Scrollbar glass override */
+::-webkit-scrollbar-thumb {
+  background: rgba(0,160,251,0.2) !important;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,160,251,0.4) !important;
+}
+::-webkit-scrollbar-track {
+  background: rgba(5,10,26,0.8) !important;
 }
