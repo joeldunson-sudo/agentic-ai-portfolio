@@ -297,7 +297,7 @@
     el.className = 'dv-hero';
     const cv = makeCanvas(1200, 400);
     el.appendChild(cv);
-    el.innerHTML += `<div class="dv-hero-overlay"><h1>${ctx.t}</h1><div class="sub">${ctx.s}</div></div><div class="dv-scan"></div>`;
+    el.insertAdjacentHTML('beforeend', `<div class="dv-hero-overlay"><h1>${ctx.t}</h1><div class="sub">${ctx.s}</div></div><div class="dv-scan"></div>`;
     const nav = document.querySelector('nav, .navbar, header, .top-bar');
     if (nav) nav.parentNode.insertBefore(el, nav.nextSibling);
     else document.body.insertBefore(el, document.body.firstChild);
@@ -322,7 +322,7 @@
       cell.className = 'dv-cell';
       const cv = makeCanvas(520, 360);
       cell.appendChild(cv);
-      cell.innerHTML += `<div class="lbl">${l.t}<span>${l.s}</span></div>`;
+      cell.insertAdjacentHTML('beforeend', `<div class="lbl">${l.t}<span>${l.s}</span></div>`;
       grid.appendChild(cell);
       l.r(cv);
     });
@@ -344,7 +344,7 @@
       el.className = 'dv-panel';
       const cv = makeCanvas(800, 200);
       el.appendChild(cv);
-      el.innerHTML += `<div class="pc"><h3>${p.t}</h3><p>${p.d}</p></div>`;
+      el.insertAdjacentHTML('beforeend', `<div class="pc"><h3>${p.t}</h3><p>${p.d}</p></div>`;
       if (secs[i*2]) secs[i*2].parentNode.insertBefore(el, secs[i*2].nextSibling);
       p.r(cv);
     });
