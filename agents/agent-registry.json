@@ -44,6 +44,20 @@
       },
       "capabilities": ["Parse submissions", "Create Linear issues", "Route to agents", "Globe markers"],
       "nfrs": { "maxExecutionTime": "90s", "responseTime": "< 10s" }
+    },
+    {
+      "id": "deploy-rpa-orchestrator",
+      "name": "Deploy RPA Agent - Team Orchestrator",
+      "version": "1.0.0",
+      "platform": "meta-orchestrator",
+      "triggers": {
+        "manual": { "command": "deploy-rpa-agent" },
+        "github": { "paths": ["agents/deploy-rpa-orchestrator.json", "config/deploy-rpa-config.json"] }
+      },
+      "capabilities": ["Deployment planning", "Change management", "RACI generation", "Runbook authoring", "Monitoring spec", "Risk assessment"],
+      "config": "config/deploy-rpa-config.json",
+      "artefacts": "intelligence/deployments/deploy_rpa_agent_team/",
+      "nfrs": { "maxExecutionTime": "15min", "requiresApproval": true, "separationOfDuties": true }
     }
   ],
   "agentOrchestration": {
