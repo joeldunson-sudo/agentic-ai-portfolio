@@ -1,0 +1,1 @@
+"""SixSense warehouse module."""

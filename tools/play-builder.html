@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Play Builder Framework | Joel Dunson</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#0a0e17;color:#e0e0e0;min-height:100vh}
+.nav{display:flex;gap:12px;padding:20px 32px;border-bottom:1px solid #1a2332}
+.nav a{color:#00e5ff;text-decoration:none;padding:8px 16px;border:1px solid #1a2332;border-radius:8px;font-size:14px}
+.nav a:hover,.nav a.active{background:#00e5ff;color:#000}
+.container{max-width:1200px;margin:0 auto;padding:32px}
+h1{color:#00e5ff;font-size:32px;margin-bottom:8px}
+.sub{color:#888;margin-bottom:32px}
+.card{background:#0d1420;border:1px solid #1a2332;border-radius:12px;padding:24px;margin-bottom:20px}
+h2{color:#00e5ff;font-size:20px;margin-bottom:16px}
+label{display:block;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin:16px 0 6px}
+select,input,textarea{width:100%;padding:10px 14px;background:#111927;border:1px solid #1a2332;border-radius:8px;color:#e0e0e0;font-size:14px;font-family:inherit}
+textarea{min-height:100px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn{display:inline-block;padding:12px 24px;background:#00e5ff;color:#000;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:16px}
+.btn:hover{background:#00b8d4}
+.out{background:#111927;border:1px solid #1a2332;border-radius:8px;padding:16px;margin-top:16px;font-family:monospace;font-size:13px;line-height:1.8;white-space:pre-wrap;min-height:200px}
+.sbar{display:flex;gap:24px;padding:12px 20px;background:#0d1420;border:1px solid #1a2332;border-radius:8px;margin-bottom:24px;font-size:13px;color:#888}
+.sbar span{color:#69f0ae}
+</style>
+</head>
+<body>
+<div class="nav">
+<a href="../hub.html">Hub</a>
+<a href="../command-center.html">Command Center</a>
+<a href="index.html">Tools</a>
+<a href="../intelligence/index.html">Intelligence</a>
+<a href="play-builder.html" class="active">Play Builder</a>
+</div>
+<div class="container">
+<h1>Play Builder Framework</h1>
+<p class="sub">Templated demand play creation. Input: trigger + persona + product. Output: cadence-ready messaging, competitive positioning, and objection handling.</p>
+<div class="sbar">Engine: <span>READY</span>&nbsp;&nbsp;|&nbsp;&nbsp;Templates: <span>12 loaded</span>&nbsp;&nbsp;|&nbsp;&nbsp;Plays generated: <span id="pc">0</span></div>
+<div class="grid">
+<div>
+<div class="card">
+<h2>1. Configure Play Inputs</h2>
+<label>Trigger Event</label>
+<select id="trigger"><option value="">Select trigger...</option><option>Contract Expiry Window</option><option>Leadership Change</option><option>M and A Activity</option><option>Earnings Call Signal</option><option>Hiring Surge</option><option>Budget Approval Detected</option><option>Competitor Displacement</option></select>
+<label>Target Persona</label>
+<select id="persona"><option value="">Select persona...</option><option>VP Operations</option><option>CIO / CTO</option><option>Director IT</option><option>VP Data Engineering</option><option>Head of AI / ML</option><option>CFO / VP Finance</option><option>Procurement</option></select>
+<label>Tungsten Product</label>
+<select id="product"><option value="">Select product...</option><option>TotalAgility</option><option>Intelligent Capture</option><option>Tungsten RPA</option><option>Communication Manager</option><option>Full Platform Suite</option></select>
+<label>Target Account</label>
+<input type="text" id="acct" placeholder="e.g., Snowflake, Meta Platforms...">
+<label>Additional Context</label>
+<textarea id="ctx" placeholder="Deal-specific context, competitive intel, timing notes..."></textarea>
+<button class="btn" onclick="gen()">Generate Play</button>
+</div>
+</div>
+<div>
+<div class="card">
+<h2>2. Generated Play Output</h2>
+<div id="out" class="out">Configure inputs and click Generate Play.
+
+Output includes:
+  - Opening messaging (email subject + body)
+  - Competitive positioning
+  - Objection handling scripts
+  - Multi-touch cadence sequence
+  - Success metrics</div>
+</div>
+<div class="card">
+<h2>3. Cadence Sequence</h2>
+<div id="cad" class="out">Day 1:  Email 1 (trigger-based opener)
+Day 3:  LinkedIn connection + note
+Day 5:  Phone attempt 1
+Day 7:  Email 2 (value prop)
+Day 10: LinkedIn engage
+Day 14: Email 3 (case study)
+Day 17: Phone attempt 2
+Day 21: Break-up email</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+let n=0;
+function gen(){
+var t=document.getElementById("trigger").value,p=document.getElementById("persona").value,pr=document.getElementById("product").value,a=document.getElementById("acct").value||"[Company]",c=document.getElementById("ctx").value;
+if(!t||!p||!pr){document.getElementById("out").textContent="Please select trigger, persona, and product.";return}
+n++;document.getElementById("pc").textContent=n;
+var msg="PLAY: "+t+" > "+p+" > "+pr+"\nAccount: "+a;
+if(c) msg+="\nContext: "+c;
+msg+="\n\nSUBJECT LINE:\n"+a+": "+t+" + "+pr+" opportunity";
+msg+="\n\nOPENING MESSAGE:\nBased on the "+t.toLowerCase()+" signal detected at "+a+", organizations in your position are evaluating how intelligent automation can accelerate outcomes. We are helping similar teams achieve 3-5x ROI within 12 months using "+pr+".";
+msg+="\n\nVALUE PROP FOR "+p.toUpperCase()+":\nTungsten "+pr+" delivers measurable impact on the metrics that matter most to your role.";
+msg+="\n\nOBJECTION HANDLING:\nQ: We are happy with our current vendor.\nA: Many customers felt similarly before discovering 40% cost savings. A side-by-side comparison takes 20 minutes.\n\nQ: Budget is tight.\nA: Our self-funding model means ROI in Year 1. Can I show you the math?\n\nQ: We are building in-house.\nA: Smart. Tungsten handles the 80% so your team focuses on the 20% that differentiates.";
+document.getElementById("out").textContent=msg;
+document.getElementById("cad").textContent="CADENCE FOR: "+a+" | "+p+"\n\nDay 1:  Email 1 - "+t+" opener\nDay 3:  LinkedIn connection + personalized note\nDay 5:  Phone attempt 1\nDay 7:  Email 2 - Value prop + ROI framework\nDay 10: LinkedIn engage\nDay 14: Email 3 - Case study\nDay 17: Phone attempt 2 + voicemail\nDay 21: Break-up email\n\nEXIT CRITERIA:\n- Meeting booked: Move to discovery\n- Reply positive: Accelerate\n- No response Day 21: Nurture track\n- Negative: Pause 90 days"
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+sixsense:
+  name: SixSense Engine
+  version: 0.1.0
+
+github:
+  owner: joeldunson-sudo
+  repo: agentic-ai-portfolio
+
+gitlab:
+  project_id: ""
+
+scheduler:
+  interval_minutes: 60
+  batch_size: 500
