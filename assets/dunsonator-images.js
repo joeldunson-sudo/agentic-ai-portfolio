@@ -1,483 +1,407 @@
 /**
- * DUNSONATOR IMAGE INJECTION SYSTEM v2.0
- * Tactical Signal Hunter Visual Layer
- * Injects CDN-sourced tactical/tech imagery across all pages
+ * DUNSONATOR PROCEDURAL VISUAL SYSTEM v3.0
+ * Zero stock photos. All visuals generated in-browser.
+ * Particle networks, radar sweeps, data meshes, signal waveforms.
+ * Inspired by Palantir HUD / Anduril Lattice aesthetic.
  */
 (function() {
   'use strict';
+  const C = { orange: '#ff8c00', copper: '#b87333', bg: '#0a0a0f', dim: 'rgba(255,140,0,0.15)', glow: 'rgba(255,140,0,0.4)' };
 
-  // === IMAGE LIBRARY - Unsplash CDN tactical/tech images ===
-  const TACTICAL_IMAGES = {
-    heroes: [
-      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80', // cyber grid
-      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1920&q=80', // matrix code
-      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=80', // server room
-      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80', // tech office
-      'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&q=80', // circuit board
-    ],
-    signals: [
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80', // data dashboard
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80', // analytics screen
-      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80', // stock charts
-      'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80', // trading desk
-      'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=800&q=80', // AI neural
-      'https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&q=80', // blockchain
-    ],
-    tactical: [
-      'https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=800&q=80', // hacker screen
-      'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80', // cybersecurity
-      'https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=800&q=80', // hacker hood
-      'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&q=80', // network fiber
-      'https://images.unsplash.com/photo-1580894894513-541e068a3e2b?w=800&q=80', // radar screen
-      'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=80', // neon tech
-    ],
-    environments: [
-      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80', // earth from space
-      'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800&q=80', // satellite
-      'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&q=80', // hologram
-      'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&q=80', // abstract tech
-      'https://images.unsplash.com/photo-1562408590-e32931084e23?w=800&q=80', // command center
-    ]
-  };
-
-  // === INJECT TACTICAL CSS ===
-  function injectImageStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-      /* === TACTICAL HERO BANNER === */
-      .duns-hero-banner {
-        position: relative;
-        width: 100%;
-        height: 340px;
-        overflow: hidden;
-        border-bottom: 2px solid #ff8c00;
-        margin-bottom: 32px;
-      }
-      .duns-hero-banner img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: brightness(0.35) saturate(1.4) hue-rotate(-5deg);
-        transition: filter 0.6s ease;
-      }
-      .duns-hero-banner:hover img {
-        filter: brightness(0.5) saturate(1.6);
-      }
-      .duns-hero-overlay {
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(180deg, rgba(10,10,15,0.7) 0%, rgba(10,10,15,0.3) 40%, rgba(10,10,15,0.8) 100%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 2;
-      }
-      .duns-hero-overlay h1 {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 2.2rem;
-        color: #ff8c00;
-        text-shadow: 0 0 30px rgba(255,140,0,0.6), 0 0 60px rgba(255,140,0,0.3);
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        margin: 0;
-      }
-      .duns-hero-overlay .hero-sub {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.85rem;
-        color: #b87333;
-        letter-spacing: 6px;
-        margin-top: 8px;
-        opacity: 0.8;
-      }
-      .duns-hero-scanline {
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,140,0,0.03) 2px, rgba(255,140,0,0.03) 4px);
-        pointer-events: none;
-        z-index: 3;
-        animation: scanMove 8s linear infinite;
-      }
-      @keyframes scanMove {
-        0% { transform: translateY(0); }
-        100% { transform: translateY(20px); }
-      }
-
-      /* === TACTICAL IMAGE GRID === */
-      .duns-image-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 16px;
-        padding: 24px;
-        margin: 32px 0;
-      }
-      .duns-image-card {
-        position: relative;
-        border-radius: 8px;
-        overflow: hidden;
-        border: 1px solid rgba(255,140,0,0.2);
-        background: rgba(10,10,15,0.9);
-        transition: all 0.4s ease;
-        cursor: pointer;
-      }
-      .duns-image-card:hover {
-        border-color: #ff8c00;
-        transform: translateY(-4px);
-        box-shadow: 0 8px 32px rgba(255,140,0,0.2);
-      }
-      .duns-image-card img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        filter: brightness(0.6) saturate(1.2);
-        transition: all 0.4s ease;
-      }
-      .duns-image-card:hover img {
-        filter: brightness(0.8) saturate(1.5);
-        transform: scale(1.05);
-      }
-      .duns-image-card .card-label {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 16px;
-        background: linear-gradient(transparent, rgba(10,10,15,0.95));
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.75rem;
-        color: #ff8c00;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-      }
-      .duns-image-card .card-label span {
-        display: block;
-        color: #b87333;
-        font-size: 0.65rem;
-        margin-top: 4px;
-        opacity: 0.7;
-      }
-
-      /* === FLOATING TACTICAL PANELS === */
-      .duns-tactical-panel {
-        position: relative;
-        margin: 24px;
-        padding: 0;
-        border: 1px solid rgba(255,140,0,0.15);
-        border-radius: 8px;
-        overflow: hidden;
-        background: rgba(10,10,15,0.95);
-      }
-      .duns-tactical-panel .panel-image {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        filter: brightness(0.4) saturate(1.3);
-      }
-      .duns-tactical-panel .panel-content {
-        padding: 20px;
-        position: relative;
-      }
-      .duns-tactical-panel .panel-content::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: 20px;
-        right: 20px;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #ff8c00, transparent);
-      }
-
-      /* === AMBIENT BACKGROUND IMAGES === */
-      .duns-ambient-bg {
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        z-index: -1;
-        pointer-events: none;
-      }
-      .duns-ambient-bg img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.06;
-        filter: saturate(0.5) brightness(0.3);
-        transition: opacity 10s ease;
-      }
-
-      /* === CORNER TACTICAL VIGNETTES === */
-      .duns-corner-img {
-        position: fixed;
-        width: 200px;
-        height: 200px;
-        opacity: 0.12;
-        pointer-events: none;
-        z-index: 1;
-        filter: brightness(0.5) saturate(1.5);
-      }
-      .duns-corner-img.top-right {
-        top: 80px; right: 0;
-        mask-image: radial-gradient(ellipse at top right, black 30%, transparent 70%);
-        -webkit-mask-image: radial-gradient(ellipse at top right, black 30%, transparent 70%);
-      }
-      .duns-corner-img.bottom-left {
-        bottom: 0; left: 0;
-        mask-image: radial-gradient(ellipse at bottom left, black 30%, transparent 70%);
-        -webkit-mask-image: radial-gradient(ellipse at bottom left, black 30%, transparent 70%);
-      }
-
-      /* === DUNSONATOR AVATAR BADGE === */
-      .duns-avatar-badge {
-        position: fixed;
-        bottom: 90px;
-        right: 24px;
-        width: 56px;
-        height: 56px;
-        z-index: 9998;
-        cursor: pointer;
-        filter: drop-shadow(0 0 12px rgba(255,140,0,0.5));
-        animation: avatarPulse 3s ease-in-out infinite;
-        transition: transform 0.3s ease;
-      }
-      .duns-avatar-badge:hover {
-        transform: scale(1.2);
-        filter: drop-shadow(0 0 20px rgba(255,140,0,0.8));
-      }
-      @keyframes avatarPulse {
-        0%, 100% { filter: drop-shadow(0 0 12px rgba(255,140,0,0.5)); }
-        50% { filter: drop-shadow(0 0 24px rgba(255,140,0,0.8)); }
-      }
-
-      /* === SECTION DIVIDER WITH IMAGE === */
-      .duns-section-divider {
-        width: 100%;
-        height: 120px;
-        position: relative;
-        margin: 40px 0;
-        overflow: hidden;
-      }
-      .duns-section-divider img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: brightness(0.2) saturate(1.5);
-      }
-      .duns-section-divider::after {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(90deg, rgba(10,10,15,1) 0%, transparent 20%, transparent 80%, rgba(10,10,15,1) 100%);
-      }
-      .duns-section-divider .divider-line {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, #ff8c00, transparent);
-        z-index: 2;
-      }
+  // === INJECT STYLES ===
+  function injectStyles() {
+    const s = document.createElement('style');
+    s.textContent = `
+      .dv-hero{position:relative;width:100%;height:320px;overflow:hidden;border-bottom:1px solid ${C.dim};margin-bottom:24px}
+      .dv-hero canvas{position:absolute;top:0;left:0;width:100%;height:100%}
+      .dv-hero-overlay{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;background:linear-gradient(180deg,rgba(10,10,15,0.4) 0%,rgba(10,10,15,0.15) 50%,rgba(10,10,15,0.6) 100%)}
+      .dv-hero-overlay h1{font-family:'JetBrains Mono',monospace;font-size:clamp(1.4rem,3vw,2.4rem);color:${C.orange};text-shadow:0 0 40px ${C.glow};letter-spacing:6px;text-transform:uppercase;margin:0}
+      .dv-hero-overlay .sub{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:${C.copper};letter-spacing:8px;margin-top:6px;opacity:0.7}
+      .dv-scan{position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,140,0,0.015) 3px,rgba(255,140,0,0.015) 6px);pointer-events:none;z-index:3}
+      .dv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;padding:16px 24px;margin:20px 0}
+      .dv-cell{position:relative;height:180px;border-radius:6px;overflow:hidden;border:1px solid ${C.dim};background:${C.bg};cursor:pointer;transition:all .4s}
+      .dv-cell:hover{border-color:${C.orange};box-shadow:0 0 24px rgba(255,140,0,0.12)}
+      .dv-cell canvas{width:100%;height:100%}
+      .dv-cell .lbl{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(transparent,rgba(10,10,15,0.95));font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:${C.orange};letter-spacing:2px;text-transform:uppercase;z-index:2}
+      .dv-cell .lbl span{display:block;color:${C.copper};font-size:0.6rem;margin-top:3px;opacity:0.6}
+      .dv-panel{position:relative;margin:20px 24px;border-radius:6px;overflow:hidden;border:1px solid ${C.dim};background:${C.bg}}
+      .dv-panel canvas{width:100%;height:160px;display:block}
+      .dv-panel .pc{padding:16px 20px;position:relative}
+      .dv-panel .pc::before{content:'';position:absolute;top:0;left:20px;right:20px;height:1px;background:linear-gradient(90deg,transparent,${C.orange},transparent)}
+      .dv-panel h3{color:${C.orange};font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:3px;margin:0 0 6px}
+      .dv-panel p{color:#666;font-family:'JetBrains Mono',monospace;font-size:0.7rem;margin:0;line-height:1.5}
+      .dv-divider{width:100%;height:80px;position:relative;margin:32px 0;overflow:hidden}
+      .dv-divider canvas{width:100%;height:100%}
+      .dv-divider::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(90deg,${C.bg} 0%,transparent 15%,transparent 85%,${C.bg} 100%)}
+      .dv-ambient{position:fixed;top:0;left:0;right:0;bottom:0;z-index:-1;pointer-events:none}
+      .dv-ambient canvas{width:100%;height:100%;opacity:0.04}
+      .dv-avatar{position:fixed;bottom:90px;right:24px;width:52px;height:52px;z-index:9998;cursor:pointer;filter:drop-shadow(0 0 10px ${C.glow});animation:avp 3s ease-in-out infinite;transition:transform .3s}
+      .dv-avatar:hover{transform:scale(1.15)}
+      @keyframes avp{0%,100%{filter:drop-shadow(0 0 10px ${C.glow})}50%{filter:drop-shadow(0 0 20px rgba(255,140,0,0.7))}}
     `;
-    document.head.appendChild(style);
+    document.head.appendChild(s);
   }
 
-  // === PAGE CONTEXT DETECTION ===
-  function getPageContext() {
-    const path = window.location.pathname.toLowerCase();
-    const title = document.title.toLowerCase();
-    if (path.includes('hub') || path.endsWith('/')) return { type: 'hub', title: 'DUNSONATOR // COMMAND HUB', sub: 'TACTICAL SIGNAL HUNTER v2.0' };
-    if (path.includes('rpa')) return { type: 'rpa', title: 'RPA CONTROL CENTER', sub: 'AUTOMATED INTELLIGENCE GRID' };
-    if (path.includes('command')) return { type: 'command', title: 'COMMAND CENTER', sub: 'REAL-TIME SIGNAL OPERATIONS' };
-    if (path.includes('prospect')) return { type: 'prospect', title: 'PROSPECTING PIPELINE', sub: 'TARGET ACQUISITION SYSTEM' };
-    if (path.includes('intelligence')) return { type: 'intel', title: 'INTELLIGENCE MATRIX', sub: 'DEEP SIGNAL ANALYSIS' };
-    if (path.includes('6sense') || path.includes('ticker')) return { type: 'ticker', title: '6SENSE SIGNAL TICKER', sub: 'LIVE INTENT DATA FEED' };
-    if (path.includes('signal-map') || path.includes('map')) return { type: 'map', title: 'LIVE SIGNAL MAP', sub: 'GLOBAL THREAT DETECTION' };
-    if (path.includes('index')) return { type: 'index', title: 'DUNSONATOR HQ', sub: 'ENTERPRISE AI OPERATIONS' };
-    return { type: 'default', title: 'DUNSONATOR', sub: 'SIGNAL HUNTER ACTIVE' };
+  // === CANVAS RENDERERS ===
+  function makeCanvas(w, h) {
+    const cv = document.createElement('canvas');
+    cv.width = w; cv.height = h;
+    return cv;
   }
 
-  // === BUILD HERO BANNER ===
-  function buildHeroBanner() {
-    const ctx = getPageContext();
-    const heroIdx = Math.abs(ctx.type.charCodeAt(0)) % TACTICAL_IMAGES.heroes.length;
-    const banner = document.createElement('div');
-    banner.className = 'duns-hero-banner';
-    banner.innerHTML = `
-      <img src="${TACTICAL_IMAGES.heroes[heroIdx]}" alt="Tactical" loading="eager">
-      <div class="duns-hero-overlay">
-        <h1>${ctx.title}</h1>
-        <div class="hero-sub">${ctx.sub}</div>
-      </div>
-      <div class="duns-hero-scanline"></div>
-    `;
-    // Insert at top of body or after nav
-    const nav = document.querySelector('nav, .navbar, header, .top-bar');
-    if (nav) {
-      nav.parentNode.insertBefore(banner, nav.nextSibling);
-    } else {
-      document.body.insertBefore(banner, document.body.firstChild);
+  // 1. PARTICLE NETWORK - connected nodes floating in space
+  function drawParticleNetwork(cv, opts) {
+    const ctx = cv.getContext('2d');
+    const W = cv.width, H = cv.height;
+    const count = opts.count || 60;
+    const particles = [];
+    for (let i = 0; i < count; i++) {
+      particles.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, r: Math.random()*2+1 });
     }
+    function frame() {
+      ctx.fillStyle = 'rgba(10,10,15,0.12)';
+      ctx.fillRect(0,0,W,H);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x<0||p.x>W) p.vx*=-1;
+        if (p.y<0||p.y>H) p.vy*=-1;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = C.orange; ctx.globalAlpha=0.7; ctx.fill(); ctx.globalAlpha=1;
+      });
+      for (let i=0;i<particles.length;i++) {
+        for (let j=i+1;j<particles.length;j++) {
+          const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+          const dist=Math.sqrt(dx*dx+dy*dy);
+          if (dist<120) {
+            ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y);
+            ctx.strokeStyle=C.orange; ctx.globalAlpha=0.15*(1-dist/120); ctx.lineWidth=0.5; ctx.stroke(); ctx.globalAlpha=1;
+          }
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+    ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+    frame();
   }
 
-  // === BUILD IMAGE GRID ===
-  function buildImageGrid() {
+  // 2. RADAR SWEEP
+  function drawRadar(cv) {
+    const ctx = cv.getContext('2d');
+    const W = cv.width, H = cv.height;
+    const cx = W/2, cy = H/2, radius = Math.min(W,H)*0.42;
+    let angle = 0;
+    const blips = Array.from({length:8},()=>({a:Math.random()*Math.PI*2,d:Math.random()*0.8+0.1,pulse:0}));
+    function frame() {
+      ctx.fillStyle='rgba(10,10,15,0.08)'; ctx.fillRect(0,0,W,H);
+      // rings
+      for (let r=1;r<=4;r++) {
+        ctx.beginPath(); ctx.arc(cx,cy,radius*r/4,0,Math.PI*2);
+        ctx.strokeStyle=C.dim; ctx.lineWidth=0.5; ctx.stroke();
+      }
+      // crosshairs
+      ctx.beginPath(); ctx.moveTo(cx-radius,cy); ctx.lineTo(cx+radius,cy);
+      ctx.moveTo(cx,cy-radius); ctx.lineTo(cx,cy+radius);
+      ctx.strokeStyle='rgba(255,140,0,0.08)'; ctx.lineWidth=0.5; ctx.stroke();
+      // sweep
+      const grad = ctx.createConicalGradient ? null : null;
+      ctx.beginPath(); ctx.moveTo(cx,cy);
+      ctx.arc(cx,cy,radius,angle-0.5,angle);
+      ctx.closePath();
+      const g = ctx.createRadialGradient(cx,cy,0,cx,cy,radius);
+      g.addColorStop(0,'rgba(255,140,0,0.3)'); g.addColorStop(1,'rgba(255,140,0,0)');
+      ctx.fillStyle=g; ctx.fill();
+      // sweep line
+      ctx.beginPath(); ctx.moveTo(cx,cy);
+      ctx.lineTo(cx+Math.cos(angle)*radius,cy+Math.sin(angle)*radius);
+      ctx.strokeStyle=C.orange; ctx.globalAlpha=0.6; ctx.lineWidth=1.5; ctx.stroke(); ctx.globalAlpha=1;
+      // blips
+      blips.forEach(b => {
+        const bx=cx+Math.cos(b.a)*b.d*radius, by=cy+Math.sin(b.a)*b.d*radius;
+        const diff=Math.abs(((angle%(Math.PI*2))-(b.a%(Math.PI*2))+Math.PI*2)%(Math.PI*2));
+        if(diff<0.3) b.pulse=1;
+        if(b.pulse>0) {
+          ctx.beginPath(); ctx.arc(bx,by,3*b.pulse,0,Math.PI*2);
+          ctx.fillStyle=C.orange; ctx.globalAlpha=b.pulse*0.8; ctx.fill(); ctx.globalAlpha=1;
+          b.pulse-=0.015;
+        }
+      });
+      angle+=0.02;
+      requestAnimationFrame(frame);
+    }
+    ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+    frame();
+  }
+
+  // 3. TOPOGRAPHIC CONTOUR MAP
+  function drawTopo(cv) {
+    const ctx = cv.getContext('2d');
+    const W = cv.width, H = cv.height;
+    ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+    // Generate height field from sine waves
+    const centers = Array.from({length:4},()=>({x:Math.random()*W,y:Math.random()*H,s:Math.random()*80+40}));
+    function heightAt(x,y) {
+      let h=0;
+      centers.forEach(c => { const d=Math.sqrt((x-c.x)**2+(y-c.y)**2); h+=c.s*Math.exp(-d*d/(c.s*c.s*2)); });
+      return h;
+    }
+    // Draw contour lines
+    for (let level=10;level<100;level+=8) {
+      ctx.beginPath();
+      for (let x=0;x<W;x+=3) {
+        for (let y=0;y<H;y+=3) {
+          const h=heightAt(x,y);
+          if (Math.abs(h-level)<2) {
+            ctx.rect(x,y,1,1);
+          }
+        }
+      }
+      ctx.fillStyle=C.orange;
+      ctx.globalAlpha=0.12+level*0.002;
+      ctx.fill();
+      ctx.globalAlpha=1;
+    }
+    // Animated scan line
+    let scanY=0;
+    function animate() {
+      ctx.fillStyle='rgba(10,10,15,0.03)'; ctx.fillRect(0,scanY-1,W,3);
+      ctx.fillStyle=C.orange; ctx.globalAlpha=0.1;
+      ctx.fillRect(0,scanY,W,1); ctx.globalAlpha=1;
+      scanY=(scanY+0.5)%H;
+      requestAnimationFrame(animate);
+    }
+    animate();
+  }
+
+  // 4. SIGNAL WAVEFORM
+  function drawWaveform(cv) {
+    const ctx = cv.getContext('2d');
+    const W = cv.width, H = cv.height;
+    let t=0;
+    function frame() {
+      ctx.fillStyle='rgba(10,10,15,0.15)'; ctx.fillRect(0,0,W,H);
+      // Grid
+      ctx.strokeStyle='rgba(255,140,0,0.04)'; ctx.lineWidth=0.5;
+      for(let x=0;x<W;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+      for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+      // Waveforms
+      [0.3,0.5,0.7].forEach((yRatio,idx) => {
+        ctx.beginPath();
+        const baseY=H*yRatio;
+        for(let x=0;x<W;x++) {
+          const val=Math.sin(x*0.03+t*(1+idx*0.3))*15*Math.sin(x*0.007+t*0.1)+Math.sin(x*0.05+t*2)*5;
+          const y=baseY+val;
+          x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+        }
+        ctx.strokeStyle=C.orange;
+        ctx.globalAlpha=0.4-idx*0.1;
+        ctx.lineWidth=1.2-idx*0.3;
+        ctx.stroke();
+        ctx.globalAlpha=1;
+      });
+      t+=0.03;
+      requestAnimationFrame(frame);
+    }
+    ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+    frame();
+  }
+
+  // 5. DATA CONSTELLATION
+  function drawConstellation(cv) {
+    const ctx = cv.getContext('2d');
+    const W = cv.width, H = cv.height;
+    const nodes=Array.from({length:20},()=>({x:Math.random()*W,y:Math.random()*H,s:Math.random()*4+2,phase:Math.random()*Math.PI*2}));
+    // Pre-compute edges (MST-like)
+    const edges=[];
+    nodes.forEach((n,i) => {
+      let minD=Infinity,minJ=-1;
+      nodes.forEach((m,j) => { if(i!==j){const d=Math.hypot(n.x-m.x,n.y-m.y);if(d<minD){minD=d;minJ=j;}} });
+      if(minJ>=0) edges.push([i,minJ]);
+    });
+    let t=0;
+    function frame() {
+      ctx.fillStyle='rgba(10,10,15,0.06)'; ctx.fillRect(0,0,W,H);
+      edges.forEach(([i,j]) => {
+        ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y);
+        ctx.strokeStyle=C.orange; ctx.globalAlpha=0.1; ctx.lineWidth=0.5; ctx.stroke(); ctx.globalAlpha=1;
+      });
+      nodes.forEach(n => {
+        const pulse=Math.sin(t+n.phase)*0.3+0.7;
+        ctx.beginPath(); ctx.arc(n.x,n.y,n.s*pulse,0,Math.PI*2);
+        ctx.fillStyle=C.orange; ctx.globalAlpha=0.5*pulse; ctx.fill();
+        ctx.globalAlpha=0.1; ctx.beginPath(); ctx.arc(n.x,n.y,n.s*2*pulse,0,Math.PI*2); ctx.fill();
+        ctx.globalAlpha=1;
+      });
+      t+=0.02;
+      requestAnimationFrame(frame);
+    }
+    ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+    frame();
+  }
+
+  // 6. HEX GRID
+  function drawHexGrid(cv) {
+    const ctx = cv.getContext('2d');
+    const W = cv.width, H = cv.height;
+    ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+    const size=18;
+    const h=size*Math.sqrt(3);
+    let t=0;
+    function frame() {
+      ctx.fillStyle='rgba(10,10,15,0.04)'; ctx.fillRect(0,0,W,H);
+      for(let row=0;row<H/h+1;row++) {
+        for(let col=0;col<W/(size*3)+1;col++) {
+          const x=col*size*3+(row%2)*size*1.5;
+          const y=row*h*0.5;
+          const dist=Math.hypot(x-W/2,y-H/2);
+          const wave=Math.sin(dist*0.02-t)*0.5+0.5;
+          ctx.beginPath();
+          for(let a=0;a<6;a++) {
+            const angle=Math.PI/3*a-Math.PI/6;
+            const px=x+Math.cos(angle)*size*0.9;
+            const py=y+Math.sin(angle)*size*0.9;
+            a===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+          }
+          ctx.closePath();
+          ctx.strokeStyle=C.orange;
+          ctx.globalAlpha=0.06+wave*0.12;
+          ctx.lineWidth=0.5;
+          ctx.stroke();
+          ctx.globalAlpha=1;
+        }
+      }
+      t+=0.015;
+      requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  // === RENDERER REGISTRY ===
+  const RENDERERS = [drawParticleNetwork, drawRadar, drawTopo, drawWaveform, drawConstellation, drawHexGrid];
+
+  // === PAGE CONTEXT ===
+  function getCtx() {
+    const p = window.location.pathname.toLowerCase();
+    if (p.includes('hub')||p.endsWith('/')) return {t:'DUNSONATOR // COMMAND HUB',s:'PROCEDURAL INTELLIGENCE LAYER',r:0};
+    if (p.includes('rpa')) return {t:'RPA CONTROL CENTER',s:'AUTONOMOUS ORCHESTRATION GRID',r:1};
+    if (p.includes('command')) return {t:'COMMAND CENTER',s:'REAL-TIME SIGNAL OPERATIONS',r:2};
+    if (p.includes('prospect')) return {t:'PROSPECTING PIPELINE',s:'TARGET ACQUISITION SYSTEM',r:3};
+    if (p.includes('intelligence')) return {t:'INTELLIGENCE MATRIX',s:'DEEP SIGNAL ANALYSIS',r:4};
+    if (p.includes('index')) return {t:'DUNSONATOR HQ',s:'ENTERPRISE AI OPERATIONS',r:5};
+    return {t:'DUNSONATOR',s:'SIGNAL HUNTER ACTIVE',r:0};
+  }
+
+  // === BUILD HERO ===
+  function buildHero() {
+    const ctx = getCtx();
+    const el = document.createElement('div');
+    el.className = 'dv-hero';
+    const cv = makeCanvas(1200, 400);
+    el.appendChild(cv);
+    el.innerHTML += `<div class="dv-hero-overlay"><h1>${ctx.t}</h1><div class="sub">${ctx.s}</div></div><div class="dv-scan"></div>`;
+    const nav = document.querySelector('nav, .navbar, header, .top-bar');
+    if (nav) nav.parentNode.insertBefore(el, nav.nextSibling);
+    else document.body.insertBefore(el, document.body.firstChild);
+    // Use particle network for hero - always impressive
+    drawParticleNetwork(cv, {count:80});
+  }
+
+  // === BUILD VIZ GRID ===
+  function buildGrid() {
     const labels = [
-      { title: 'SIGNAL INTERCEPT', sub: 'Real-time data capture' },
-      { title: 'NEURAL ANALYSIS', sub: 'AI pattern recognition' },
-      { title: 'THREAT MATRIX', sub: 'Competitive intelligence' },
-      { title: 'DATA PIPELINE', sub: 'Automated ETL flows' },
-      { title: 'CYBER DEFENSE', sub: 'Security perimeter' },
-      { title: 'NETWORK OPS', sub: 'Infrastructure backbone' },
+      {t:'SIGNAL INTERCEPT',s:'Real-time pattern capture',r:drawWaveform},
+      {t:'NEURAL MESH',s:'AI decision topology',r:drawConstellation},
+      {t:'THREAT RADAR',s:'360 perimeter sweep',r:drawRadar},
+      {t:'TERRAIN MAP',s:'Account landscape contours',r:drawTopo},
+      {t:'HEX LATTICE',s:'Distributed node grid',r:drawHexGrid},
+      {t:'PARTICLE FIELD',s:'Data flow visualization',r:function(cv){drawParticleNetwork(cv,{count:35})}},
     ];
     const grid = document.createElement('div');
-    grid.className = 'duns-image-grid';
-    TACTICAL_IMAGES.signals.forEach((src, i) => {
-      const card = document.createElement('div');
-      card.className = 'duns-image-card';
-      card.innerHTML = `
-        <img src="${src}" alt="${labels[i].title}" loading="lazy">
-        <div class="card-label">
-          ${labels[i].title}
-          <span>${labels[i].sub}</span>
-        </div>
-      `;
-      grid.appendChild(card);
+    grid.className = 'dv-grid';
+    labels.forEach(l => {
+      const cell = document.createElement('div');
+      cell.className = 'dv-cell';
+      const cv = makeCanvas(520, 360);
+      cell.appendChild(cv);
+      cell.innerHTML += `<div class="lbl">${l.t}<span>${l.s}</span></div>`;
+      grid.appendChild(cell);
+      l.r(cv);
     });
-    // Insert after first major section or after hero
-    const hero = document.querySelector('.duns-hero-banner');
-    const target = document.querySelector('.grid, .cards, .dashboard, main, .content, .container');
-    if (target) {
-      target.parentNode.insertBefore(grid, target);
-    } else if (hero) {
-      hero.parentNode.insertBefore(grid, hero.nextSibling);
-    }
+    const hero = document.querySelector('.dv-hero');
+    const target = document.querySelector('.grid, .cards, .dashboard, main, .content');
+    if (target) target.parentNode.insertBefore(grid, target);
+    else if (hero) hero.parentNode.insertBefore(grid, hero.nextSibling);
   }
 
-  // === BUILD TACTICAL PANELS (between sections) ===
-  function buildTacticalPanels() {
+  // === BUILD PANELS ===
+  function buildPanels() {
     const panels = [
-      { img: TACTICAL_IMAGES.tactical[0], title: 'SIGNAL INTERCEPT MODE', desc: 'Monitoring 847 active endpoints across enterprise networks. Threat level: ELEVATED.' },
-      { img: TACTICAL_IMAGES.tactical[1], title: 'PERIMETER DEFENSE', desc: 'Automated RPA bots scanning for intent signals. 12 high-value targets identified.' },
-      { img: TACTICAL_IMAGES.tactical[2], title: 'DEEP RECONNAISSANCE', desc: 'DUNSONATOR deployed across 6 intelligence verticals. Signal-to-noise ratio: 94.7%.' },
+      {t:'SIGNAL INTERCEPT MODE',d:'Monitoring 847 active endpoints. Threat level: ELEVATED. Signal-to-noise ratio: 94.7%.',r:drawWaveform},
+      {t:'PERIMETER DEFENSE',d:'12 high-value targets identified. RPA bots deployed across 6 intelligence verticals.',r:drawRadar},
     ];
-    const sections = document.querySelectorAll('section, .section, .card-grid, .widget, [class*="grid"]');
-    panels.forEach((p, i) => {
-      const panel = document.createElement('div');
-      panel.className = 'duns-tactical-panel';
-      panel.innerHTML = `
-        <img class="panel-image" src="${p.img}" alt="${p.title}" loading="lazy">
-        <div class="panel-content">
-          <h3 style="color:#ff8c00;font-family:'JetBrains Mono',monospace;font-size:0.9rem;letter-spacing:3px;margin:0 0 8px 0;">${p.title}</h3>
-          <p style="color:#8a8a8a;font-family:'JetBrains Mono',monospace;font-size:0.75rem;margin:0;line-height:1.6;">${p.desc}</p>
-        </div>
-      `;
-      if (sections[i * 2]) {
-        sections[i * 2].parentNode.insertBefore(panel, sections[i * 2].nextSibling);
+    const secs = document.querySelectorAll('section, .section, .card-grid, .widget, [class*="grid"]');
+    panels.forEach((p,i) => {
+      const el = document.createElement('div');
+      el.className = 'dv-panel';
+      const cv = makeCanvas(800, 200);
+      el.appendChild(cv);
+      el.innerHTML += `<div class="pc"><h3>${p.t}</h3><p>${p.d}</p></div>`;
+      if (secs[i*2]) secs[i*2].parentNode.insertBefore(el, secs[i*2].nextSibling);
+      p.r(cv);
+    });
+  }
+
+  // === BUILD DIVIDERS ===
+  function buildDividers() {
+    const secs = document.querySelectorAll('section, .section, [class*="grid"]');
+    let n=0;
+    secs.forEach((s,i) => {
+      if (i%3===1&&n<2) {
+        const d = document.createElement('div');
+        d.className = 'dv-divider';
+        const cv = makeCanvas(1200, 100);
+        d.appendChild(cv);
+        s.parentNode.insertBefore(d, s);
+        drawWaveform(cv);
+        n++;
       }
     });
   }
 
-  // === BUILD SECTION DIVIDERS ===
-  function buildSectionDividers() {
-    const sections = document.querySelectorAll('section, .section, .card-grid, [class*="grid"]');
-    let divCount = 0;
-    sections.forEach((sec, i) => {
-      if (i % 3 === 1 && divCount < 3) {
-        const divider = document.createElement('div');
-        divider.className = 'duns-section-divider';
-        divider.innerHTML = `
-          <img src="${TACTICAL_IMAGES.environments[divCount]}" alt="" loading="lazy">
-          <div class="divider-line"></div>
-        `;
-        sec.parentNode.insertBefore(divider, sec);
-        divCount++;
-      }
-    });
+  // === AMBIENT BG ===
+  function addAmbient() {
+    const el = document.createElement('div');
+    el.className = 'dv-ambient';
+    const cv = makeCanvas(800, 600);
+    el.appendChild(cv);
+    document.body.appendChild(el);
+    drawHexGrid(cv);
   }
 
-  // === ADD AMBIENT BACKGROUND ===
-  function addAmbientBackground() {
-    const bg = document.createElement('div');
-    bg.className = 'duns-ambient-bg';
-    const idx = Math.floor(Math.random() * TACTICAL_IMAGES.environments.length);
-    bg.innerHTML = `<img src="${TACTICAL_IMAGES.environments[idx]}" alt="">`;
-    document.body.appendChild(bg);
-    // Cycle images every 30s
-    setInterval(() => {
-      const newIdx = Math.floor(Math.random() * TACTICAL_IMAGES.environments.length);
-      bg.querySelector('img').src = TACTICAL_IMAGES.environments[newIdx];
-    }, 30000);
+  // === AVATAR ===
+  function addAvatar() {
+    const p = window.location.pathname;
+    const pre = p.includes('/intelligence/') ? '../assets/' : 'assets/';
+    const img = document.createElement('img');
+    img.className = 'dv-avatar';
+    img.src = pre + 'dunsonator-avatar.svg';
+    img.alt = 'DUNSONATOR';
+    img.title = 'DUNSONATOR // Signal Hunter';
+    img.onclick = () => { const b=document.querySelector('.duns-chat-toggle, #dunsonator-chat-toggle'); if(b)b.click(); };
+    document.body.appendChild(img);
   }
 
-  // === ADD CORNER VIGNETTES ===
-  function addCornerImages() {
-    const tr = document.createElement('img');
-    tr.className = 'duns-corner-img top-right';
-    tr.src = TACTICAL_IMAGES.tactical[3];
-    tr.alt = '';
-    document.body.appendChild(tr);
-
-    const bl = document.createElement('img');
-    bl.className = 'duns-corner-img bottom-left';
-    bl.src = TACTICAL_IMAGES.tactical[4];
-    bl.alt = '';
-    document.body.appendChild(bl);
-  }
-
-  // === ADD DUNSONATOR AVATAR BADGE ===
-  function addAvatarBadge() {
-    // Determine correct path
-    const path = window.location.pathname;
-    const isSubdir = path.includes('/intelligence/');
-    const prefix = isSubdir ? '../assets/' : 'assets/';
-    
-    const avatar = document.createElement('img');
-    avatar.className = 'duns-avatar-badge';
-    avatar.src = prefix + 'dunsonator-avatar.svg';
-    avatar.alt = 'DUNSONATOR';
-    avatar.title = 'DUNSONATOR // Signal Hunter Active';
-    avatar.addEventListener('click', () => {
-      const chatBtn = document.querySelector('.duns-chat-toggle, #dunsonator-chat-toggle');
-      if (chatBtn) chatBtn.click();
-    });
-    document.body.appendChild(avatar);
-  }
-
-  // === ADD TACTICAL IMAGERY TO EXISTING CARDS ===
-  function enhanceExistingCards() {
-    const cards = document.querySelectorAll('.card, .widget, .panel, [class*="card"], [class*="widget"]');
-    cards.forEach((card, i) => {
-      if (card.querySelector('img')) return; // skip if already has image
-      if (card.classList.contains('duns-image-card') || card.classList.contains('duns-tactical-panel')) return;
-      const imgSrc = TACTICAL_IMAGES.tactical[i % TACTICAL_IMAGES.tactical.length];
-      const imgEl = document.createElement('div');
-      imgEl.style.cssText = `
-        width:100%;height:120px;overflow:hidden;position:relative;
-        border-bottom:1px solid rgba(255,140,0,0.15);
-      `;
-      imgEl.innerHTML = `<img src="${imgSrc}" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.3) saturate(1.4);" loading="lazy">`;
-      card.insertBefore(imgEl, card.firstChild);
-    });
-  }
-
-  // === INITIALIZE ===
+  // === INIT ===
   function init() {
-    injectImageStyles();
-    buildHeroBanner();
-    buildImageGrid();
-    buildTacticalPanels();
-    buildSectionDividers();
-    addAmbientBackground();
-    addCornerImages();
-    addAvatarBadge();
-    // Slight delay for enhanced cards to let DOM settle
-    setTimeout(enhanceExistingCards, 500);
-    console.log('[DUNSONATOR-IMAGES] Tactical visual layer deployed.');
+    injectStyles();
+    buildHero();
+    buildGrid();
+    buildPanels();
+    buildDividers();
+    addAmbient();
+    addAvatar();
+    console.log('[DUNSONATOR] Procedural visual system v3.0 deployed. Zero stock photos.');
   }
 
-  // Run on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+  else init();
 })();
