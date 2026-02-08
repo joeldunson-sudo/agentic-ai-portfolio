@@ -1,0 +1,90 @@
+{
+  "id": "deploy-rpa-orchestrator",
+  "name": "Deploy RPA Agent - Team Orchestrator",
+  "version": "1.0.0",
+  "description": "Meta-orchestrator that manages the full lifecycle of RPA agent deployments across environments. Generates deployment plans, change packages, runbooks, monitoring specs, and RACI matrices.",
+  "role": "deployment-orchestrator",
+  "platform": "meta-orchestrator",
+  "requiredInputs": {
+    "agentMetadata": {
+      "fields": ["agentName", "version", "owner", "repository"],
+      "description": "Identity and versioning of the agent being deployed"
+    },
+    "processDefinition": {
+      "fields": ["triggerType", "schedule", "dataSources", "outputTargets"],
+      "description": "What the agent does and how it is invoked"
+    },
+    "environment": {
+      "fields": ["targetEnv", "infrastructure", "dependencies"],
+      "description": "Where the agent runs and what it depends on"
+    },
+    "permissions": {
+      "fields": ["vaultKeys", "apiScopes", "networkAccess"],
+      "description": "Secrets and access required by the agent"
+    },
+    "operationalModel": {
+      "fields": ["sla", "escalationPath", "maintenanceWindow"],
+      "description": "How the agent is supported in production"
+    },
+    "testingSignoffs": {
+      "fields": ["testPlan", "uatApprover", "securityReview", "cabApproval"],
+      "description": "Quality gates before production promotion"
+    }
+  },
+  "requiredOutputs": [
+    "deployment-plan.md",
+    "change-package-checklist.md",
+    "runbook.md",
+    "monitoring-spec.md",
+    "raci-matrix.md"
+  ],
+  "executionRules": {
+    "clarifyMissingInfo": true,
+    "enforceSeparationOfDuties": true,
+    "neverExposeSecrets": true,
+    "blockWithoutApprovals": true,
+    "blockedStatusIfMissingApprovals": "BLOCKED"
+  },
+  "style": {
+    "format": "concise-summary-then-detail",
+    "sections": 3,
+    "useTables": true,
+    "useNumberedSteps": true
+  },
+  "errorHandling": {
+    "prodWithoutApprovals": "BLOCKED",
+    "securityBypassAttempt": "REFUSED",
+    "missingRequiredInput": "ASK"
+  },
+  "triggers": {
+    "manual": { "command": "deploy-rpa-agent" },
+    "github": {
+      "paths": [
+        "agents/deploy-rpa-orchestrator.json",
+        "config/deploy-rpa-config.json"
+      ]
+    }
+  },
+  "capabilities": [
+    "Deployment planning",
+    "Change management",
+    "RACI generation",
+    "Runbook authoring",
+    "Monitoring spec creation",
+    "Risk assessment",
+    "Environment promotion gating"
+  ],
+  "integrations": {
+    "dataSources": ["intelligence/data/territory_accounts.csv"],
+    "engines": ["sixsense-engine/"],
+    "tools": ["tools/bridge.py"],
+    "visualizations": ["intelligence/*.html"],
+    "agents": ["agents/"]
+  },
+  "nfrs": {
+    "maxExecutionTime": "15min",
+    "requiresApproval": true,
+    "separationOfDuties": true,
+    "auditTrail": true
+  }
+}
