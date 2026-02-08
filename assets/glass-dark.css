@@ -1,0 +1,287 @@
+/* ============================================================
+   GLASS DARK DESIGN SYSTEM v1.0
+   Blue / Black / White - Glassmorphism - First Class
+   Overrides all orange/copper tokens. Loaded AFTER dunsonator.css.
+   ============================================================ */
+
+/* === 1. ROOT TOKENS === */
+:root {
+  --gd-bg-0: #020308;
+  --gd-bg-1: #050812;
+  --gd-bg-2: #0a1020;
+  --gd-surface: rgba(8,16,32,0.75);
+  --gd-glass: rgba(12,20,40,0.25);
+  --gd-glass-border: rgba(100,160,255,0.12);
+  --gd-glass-glow: rgba(60,130,255,0.08);
+  --gd-accent: #3b82f6;
+  --gd-accent-bright: #60a5fa;
+  --gd-accent-dim: #1d4ed8;
+  --gd-cyan: #22d3ee;
+  --gd-white: #f0f4ff;
+  --gd-white-dim: #94a3b8;
+  --gd-white-muted: #475569;
+  --gd-danger: #ef4444;
+  --gd-success: #10b981;
+  --gd-warning: #f59e0b;
+  --gd-font-display: 'Inter Tight','Inter','SF Pro Display',system-ui,sans-serif;
+  --gd-font-body: 'Inter','SF Pro Text',system-ui,sans-serif;
+  --gd-font-mono: 'JetBrains Mono','SF Mono','Fira Code',monospace;
+  --gd-radius: 12px;
+  --gd-radius-pill: 999px;
+  --gd-blur: 20px;
+  --gd-transition: 280ms cubic-bezier(0.22,1,0.36,1);
+  --gd-transition-slow: 420ms cubic-bezier(0.22,1,0.36,1);
+}
+
+/* === 2. GLOBAL OVERRIDES === */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+html, body {
+  background: linear-gradient(165deg, var(--gd-bg-0) 0%, var(--gd-bg-1) 40%, var(--gd-bg-2) 100%) !important;
+  color: var(--gd-white) !important;
+  font-family: var(--gd-font-body) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Kill all orange/copper from dunsonator.css */
+* {
+  --accent: var(--gd-accent) !important;
+  --accent-glow: var(--gd-glass-glow) !important;
+}
+
+/* === 3. GLASS CARD SYSTEM === */
+.card, .widget, .panel, .section,
+[class*="card"], [class*="widget"], [class*="panel"],
+.kpi-card, .signal-card, .alert-card, .agent-card {
+  background: var(--gd-glass) !important;
+  backdrop-filter: blur(var(--gd-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--gd-blur)) !important;
+  border: 1px solid var(--gd-glass-border) !important;
+  border-radius: var(--gd-radius) !important;
+  box-shadow:
+    0 0 0 1px rgba(100,160,255,0.05),
+    0 4px 24px rgba(0,0,0,0.4),
+    0 1px 0 rgba(255,255,255,0.03) inset !important;
+  transition: all var(--gd-transition) !important;
+  animation: gdCardEnter var(--gd-transition) ease-out both;
+}
+
+.card:hover, .widget:hover, .panel:hover,
+[class*="card"]:hover, [class*="widget"]:hover {
+  border-color: rgba(100,160,255,0.25) !important;
+  box-shadow:
+    0 0 0 1px rgba(100,160,255,0.1),
+    0 8px 40px rgba(0,0,0,0.5),
+    0 0 30px var(--gd-glass-glow),
+    0 1px 0 rgba(255,255,255,0.05) inset !important;
+  transform: translateY(-2px);
+}
+
+@keyframes gdCardEnter {
+  from { opacity:0; transform:scale(0.96) translateY(8px); }
+  to { opacity:1; transform:scale(1) translateY(0); }
+}
+
+/* === 4. TYPOGRAPHY === */
+h1, h2, h3, .heading, .title,
+[class*="title"], [class*="heading"] {
+  font-family: var(--gd-font-display) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--gd-white) !important;
+}
+
+h1 { font-size: clamp(1.5rem,3.5vw,2.8rem) !important; font-weight:800 !important; }
+h2 { font-size: clamp(1.1rem,2vw,1.6rem) !important; }
+h3 { font-size: clamp(0.85rem,1.5vw,1.1rem) !important; }
+
+p, span, div, li, td, th, label, .body-text {
+  font-family: var(--gd-font-body) !important;
+}
+
+code, pre, .mono, [class*="mono"],
+[class*="console"], [class*="log"] {
+  font-family: var(--gd-font-mono) !important;
+}
+
+/* === 5. CAPSULE / PILL COMPONENTS === */
+.btn, button, a.btn, .button, .pill, .badge, .tag, .status,
+[class*="btn"], [class*="button"], [class*="pill"], [class*="badge"], [class*="tag"] {
+  border-radius: var(--gd-radius-pill) !important;
+  font-family: var(--gd-font-display) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  font-size: 0.75rem !important;
+  padding: 8px 20px !important;
+  border: 1.5px solid var(--gd-glass-border) !important;
+  background: var(--gd-glass) !important;
+  color: var(--gd-white) !important;
+  backdrop-filter: blur(12px) !important;
+  transition: all var(--gd-transition) !important;
+  cursor: pointer;
+}
+
+.btn:hover, button:hover, [class*="btn"]:hover {
+  border-color: var(--gd-accent) !important;
+  box-shadow: 0 0 20px rgba(59,130,246,0.2), 0 0 0 1px rgba(59,130,246,0.1) !important;
+  color: var(--gd-accent-bright) !important;
+  background: rgba(59,130,246,0.08) !important;
+}
+
+/* === 6. DIRECT COLOR OVERRIDES (kill orange everywhere) === */
+[style*="#ff8c00"], [style*="rgb(255, 140, 0)"],
+[style*="#b87333"], [style*="rgb(184, 115, 51)"] {
+  color: var(--gd-accent-bright) !important;
+}
+
+/* Override inline orange text-shadows and box-shadows */
+[style*="text-shadow"] { text-shadow: none !important; }
+
+/* Links */
+a { color: var(--gd-accent-bright) !important; text-decoration: none !important; transition: color var(--gd-transition) !important; }
+a:hover { color: var(--gd-cyan) !important; }
+
+/* === 7. NAV / TOP BAR === */
+nav, .navbar, .top-bar, header, .ticker,
+[class*="nav"], [class*="ticker"], [class*="header"] {
+  background: rgba(2,3,8,0.85) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid var(--gd-glass-border) !important;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3) !important;
+}
+
+/* === 8. KPI / STAT NUMBERS === */
+.kpi-number, .stat-number, .metric-value,
+[class*="kpi"] [class*="number"], [class*="stat"] [class*="value"],
+[class*="metric"] {
+  color: var(--gd-accent-bright) !important;
+  font-family: var(--gd-font-display) !important;
+  font-weight: 800 !important;
+  text-shadow: 0 0 20px rgba(59,130,246,0.3) !important;
+}
+
+/* === 9. STATUS INDICATORS === */
+[class*="active"], [class*="online"], [class*="running"] {
+  color: var(--gd-success) !important;
+}
+[class*="alert"], [class*="urgent"], [class*="danger"] {
+  color: var(--gd-danger) !important;
+}
+[class*="warning"], [class*="pending"] {
+  color: var(--gd-warning) !important;
+}
+
+/* === 10. PROCEDURAL HERO OVERRIDES === */
+.dv-hero { border-bottom-color: var(--gd-glass-border) !important; }
+.dv-ho h1 { color: var(--gd-white) !important; text-shadow: 0 0 40px rgba(59,130,246,0.4) !important; }
+.dv-ho .sub { color: var(--gd-white-dim) !important; }
+.dv-scan { background: repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(59,130,246,0.015) 3px,rgba(59,130,246,0.015) 6px) !important; }
+.dv-c { border-color: var(--gd-glass-border) !important; background: var(--gd-glass) !important; }
+.dv-c:hover { border-color: rgba(100,160,255,0.3) !important; box-shadow: 0 0 20px rgba(59,130,246,0.12) !important; }
+.dv-c .lb { color: var(--gd-accent-bright) !important; }
+.dv-c .lb span { color: var(--gd-white-dim) !important; }
+.dv-p { border-color: var(--gd-glass-border) !important; background: var(--gd-glass) !important; }
+.dv-p h3 { color: var(--gd-accent-bright) !important; }
+.dv-p p { color: var(--gd-white-muted) !important; }
+.dv-g { gap: 14px !important; }
+
+/* === 11. DUNSONATOR CHAT OVERRIDES === */
+.duns-chat-toggle, #dunsonator-chat-toggle {
+  background: var(--gd-accent) !important;
+  box-shadow: 0 0 20px rgba(59,130,246,0.3) !important;
+  border: 2px solid rgba(100,160,255,0.2) !important;
+}
+.duns-chat-toggle:hover {
+  background: var(--gd-accent-bright) !important;
+  box-shadow: 0 0 30px rgba(59,130,246,0.5) !important;
+}
+#dunsonator-presence, .dunsonator-presence,
+[id*="dunsonator"] {
+  color: var(--gd-white) !important;
+}
+#dunsonator-tooltip, .dunsonator-tooltip,
+[id*="tooltip"] {
+  background: var(--gd-surface) !important;
+  border: 1px solid var(--gd-glass-border) !important;
+  color: var(--gd-white-dim) !important;
+  backdrop-filter: blur(16px) !important;
+}
+.dv-av {
+  filter: drop-shadow(0 0 10px rgba(59,130,246,0.4)) !important;
+}
+
+/* === 12. AVATAR BADGE OVERRIDE === */
+@keyframes avp {
+  0%,100% { filter: drop-shadow(0 0 10px rgba(59,130,246,0.4)) !important; }
+  50% { filter: drop-shadow(0 0 20px rgba(59,130,246,0.6)) !important; }
+}
+
+/* === 13. SCROLLBAR === */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:var(--gd-bg-0); }
+::-webkit-scrollbar-thumb { background:rgba(59,130,246,0.2); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(59,130,246,0.4); }
+
+/* === 14. SELECTION === */
+::selection { background:rgba(59,130,246,0.3); color:var(--gd-white); }
+
+/* === 15. TABLE OVERRIDES === */
+table, th, td {
+  border-color: var(--gd-glass-border) !important;
+}
+th {
+  background: var(--gd-surface) !important;
+  color: var(--gd-white-dim) !important;
+  font-family: var(--gd-font-display) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  font-size: 0.7rem !important;
+}
+td {
+  background: transparent !important;
+  color: var(--gd-white) !important;
+}
+
+/* === 16. FOOTER === */
+footer, .footer, [class*="footer"] {
+  background: var(--gd-bg-0) !important;
+  border-top: 1px solid var(--gd-glass-border) !important;
+  color: var(--gd-white-muted) !important;
+}
+
+/* === 17. AMBIENT GLASS NOISE OVERLAY === */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+body > * { position: relative; z-index: 1; }
+
+/* === 18. GRID / LAYOUT SPACING === */
+.grid, [class*="grid"] {
+  gap: 14px !important;
+}
+
+/* === 19. INPUT / FORM === */
+input, textarea, select {
+  background: var(--gd-surface) !important;
+  border: 1px solid var(--gd-glass-border) !important;
+  border-radius: var(--gd-radius) !important;
+  color: var(--gd-white) !important;
+  font-family: var(--gd-font-body) !important;
+  padding: 10px 14px !important;
+  transition: all var(--gd-transition) !important;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--gd-accent) !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1) !important;
+  outline: none !important;
+}
