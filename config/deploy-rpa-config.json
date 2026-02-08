@@ -1,0 +1,64 @@
+{
+  "agentId": "deploy-rpa-orchestrator",
+  "environments": {
+    "TEST": {
+      "infrastructure": "docker-compose",
+      "host": "localhost",
+      "approval": "none",
+      "autoPromote": true
+    },
+    "UAT": {
+      "infrastructure": "k8s",
+      "cluster": "gtm-uat",
+      "approval": "process-owner",
+      "autoPromote": false
+    },
+    "STAGE": {
+      "infrastructure": "k8s",
+      "cluster": "gtm-stage",
+      "approval": "security",
+      "autoPromote": false
+    },
+    "PROD": {
+      "infrastructure": "k8s",
+      "cluster": "gtm-prod",
+      "approval": "cab",
+      "autoPromote": false
+    }
+  },
+  "vault": {
+    "PROD_DATABASE_URL": { "purpose": "PostgreSQL connection", "rotationDays": 90 },
+    "PROD_SIXSENSE_API_KEY": { "purpose": "6sense API access", "rotationDays": 180 },
+    "PROD_CLEARBIT_API_KEY": { "purpose": "Clearbit enrichment", "rotationDays": 180 },
+    "PROD_PERPLEXITY_API_KEY": { "purpose": "Intelligence Hub queries", "rotationDays": 180 },
+    "EXPORT_STORAGE_PATH": { "purpose": "Data export location", "rotationDays": 365 },
+    "PERPLEXITY_COLLECTION_ID": { "purpose": "Collection target", "rotationDays": 365 }
+  },
+  "dataPipeline": {
+    "source": "intelligence/data/territory_accounts.csv",
+    "recordCount": 228,
+    "enrichmentApis": ["6sense", "clearbit"],
+    "intentEngine": "sixsense-engine/",
+    "signalBridge": "tools/bridge.py",
+    "outputDashboards": [
+      "intelligence/6sense-ticker.html",
+      "intelligence/live-signal-map.html",
+      "intelligence/index.html"
+    ]
+  },
+  "schedule": {
+    "triggerType": "cron",
+    "expression": "0 6 * * 1-5",
+    "timezone": "America/Chicago",
+    "description": "Weekdays at 6 AM CST"
+  },
+  "notifications": {
+    "slack": {
+      "channel": "gtm-deployments",
+      "onSuccess": true,
+      "onFailure": true,
+      "onBlocked": true
+    }
+  },
+  "artefactOutput": "intelligence/deployments/deploy_rpa_agent_team/"
+}
