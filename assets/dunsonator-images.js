@@ -119,7 +119,7 @@ var sc=document.createElement('div');sc.className='dv-scan';el.appendChild(sc);
 var nav=document.querySelector('nav,.navbar,header,.top-bar');
 if(nav)nav.parentNode.insertBefore(el,nav.nextSibling);
 else document.body.insertBefore(el,document.body.firstChild);
-setTimeout(function(){sizeCanvas(cv,el);drawNet(cv);},50);}
+cv.width=800;cv.height=400;drawNet(cv);}
 // BUILD GRID
 function buildGrid(){
 var items=[{t:'SIGNAL INTERCEPT',s:'Real-time pattern capture',r:drawWave},{t:'NEURAL MESH',s:'AI decision topology',r:drawStar},{t:'THREAT RADAR',s:'360 perimeter sweep',r:drawRadar},{t:'TERRAIN MAP',s:'Account landscape contours',r:drawTopo},{t:'HEX LATTICE',s:'Distributed node grid',r:drawHex},{t:'PARTICLE FIELD',s:'Data flow visualization',r:drawNet}];
@@ -129,7 +129,7 @@ var d=document.createElement('div');d.className='dv-c';
 var cv=document.createElement('canvas');d.appendChild(cv);
 var lb=document.createElement('div');lb.className='lb';lb.innerHTML=it.t+'<span>'+it.s+'</span>';d.appendChild(lb);
 g.appendChild(d);
-setTimeout(function(){sizeCanvas(cv,d);it.r(cv);},100);
+cv.width=400;cv.height=280;it.r(cv);
 });
 var hero=document.querySelector('.dv-hero');
 var tg=document.querySelector('.grid,.cards,.dashboard,main,.content');
@@ -144,7 +144,7 @@ var el=document.createElement('div');el.className='dv-p';
 var cv=document.createElement('canvas');el.appendChild(cv);
 var pc=document.createElement('div');pc.className='pc';pc.innerHTML='<h3>'+p.t+'</h3><p>'+p.d+'</p>';el.appendChild(pc);
 if(secs[i*2])secs[i*2].parentNode.insertBefore(el,secs[i*2].nextSibling);
-setTimeout(function(){sizeCanvas(cv,el);p.r(cv);},150);
+cv.width=800;cv.height=200;p.r(cv);
 });}
 // AVATAR
 function addAvatar(){
