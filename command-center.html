@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agent Command Center | Enterprise AE Hub</title>
     <link rel="stylesheet" href="./assets/globe-skin.css" />
+        <link rel="stylesheet" href="./assets/dunsonator.css" />
 <style>
 :root{--bg:#0a0e17;--card:#111827;--border:#1e293b;--text:#e2e8f0;--muted:#64748b;--green:#10b981;--yellow:#f59e0b;--blue:#3b82f6;--purple:#8b5cf6;--red:#ef4444;--cyan:#06b6d4}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -76,5 +77,7 @@ function tick(){document.getElementById("clock").textContent=new Date().toLocale
 async function load(){try{var r=await fetch("intelligence/data/sales_system.json?t="+Date.now());var d=await r.json();render(d)}catch(e){document.getElementById("agents-grid").innerHTML='<div class="loading">Error: '+e.message+"</div>"}}
 load();setInterval(load,30000);
 </script>
+    <script src="./assets/dunsonator-chat.js"></script>
+<script src="./assets/enhance.js"></script>
 </body>
 </html>
